@@ -1,11 +1,12 @@
-package com.example.seepawandroid.data.remote.dtos.Animals
+package com.example.seepawandroid.data.remote.dtos.animals
 
 import com.example.seepawandroid.data.models.enums.AnimalState
 import com.example.seepawandroid.data.models.enums.SexType
 import com.example.seepawandroid.data.models.enums.SizeType
 import com.example.seepawandroid.data.models.enums.Species
-import com.example.seepawandroid.data.remote.dtos.Breeds.ResBreedDto
-import com.example.seepawandroid.data.remote.dtos.Images.ResImageDto
+import com.example.seepawandroid.data.remote.dtos.breeds.ResBreedDto
+import com.example.seepawandroid.data.remote.dtos.images.ResImageDto
+
 
 data class ResAnimalDto(
     val id: String,

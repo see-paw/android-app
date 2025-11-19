@@ -1,7 +1,7 @@
 package com.example.seepawandroid.data.models.mappers
 
 import com.example.seepawandroid.data.local.entities.Animal
-import com.example.seepawandroid.data.remote.dtos.Animals.ResAnimalDto
+import com.example.seepawandroid.data.remote.dtos.animals.ResAnimalDto
 
 fun ResAnimalDto.toEntity(): Animal {
     val mainImage = this.images?.firstOrNull { it.isPrincipal }?.url

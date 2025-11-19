@@ -12,6 +12,6 @@ interface AnimalDao {
     @Query("SELECT * FROM animals")
     suspend fun getAll(): List<Animal>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.Companion.REPLACE)
     suspend fun insertAll(list: List<Animal>)
 }

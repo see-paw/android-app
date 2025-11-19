@@ -6,7 +6,6 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.seepawandroid.ui.screens.ScreenPlaceholder
 
 import com.example.seepawandroid.ui.screens.login.AuthViewModel
 import com.example.seepawandroid.ui.screens.user.UserHomeScreen_DEMO
@@ -28,16 +27,13 @@ import com.example.seepawandroid.ui.screens.user.UserHomeScreen_DEMO
 @Composable
 fun NavGraphUser(
     navController: NavHostController,
-    //windowSize: WindowWidthSizeClass,
-    isLoggedIn: Boolean = true
+    authViewModel: AuthViewModel
 ) {
     // adicionar aqui variáveis de ViewModels necessários
 
-fun NavGraphUser(navController: NavHostController, authViewModel: AuthViewModel) {
     NavHost(
         navController = navController,
-        startDestination = NavigationRoutes.USER_HOME
-        startDestination = "UserHome"
+        startDestination = NavigationRoutes.USER_HOME,
     ) {
         composable(NavigationRoutes.USER_HOME) {
             UserHomeScreen_DEMO(authViewModel)

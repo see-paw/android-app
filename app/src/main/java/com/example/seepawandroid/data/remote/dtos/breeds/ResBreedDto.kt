@@ -1,4 +1,4 @@
-package com.example.seepawandroid.data.remote.dtos.Breeds
+package com.example.seepawandroid.data.remote.dtos.breeds
 
 
 data class ResBreedDto(

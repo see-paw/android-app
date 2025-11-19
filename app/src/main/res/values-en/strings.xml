@@ -1,5 +1,7 @@
 <resources>
+    <!-- App Name -->
     <string name="app_name">SeePaw</string>
+    <string name="app_logo_description">SeePaw Logo</string>
 
     <!-- Animals Catalogue -->
     <string name="catalog_search_placeholder">Search</string>
@@ -16,9 +18,6 @@
 
     <!-- Images -->
     <string name="animal_image_desc">Animal image %1$s</string>
-    <!-- App Name -->
-    <string name="app_name">SeePaw</string>
-    <string name="app_logo_description">SeePaw Logo</string>
 
     <!-- Navigation Drawer Options -->
     <string name="catalogue">Animals Catalogue</string>

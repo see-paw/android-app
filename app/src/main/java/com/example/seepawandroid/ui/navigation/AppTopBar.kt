@@ -36,14 +36,13 @@ import com.example.seepawandroid.R
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppTopBar(
-    isLoggedIn: Boolean,
+    isAuthenticated: Boolean,
     currentRoute: String?,
     onMenuClick: () -> Unit,
-    onLogoutClick: () -> Unit,
-    onNotificationsClick: () -> Unit
+    onLogoutClick: () -> Unit
 ) {
     // Menu só aparece quando o utilizador está autenticado
-    val showMenuIcon = isLoggedIn
+    val showMenuIcon = isAuthenticated
 
     TopAppBar(
         title = {
@@ -70,15 +69,7 @@ fun AppTopBar(
             }
         },
         actions = {
-            if (isLoggedIn) {
-                // Botão de notificações
-                IconButton(onClick = onNotificationsClick) {
-                    Icon(
-                        imageVector = Icons.Outlined.Notifications,
-                        contentDescription = stringResource(R.string.notifications),
-                        tint = Color(0xFF37474F)
-                    )
-                }
+            if (isAuthenticated) {
 
                 // Botão de logout
                 IconButton(onClick = onLogoutClick) {

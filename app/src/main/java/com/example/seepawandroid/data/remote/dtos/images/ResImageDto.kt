@@ -1,4 +1,4 @@
-package com.example.seepawandroid.data.remote.dtos.Images
+package com.example.seepawandroid.data.remote.dtos.images
 
 
 data class ResImageDto(

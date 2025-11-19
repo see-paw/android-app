@@ -7,7 +7,6 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.seepawandroid.ui.screens.ScreenPlaceholder
 import com.example.seepawandroid.ui.screens.login.AuthViewModel
 import com.example.seepawandroid.ui.screens.login.LoginScreen
 
@@ -28,15 +27,14 @@ import com.example.seepawandroid.ui.screens.login.LoginScreen
 @Composable
 fun NavGraphPublic(
     navController: NavHostController,
-    onLoginSuccess: () -> Unit
+    onLoginSuccess: () -> Unit,
     authViewModel: AuthViewModel
 ) {
-    // colocar varivaés de ViewModels necessários aqui
+    // colocar variáveis de ViewModels necessários aqui
 
     NavHost(
         navController = navController,
-        startDestination = "Home"
-        startDestination = NavigationRoutes.LOGIN
+        startDestination = NavigationRoutes.HOMEPAGE
     ) {
         //colocar rotas aqui
 
