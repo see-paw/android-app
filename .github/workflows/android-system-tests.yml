@@ -210,7 +210,17 @@ jobs:
             ./gradlew connectedDebugAndroidTest --stacktrace --max-workers=2
 
       # ==================== GERAR RELATÓRIO ====================
-
+      - name: Debug Test Results
+        if: always()
+        run: |
+          echo "🔍 Procurando XMLs de teste..."
+          find . -name "*.xml" -path "*androidTest*" 2>/dev/null || echo "Nenhum XML encontrado"
+          echo ""
+          echo "📂 Conteúdo de build/outputs:"
+          ls -R app/build/outputs/androidTest-results/ 2>/dev/null || echo "Pasta não existe"
+          echo ""
+          echo "📄 Conteúdo dos XMLs:"
+          find app/build -name "*.xml" -path "*androidTest*" -exec cat {} \; 2>/dev/null || echo "Sem XMLs"
       - name: Generate Test Report
         if: always()
         run: |
