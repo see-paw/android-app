@@ -1,3 +1,25 @@
 <resources>
-    <string name="app_name">SeePawAndroid</string>
+    <!-- App Name -->
+    <string name="app_name">SeePaw</string>
+    <string name="app_logo_description">SeePaw Logo</string>
+
+    <!-- Navigation Drawer Options -->
+    <string name="catalogue">Catálogo de Animais</string>
+    <string name="favorites">Favoritos</string>
+    <string name="schedule_activities">Agendar Atividades</string>
+    <string name="requests">Meus Pedidos de Ownership</string>
+    <string name="active_activities">Atividades ativas</string>
+
+
+    <!-- Top Bar -->
+    <string name="open_menu">Abrir Menu</string>
+    <string name="close_menu">Fechar Menu</string>
+    <string name="notifications">Notificações</string>
+    <string name="logout">Sair</string>
+    <string name="logo_description">Logótipo da aplicação SeePaw</string>
+
+
+
+
+
 </resources>
