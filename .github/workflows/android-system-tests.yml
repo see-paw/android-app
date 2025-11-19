@@ -329,7 +329,55 @@ jobs:
             app/build/outputs/logs/
             ~/.gradle/daemon/*/daemon-*.out.log
           retention-days: 3
+        # ==================== COMENTÁRIO NO PR ====================
 
+      - name: Comment PR with Test Results
+        if: always() && github.event_name == 'pull_request' && hashFiles('test-reports/summary.txt') != ''
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const content = fs.readFileSync('test-reports/summary.txt', 'utf8');
+            
+            // Parse results
+            const passedMatch = content.match(/Testes Passados:\s+(\d+)/);
+            const failedMatch = content.match(/Testes Falhados:\s+(\d+)/);
+            const skippedMatch = content.match(/Testes Ignorados:\s+(\d+)/);
+            const totalMatch = content.match(/Total de Testes:\s+(\d+)/);
+            const successMatch = content.match(/Taxa de Sucesso:\s+(\d+)%/);
+            
+            const passed = passedMatch ? passedMatch[1] : '0';
+            const failed = failedMatch ? failedMatch[1] : '0';
+            const skipped = skippedMatch ? skippedMatch[1] : '0';
+            const total = totalMatch ? totalMatch[1] : '0';
+            const successRate = successMatch ? successMatch[1] : '0';
+            
+            const status = failed === '0' ? '✅ PASSED' : '❌ FAILED';
+            
+            const body = `## 🧪 Android System Tests ${status}
+            
+            | Métrica | Valor |
+            |---------|-------|
+            | ✅ Passados | ${passed} |
+            | ❌ Falhados | ${failed} |
+            | ⏭️ Ignorados | ${skipped} |
+            | 📝 Total | ${total} |
+            | 📈 Taxa de Sucesso | ${successRate}% |
+            
+            <details>
+            <summary>📋 Relatório Completo</summary>
+            
+            \`\`\`
+            ${content}
+            \`\`\`
+            </details>`;
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: body
+            });
       # ==================== CLEANUP ====================
 
       - name: Stop Backend Container
