@@ -32,11 +32,5 @@ fun NavGraphPublic(
     ) {
         //colocar rotas aqui
 
-        //placeholders para teste
-        composable("Home") { ScreenPlaceholder("HOME PUBLIC") }
-        composable("Login") { ScreenPlaceholder("LOGIN") }
-        composable("Register") { ScreenPlaceholder("REGISTER") }
-        composable("AnimalsCatalogueGuest") { ScreenPlaceholder("CATÁLOGO GUEST") }
-        composable("AnimalPublicDetails/{id}") { ScreenPlaceholder("DETALHES PUBLIC") }
         }
     }

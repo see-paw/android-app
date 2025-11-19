@@ -2,7 +2,6 @@ package com.example.seepawandroid.ui.navigation
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -35,13 +34,6 @@ fun NavGraphUser(
 
         //adicionar aqui rotas
 
-        //placeholders para teste
-        composable("UserHome") { ScreenPlaceholder("HOME USER") }
-        composable("AnimalsCatalogue") { ScreenPlaceholder("CATÁLOGO USER") }
-        composable("Favorites") { ScreenPlaceholder("FAVORITOS") }
-        composable("ScheduleActivities") { ScreenPlaceholder("MARCAR ATIVIDADE") }
-        composable("ActiveActivities") { ScreenPlaceholder("ATIVIDADES ATIVAS") }
-        composable("Requests") { ScreenPlaceholder("PEDIDOS DE OWNERSHIP") }
 
     }
 }
