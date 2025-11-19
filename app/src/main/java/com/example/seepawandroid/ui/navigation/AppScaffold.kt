@@ -11,9 +11,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.launch
 import pt.ipp.estg.seepaw.ui.navigation.AppTopBar
+import com.example.seepawandroid.data.models.enums.UserRole
+import com.example.seepawandroid.ui.screens.login.AuthViewModel
 
 /**
  * Scaffold principal da aplicação SeePaw
@@ -27,6 +31,7 @@ import pt.ipp.estg.seepaw.ui.navigation.AppTopBar
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
+fun AppScaffold() {
 fun AppScaffold(
     isLoggedIn: Boolean,
     onLoginSuccess: () -> Unit,
@@ -38,19 +43,27 @@ fun AppScaffold(
 
     // Navegação
     val navController = rememberNavController()
+    val authViewModel: AuthViewModel = viewModel()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
+    val isAuthenticated by authViewModel.isAuthenticated.observeAsState(false)
+    val role by authViewModel.userRole.observeAsState("")
     // Callback de logout que limpa a sessão e navega - preciso atualizar quando houver authviewmodel
     val onLogoutAndNavigate: () -> Unit = {
         onLogout()
     }
 
+    val userRole = UserRole.fromString(role)
     val userDrawerOptions = getUserDrawerOptions()
     val selectedDrawerOption = userDrawerOptions.find { it.route == currentRoute }
 
+    when {
+        !isAuthenticated -> NavGraphPublic(navController, authViewModel)
+        userRole == UserRole.ADMIN_CAA -> NavGraphAdmin(navController, authViewModel)
+        else -> NavGraphUser(navController, authViewModel)
     ModalNavigationDrawer(
         drawerState = drawerState,
         gesturesEnabled = isLoggedIn,
