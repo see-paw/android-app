@@ -33,7 +33,12 @@ class AuthRepository {
             if (response.isSuccessful && response.body() != null) {
                 val loginData = response.body()!!
 
-                SessionManager.saveAuthToken(loginData.accessToken, loginData.tokenExpiration)
+                // Calculate expiration time from expiresIn (seconds)
+                val expirationTime = java.time.Instant.now()
+                    .plusSeconds(loginData.expiresIn.toLong())
+                    .toString()
+
+                SessionManager.saveAuthToken(loginData.accessToken, expirationTime)
                 Result.success(loginData)
             } else {
                 Result.failure(Exception("Login failed: ${response.message()}"))

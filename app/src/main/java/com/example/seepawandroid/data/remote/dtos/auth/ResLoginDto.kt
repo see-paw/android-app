@@ -7,13 +7,13 @@ package com.example.seepawandroid.data.remote.dtos.auth
  * after successful login.
  *
  * @property accessToken JWT token used for authenticating subsequent API requests
- * @property tokenExpiration timestamp indicating when the token expires
- * @property userId Unique identifier of the authenticated user
- * @property role User's role (e.g., "User" or "AdminCAA")
+ * @property expiresIn seconds until the token expires
+ * @property tokenType type of the token (e.g., "Bearer")
+ * @property refreshToken token used to refresh the access token if it expires
  */
 data class ResLoginDto(
     val accessToken: String,
-    val tokenExpiration: String,
-    val userId: String,
-    val role: String
+    val expiresIn: Int,
+    val tokenType: String,
+    val refreshToken: String
 )

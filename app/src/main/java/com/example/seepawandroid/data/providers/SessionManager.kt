@@ -34,6 +34,16 @@ object SessionManager {
     private const val KEY_TOKEN_EXPIRATION = "token_expiration"
 
     /**
+     * Key used to store the user's role SharedPreferences.
+     */
+    private const val KEY_USER_ROLE = "user_role"
+
+    /**
+     * Key used to store the user's unique ID in SharedPreferences.
+     */
+    private const val KEY_USER_ID = "user_id"
+
+    /**
      * Initializes the SessionManager with application context.
      *
      * Must be called in Application.onCreate() before any other SessionManager methods.
@@ -93,5 +103,45 @@ object SessionManager {
         } catch (e: Exception) {
             false
         }
+    }
+
+    /**
+     * Retrieves the stored user role.
+     *
+     * @return User's role or null if not set
+     */
+    fun getUserRole(): String? {
+        return prefs.getString(KEY_USER_ROLE, null)
+    }
+
+    /**
+     * Saves the authenticated user's role.
+     *
+     * @param role User's role (e.g., "User", "AdminCAA", "PlatformAdmin")
+     */
+    fun saveUserRole(role: String) {
+        prefs.edit()
+            .putString(KEY_USER_ROLE, role)
+            .apply()
+    }
+
+    /**
+     * Saves the authenticated user's ID.
+     *
+     * @param userId User's unique identifier
+     */
+    fun saveUserId(userId: String) {
+        prefs.edit()
+            .putString(KEY_USER_ID, userId)
+            .apply()
+    }
+
+    /**
+     * Retrieves the stored user ID.
+     *
+     * @return User's ID or null if not set
+     */
+    fun getUserId(): String? {
+        return prefs.getString(KEY_USER_ID, null)
     }
 }
