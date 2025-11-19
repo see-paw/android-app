@@ -215,8 +215,17 @@ jobs:
         run: |
           echo "📊 Gerando relatório de testes..."
           
+          # Debug: ver estrutura de pastas
+          echo "🔍 DEBUG: Estrutura de pastas"
+          ls -la app/build/outputs/ || echo "outputs não existe"
+          ls -la app/build/outputs/androidTest-results/ || echo "androidTest-results não existe"
+          
           # Encontrar todos os arquivos de resultado XML
+          echo "🔍 DEBUG: Procurando XMLs..."
           test_results=$(find app/build/outputs/androidTest-results -name "TEST-*.xml" 2>/dev/null || echo "")
+          
+          echo "🔍 DEBUG: XMLs encontrados:"
+          echo "$test_results"
           
           if [ -z "$test_results" ]; then
             echo "⚠️ Nenhum resultado de teste encontrado"
@@ -243,11 +252,17 @@ jobs:
           for xml_file in $test_results; do
             echo "📄 Processando: $xml_file"
             
+            # Debug: mostrar conteúdo do XML
+            echo "🔍 DEBUG: Conteúdo do XML:"
+            head -5 "$xml_file"
+            
             # Contar testes (formato JUnit XML)
             tests=$(grep -o 'tests="[0-9]*"' "$xml_file" | cut -d'"' -f2 || echo "0")
             failures=$(grep -o 'failures="[0-9]*"' "$xml_file" | cut -d'"' -f2 || echo "0")
             errors=$(grep -o 'errors="[0-9]*"' "$xml_file" | cut -d'"' -f2 || echo "0")
             skipped=$(grep -o 'skipped="[0-9]*"' "$xml_file" | cut -d'"' -f2 || echo "0")
+            
+            echo "🔍 DEBUG: tests=$tests, failures=$failures, errors=$errors, skipped=$skipped"
             
             total_tests=$((total_tests + tests))
             failed_tests=$((failed_tests + failures + errors))
@@ -255,6 +270,8 @@ jobs:
           done
           
           passed_tests=$((total_tests - failed_tests - skipped_tests))
+          
+          echo "🔍 DEBUG FINAL: total=$total_tests, passed=$passed_tests, failed=$failed_tests"
           
           # Adicionar ao relatório
           echo "📊 RESULTADOS:" >> test-reports/summary.txt
