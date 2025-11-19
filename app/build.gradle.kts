@@ -50,6 +50,7 @@ dependencies {
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.compose.runtime.livedata)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -77,7 +78,7 @@ dependencies {
     implementation("com.squareup.okhttp3:logging-interceptor:5.3.0")
 
     // Coil (para carregar imagens)
-    implementation("io.coil-kt:coil-compose:3.0.4")
+    implementation("io.coil-kt:coil-compose:2.4.0")
 
     // ViewModel (arquitetura MVVM)
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.9.4")

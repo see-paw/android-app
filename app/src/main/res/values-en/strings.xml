@@ -1,3 +1,19 @@
 <resources>
-    <string name="app_name">SeePawAndroid</string>
+    <string name="app_name">SeePaw</string>
+
+    <!-- Animals Catalogue -->
+    <string name="catalog_search_placeholder">Search</string>
+    <string name="catalog_filter">Filters</string>
+    <string name="catalog_sort">Sort</string>
+    <string name="catalog_empty">No animals found.</string>
+    <string name="catalog_loading">Loading…</string>
+    <string name="catalog_error">An error occurred: %1$s</string>
+
+    <!-- Animal Card -->
+    <string name="animal_years_suffix">years</string>
+    <string name="favorite">Favorite</string>
+    <string name="favorite_locked">Favorite locked</string>
+
+    <!-- Images -->
+    <string name="animal_image_desc">Animal image %1$s</string>
 </resources>
