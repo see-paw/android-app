@@ -2,6 +2,9 @@ package com.example.seepawandroid.data.providers
 
 import android.content.Context
 import android.content.SharedPreferences
+import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
+import javax.inject.Singleton
 
 /**
  * Singleton object responsible for managing user authentication session data.
@@ -11,47 +14,39 @@ import android.content.SharedPreferences
  *
  * Must be initialized in Application.onCreate() before use.
  */
-object SessionManager {
-    /**
-     * SharedPreferences instance for storing session data.
-     * Lazy-initialized via init() method.
-     */
-    private lateinit var prefs: SharedPreferences
+@Singleton
+class SessionManager @Inject constructor(
+    @ApplicationContext private val context: Context
+) {
+    private val prefs: SharedPreferences =
+        context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
 
-    /**
-     * Name of the SharedPreferences file.
-     */
-    private const val PREF_NAME = "auth_prefs"
+    companion object {
 
-    /**
-     * Key used to store the authentication token in SharedPreferences.
-     */
-    private const val KEY_AUTH_TOKEN = "auth_token"
+        /**
+         * Name of the SharedPreferences file.
+         */
+        private const val PREF_NAME = "auth_prefs"
 
-    /**
-     * Key used to store the token expiration time in SharedPreferences.
-     */
-    private const val KEY_TOKEN_EXPIRATION = "token_expiration"
+        /**
+         * Key used to store the authentication token in SharedPreferences.
+         */
+        private const val KEY_AUTH_TOKEN = "auth_token"
 
-    /**
-     * Key used to store the user's role SharedPreferences.
-     */
-    private const val KEY_USER_ROLE = "user_role"
+        /**
+         * Key used to store the token expiration time in SharedPreferences.
+         */
+        private const val KEY_TOKEN_EXPIRATION = "token_expiration"
 
-    /**
-     * Key used to store the user's unique ID in SharedPreferences.
-     */
-    private const val KEY_USER_ID = "user_id"
+        /**
+         * Key used to store the user's role SharedPreferences.
+         */
+        private const val KEY_USER_ROLE = "user_role"
 
-    /**
-     * Initializes the SessionManager with application context.
-     *
-     * Must be called in Application.onCreate() before any other SessionManager methods.
-     *
-     * @param context Application context (use applicationContext, not Activity context)
-     */
-    fun init(context: Context) {
-        prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+        /**
+         * Key used to store the user's unique ID in SharedPreferences.
+         */
+        private const val KEY_USER_ID = "user_id"
     }
 
     /**

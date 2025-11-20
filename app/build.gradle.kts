@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    id("com.google.dagger.hilt.android")
     id("kotlin-kapt")
 }
 
@@ -40,6 +41,10 @@ android {
         compose = true
         buildConfig = true
     }
+}
+
+kapt {
+    correctErrorTypes = true
 }
 
 dependencies {
@@ -114,4 +119,11 @@ dependencies {
 
     // JWT decoding
     implementation("com.auth0.android:jwtdecode:2.0.2")
+
+    // Hilt
+    implementation("com.google.dagger:hilt-android:2.57.2")
+    kapt("com.google.dagger:hilt-android-compiler:2.57.2")
+
+    // Hilt for Jetpack Compose
+    implementation("androidx.hilt:hilt-navigation-compose:1.3.0")
 }

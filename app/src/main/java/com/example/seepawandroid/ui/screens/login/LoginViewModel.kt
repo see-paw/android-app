@@ -7,7 +7,9 @@ import androidx.lifecycle.viewModelScope
 import com.example.seepawandroid.data.providers.SessionManager
 import com.example.seepawandroid.data.repositories.AuthRepository
 import com.example.seepawandroid.data.repositories.UserRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 /**
  * ViewModel for the Login screen.
@@ -15,11 +17,12 @@ import kotlinx.coroutines.launch
  * Manages login business logic and UI state.
  * Communicates with AuthRepository to perform authentication.
  */
-class LoginViewModel : ViewModel() {
-
-    private val repository = AuthRepository()
-
-    private val userRepository = UserRepository()
+@HiltViewModel
+class LoginViewModel @Inject constructor(
+    private val repository: AuthRepository,
+    private val userRepository: UserRepository,
+    private val sessionManager: SessionManager
+) : ViewModel() {
 
     private val _email = MutableLiveData("")
     val email: LiveData<String> = _email
@@ -74,8 +77,8 @@ class LoginViewModel : ViewModel() {
                     val userId = userIdResult.getOrNull() ?: ""
 
                     // Save role and userId
-                    SessionManager.saveUserRole(role)
-                    SessionManager.saveUserId(userId)
+                    sessionManager.saveUserRole(role)
+                    sessionManager.saveUserId(userId)
 
                     // Update UI state
                     _uiState.value = LoginUiState.Success(userId, role)

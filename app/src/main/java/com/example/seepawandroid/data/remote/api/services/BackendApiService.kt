@@ -1,4 +1,4 @@
-package com.example.seepawandroid.services
+package com.example.seepawandroid.data.remote.api.services
 
 import com.example.seepawandroid.data.remote.dtos.auth.ReqLoginDto
 import com.example.seepawandroid.data.remote.dtos.auth.ResLoginDto
