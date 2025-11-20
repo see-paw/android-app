@@ -3,14 +3,15 @@ package com.example.seepawandroid.data.repositories
 import com.example.seepawandroid.data.local.dao.AnimalDao
 import com.example.seepawandroid.data.local.entities.Animal
 import com.example.seepawandroid.data.models.mappers.toEntity
-import com.example.seepawandroid.data.providers.RetrofitInstance
+import javax.inject.Inject
+import com.example.seepawandroid.data.remote.api.services.BackendApiService
 import com.example.seepawandroid.data.remote.dtos.Animals.AnimalFilterDto
 import com.example.seepawandroid.utils.NetworkUtils
 
-class AnimalRepository(
-    private val dao: AnimalDao
+class AnimalRepository @Inject constructor(
+    private val dao: AnimalDao,
+    private val apiService: BackendApiService
 ) {
-    private val api = RetrofitInstance.api
 
     suspend fun getAnimals(
         filters: AnimalFilterDto?,
@@ -26,7 +27,7 @@ class AnimalRepository(
                 return dao.getAll()
             }
 
-            val response = api.getAnimals(
+            val response = apiService.getAnimals(
                 species = filters?.species,
                 age = filters?.age,
                 size = filters?.size,

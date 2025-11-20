@@ -1,7 +1,8 @@
 package com.example.seepawandroid.data.repositories
 
 import com.example.seepawandroid.data.providers.RetrofitInstance
-import com.example.seepawandroid.services.BackendApiService
+import com.example.seepawandroid.data.remote.api.services.BackendApiService
+import javax.inject.Inject
 
 /**
  * Repository for user-related data operations.
@@ -9,10 +10,9 @@ import com.example.seepawandroid.services.BackendApiService
  * Handles fetching user information from the backend API,
  * such as user role, profile data, and preferences.
  */
-class UserRepository {
-
-    private val apiService: BackendApiService =
-        RetrofitInstance.retrofit.create(BackendApiService::class.java)
+class UserRepository @Inject constructor(
+    private val apiService: BackendApiService
+) {
 
     /**
      * Fetches the authenticated user's role from the backend.

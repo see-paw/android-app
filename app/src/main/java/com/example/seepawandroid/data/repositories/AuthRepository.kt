@@ -1,10 +1,10 @@
 package com.example.seepawandroid.data.repositories
 
-import com.example.seepawandroid.data.providers.RetrofitInstance
 import com.example.seepawandroid.data.providers.SessionManager
+import com.example.seepawandroid.data.remote.api.services.BackendApiService
 import com.example.seepawandroid.data.remote.dtos.auth.ReqLoginDto
 import com.example.seepawandroid.data.remote.dtos.auth.ResLoginDto
-import com.example.seepawandroid.services.BackendApiService
+import javax.inject.Inject
 
 /**
  * Repository responsible for authentication operations.
@@ -12,10 +12,9 @@ import com.example.seepawandroid.services.BackendApiService
  * Abstracts the logic for communicating with the authentication API endpoints.
  * Handles token storage and provides a clean interface for ViewModels.
  */
-class AuthRepository {
-
-    private val apiService: BackendApiService =
-        RetrofitInstance.retrofit.create(BackendApiService::class.java)
+class AuthRepository @Inject constructor(
+    private val apiService: BackendApiService
+) {
 
     /**
      * Authenticates a user with email and password.

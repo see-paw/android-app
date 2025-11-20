@@ -8,9 +8,12 @@ import com.example.seepawandroid.data.local.entities.Animal
 import com.example.seepawandroid.data.remote.dtos.Animals.AnimalFilterDto
 import com.example.seepawandroid.data.repositories.AnimalRepository
 import com.example.seepawandroid.ui.screens.Animals.AnimalListUiState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class AnimalViewModel(
+@HiltViewModel
+class AnimalViewModel @Inject constructor(
     private val repository: AnimalRepository
 ) : ViewModel() {
 

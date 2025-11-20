@@ -24,10 +24,10 @@ import com.example.seepawandroid.ui.screens.Animals.AnimalListUiState
 import com.example.seepawandroid.ui.screens.animals.viewmodel.AnimalViewModel
 
 @Composable
-fun AnimalListScreen(
+fun AnimalCatalogueScreen(
     viewModel: AnimalViewModel,
     isLoggedIn: Boolean,
-    onAnimalClick: (String) -> Unit = {}
+    onAnimalClick: (String) -> Unit
 ) {
     val uiState by viewModel.uiState.observeAsState(AnimalListUiState.Loading)
     var searchQuery by remember { mutableStateOf("") }

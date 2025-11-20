@@ -4,8 +4,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.seepawandroid.data.providers.SessionManager
+import com.example.seepawandroid.data.repositories.AuthRepository
+import javax.inject.Inject
 
-class AuthViewModel : ViewModel() {
+class AuthViewModel @Inject constructor(
+    private val authRepository: AuthRepository
+) : ViewModel() {
 
     private val _isAuthenticated = MutableLiveData(SessionManager.isAuthenticated())
     val isAuthenticated: LiveData<Boolean> = _isAuthenticated
