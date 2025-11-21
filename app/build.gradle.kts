@@ -1,9 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.compose)
     id("kotlin-kapt")
-    id("com.google.dagger.hilt.android")
-    kotlin("kapt")
 }
 
 android {
@@ -39,6 +38,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
@@ -57,7 +57,6 @@ dependencies {
     implementation(libs.androidx.compose.runtime.livedata)
     implementation(libs.androidx.compose.runtime.livedata)
     implementation(libs.androidx.compose.material3.window.size.class1)
-    implementation(libs.transport.runtime)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -123,16 +122,4 @@ dependencies {
 
     // JWT decoding
     implementation("com.auth0.android:jwtdecode:2.0.2")
-
-    //Hilt
-    implementation("com.google.dagger:hilt-android:2.52")
-    kapt("com.google.dagger:hilt-compiler:2.52")
-
-    // Para Jetpack Compose + Hilt
-    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
-
-}
-
-kapt {
-    correctErrorTypes = true
 }
