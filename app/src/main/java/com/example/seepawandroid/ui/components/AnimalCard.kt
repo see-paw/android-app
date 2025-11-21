@@ -56,10 +56,9 @@ fun AnimalCard(
                     .padding(horizontal = 8.dp, vertical = 6.dp),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                // Aqui sim fazemos a string final da idade
                 Text("$name, $age ${stringResource(R.string.animal_years_suffix)}")
 
-                if (isLoggedIn) {
+                if (isLoggedIn) {//quando exister funcionalidade de favoritos isto passa a ser um botão
                     Icon(
                         imageVector = if (isFavorite)
                             Icons.Filled.Favorite
@@ -67,12 +66,6 @@ fun AnimalCard(
                             Icons.Outlined.FavoriteBorder,
                         contentDescription = stringResource(R.string.favorite),
                         tint = MaterialTheme.colorScheme.primary
-                    )
-                } else {
-                    Icon(
-                        imageVector = Icons.Filled.Lock,
-                        contentDescription = stringResource(R.string.favorite_locked),
-                        tint = MaterialTheme.colorScheme.secondary
                     )
                 }
             }

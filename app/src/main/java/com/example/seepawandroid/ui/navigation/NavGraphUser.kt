@@ -17,6 +17,7 @@ import com.example.seepawandroid.ui.screens.animals.viewmodel.AnimalViewModel
 import com.example.seepawandroid.ui.screens.DemoViewModel
 import com.example.seepawandroid.ui.screens.login.AuthViewModel
 import com.example.seepawandroid.ui.screens.user.UserHomeScreen_DEMO
+import com.example.seepawandroid.ui.screens.user.UserHomepageScreen
 
 /**
  * Navigation graph for authenticated user screens.
@@ -39,12 +40,17 @@ fun NavGraphUser(
 
     NavHost(
         navController = navController,
-        startDestination = NavigationRoutes.USER_HOME,
+        startDestination = NavigationRoutes.USER_HOMEPAGE,
     ) {
         //adicionar aqui rotas
-        composable(NavigationRoutes.USER_HOME) {
+        /*composable(NavigationRoutes.USER_HOMEPAGE) {
             val demoViewModel: DemoViewModel = hiltViewModel() // Para Demo funcionar
             UserHomeScreen_DEMO(authViewModel, demoViewModel.sessionManager)
+        }*/
+
+
+        composable(NavigationRoutes.USER_HOMEPAGE) {
+            UserHomepageScreen()
         }
 
         composable (route = NavigationRoutes.ANIMALS_CATALOGUE) {

@@ -4,7 +4,6 @@ import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
 import com.example.seepawandroid.data.providers.SessionManager
 import com.example.seepawandroid.utils.NetworkUtils
-import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
 class SeePawApplication : Application() {

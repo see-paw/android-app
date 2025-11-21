@@ -82,7 +82,10 @@ fun AppTopBar(
             }
         },
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = Color.White
+            containerColor = Color.White,
+            navigationIconContentColor = Color(0xFF37474F),
+            titleContentColor = Color.Black,
+            actionIconContentColor = Color(0xFF37474F)
         )
     )
 }

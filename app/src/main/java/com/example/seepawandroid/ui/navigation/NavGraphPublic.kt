@@ -13,6 +13,7 @@ import com.example.seepawandroid.ui.screens.animals.AnimalCatalogueScreen
 import com.example.seepawandroid.ui.screens.animals.viewmodel.AnimalViewModel
 import com.example.seepawandroid.ui.screens.login.AuthViewModel
 import com.example.seepawandroid.ui.screens.login.LoginScreen
+import com.example.seepawandroid.ui.screens.public.PublicHomepageScreen
 
 /**
  * Grafo de navegação para utilizadores não autenticados (público)
@@ -45,6 +46,20 @@ fun NavGraphPublic(
         startDestination = NavigationRoutes.HOMEPAGE
     ) {
         //colocar rotas aqui
+
+        composable(NavigationRoutes.HOMEPAGE) {
+            PublicHomepageScreen(
+                onLogin = {
+                    navController.navigate(NavigationRoutes.LOGIN)
+                },
+                onRegister = {
+                    navController.navigate(NavigationRoutes.REGISTER)
+                },
+                onOpenCatalogue = {
+                    navController.navigate(NavigationRoutes.ANIMALS_CATALOGUE_GUEST)
+                }
+            )
+        }
 
         composable(NavigationRoutes.LOGIN) {
             LoginScreen(authViewModel = authViewModel)

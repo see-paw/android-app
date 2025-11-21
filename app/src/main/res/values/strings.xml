@@ -36,7 +36,23 @@
     <string name="logo_description">Logótipo da aplicação SeePaw</string>
 
 
+    <!-- User Homepage Screen -->
+    <string name="home_title">Bem-vindo à plataforma SeePaw</string>
+    <string name="home_intro_1">
+    A SeePaw é uma plataforma que centraliza, num só local, informação sobre animais disponíveis para adoção e apadrinhamento, recolhida de abrigos que desejam divulgar os seus patudos.
+</string>
+    <string name="home_intro_2">
+    Acreditamos que a tecnologia pode ser uma aliada poderosa no combate ao abandono animal, bem como no apoio às associações que muitas vezes só sobrevivem graças à sua ajuda monetária. Cada ajuda é uma vida transformada — juntos, fazemos a diferença!
+</string>
+    <string name="home_slogan">"Humanos Porreiros Adotam Rafeiros"</string>
 
-
+    <!-- PUBLIC HOMESCREEN -->
+    <string name="public_home_title">Bem-vindo à SeePaw</string>
+    <string name="public_home_intro">
+    Encontre animais adoráveis para adoção ou apadrinhamento. Explore o catálogo sem conta ou autentique-se para aceder a todas as funcionalidades.
+</string>
+    <string name="public_home_login">Iniciar sessão</string>
+    <string name="public_home_register">Criar conta</string>
+    <string name="public_home_catalogue">Ver catálogo de animais</string>
 
 </resources>

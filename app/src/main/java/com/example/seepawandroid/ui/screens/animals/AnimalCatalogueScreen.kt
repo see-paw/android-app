@@ -20,7 +20,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.res.stringResource
 import com.example.seepawandroid.R
 import com.example.seepawandroid.ui.components.AnimalCard
-import com.example.seepawandroid.ui.screens.Animals.AnimalListUiState
+import com.example.seepawandroid.ui.screens.Animals.AnimalCatalogueUiState
 import com.example.seepawandroid.ui.screens.animals.viewmodel.AnimalViewModel
 
 @Composable
@@ -29,14 +29,16 @@ fun AnimalCatalogueScreen(
     isLoggedIn: Boolean,
     onAnimalClick: (String) -> Unit
 ) {
-    val uiState by viewModel.uiState.observeAsState(AnimalListUiState.Loading)
+    LaunchedEffect(Unit) {
+        viewModel.loadAnimals()
+    }
+    val uiState by viewModel.uiState.observeAsState(AnimalCatalogueUiState.Loading)
     var searchQuery by remember { mutableStateOf("") }
 
     Box(modifier = Modifier.fillMaxSize()) {
 
-        // Background
         Image(
-            painter = painterResource(id = R.drawable.seepaw_fundo),
+            painter = painterResource(id = R.drawable.seepaw_wallpaper),
             contentDescription = null,
             modifier = Modifier.fillMaxSize(),
             contentScale = ContentScale.Crop
@@ -49,7 +51,6 @@ fun AnimalCatalogueScreen(
         ) {
             Spacer(modifier = Modifier.height(12.dp))
 
-            // 🔍 Search Bar
             OutlinedTextField(
                 value = searchQuery,
                 onValueChange = {
@@ -84,30 +85,29 @@ fun AnimalCatalogueScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // 👇 LISTAGEM
             when (uiState) {
 
-                is AnimalListUiState.Loading -> {
+                is AnimalCatalogueUiState.Loading -> {
                     Box(modifier = Modifier.fillMaxSize(), Alignment.Center) {
                         CircularProgressIndicator()
                     }
                 }
 
-                is AnimalListUiState.Empty -> {
+                is AnimalCatalogueUiState.Empty -> {
                     Box(modifier = Modifier.fillMaxSize(), Alignment.Center) {
                         Text(stringResource(R.string.catalog_empty))
                     }
                 }
 
-                is AnimalListUiState.Error -> {
-                    val msg = (uiState as AnimalListUiState.Error).message
+                is AnimalCatalogueUiState.Error -> {
+                    val msg = (uiState as AnimalCatalogueUiState.Error).message
                     Box(modifier = Modifier.fillMaxSize(), Alignment.Center) {
                         Text(stringResource(R.string.catalog_error, msg))
                     }
                 }
 
-                is AnimalListUiState.Success -> {
-                    val animals = (uiState as AnimalListUiState.Success).animals
+                is AnimalCatalogueUiState.Success -> {
+                    val animals = (uiState as AnimalCatalogueUiState.Success).animals
 
                     LazyVerticalGrid(
                         columns = GridCells.Fixed(2),
@@ -122,7 +122,7 @@ fun AnimalCatalogueScreen(
                                 age = animal.age,
                                 imageUrl = animal.imageUrl,
                                 isLoggedIn = isLoggedIn,
-                                isFavorite = false,
+                                isFavorite = false,//atualizar depois de implementar favoritos
                                 onClick = { onAnimalClick(animal.id) }
                             )
                         }

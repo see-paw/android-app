@@ -32,8 +32,8 @@ fun AppScaffold(
 
     // Estado de autenticação
     val isAuthenticated by authViewModel.isAuthenticated.observeAsState(false)
-    val roleString by authViewModel.userRole.observeAsState("")
-    val userRole = UserRole.fromString(roleString)
+    val role by authViewModel.userRole.observeAsState("")
+    val userRole = UserRole.fromString(role)
 
     if (!isAuthenticated) {
         NavGraphPublic(

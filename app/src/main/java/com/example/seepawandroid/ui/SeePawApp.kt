@@ -2,9 +2,16 @@ package com.example.seepawandroid.ui
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.seepawandroid.R
 import com.example.seepawandroid.ui.navigation.AppScaffold
 import com.example.seepawandroid.ui.screens.login.AuthViewModel
 
@@ -16,12 +23,23 @@ import com.example.seepawandroid.ui.screens.login.AuthViewModel
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun SeePawApp(authViewModel: AuthViewModel = hiltViewModel()) {
-    AppScaffold(
-        onLoginSuccess = {
-            authViewModel.onLoginSuccess()
-        },
-        onLogout = {
-            authViewModel.logout()
-        }
-    )
+
+    Box(modifier = Modifier.fillMaxSize()) {
+
+        // global wallpaper for all the app
+        Image(
+            painter = painterResource(id = R.drawable.seepaw_wallpaper),
+            contentDescription = null,
+            modifier = Modifier.fillMaxSize(),
+            contentScale = ContentScale.Crop
+        )
+        AppScaffold(
+            onLoginSuccess = {
+                authViewModel.onLoginSuccess()
+            },
+            onLogout = {
+                authViewModel.logout()
+            }
+        )
+    }
 }

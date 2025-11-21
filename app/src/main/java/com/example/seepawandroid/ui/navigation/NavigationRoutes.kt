@@ -10,6 +10,8 @@ object NavigationRoutes {
     // ========== PUBLIC ROUTES (UNAUTHENTICATED) ==========
     const val LOGIN = "login"
 
+    const val REGISTER = "register"
+
     const val HOMEPAGE = "homepage"
 
     /**
@@ -27,7 +29,7 @@ object NavigationRoutes {
 
 
     // ========== USER ROUTES (AUTHENTICATED) ==========
-    const val USER_HOME = "user_home"
+    const val USER_HOMEPAGE = "user_homepage"
 
 
     /**

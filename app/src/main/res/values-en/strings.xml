@@ -34,6 +34,26 @@
     <string name="logout">Logout</string>
     <string name="logo_description">SeePaw application logo</string>
 
+    <!-- User homepage screen -->
+    <string name="home_title">Welcome to the SeePaw platform</string>
+    <string name="home_intro_1">
+    SeePaw is a platform that centralizes, in one place, information about animals available for ownership and fostering, collected from shelters that wish to share their pets with the world.
+</string>
+    <string name="home_intro_2">
+    We believe technology can be a powerful ally in the fight against animal abandonment, as well as in supporting rescue associations that often survive only thanks to yours generosity. Every contribution transforms a life — together, we make a difference!
+</string>
+    <string name="home_slogan">"Cool Humans Adopt Mutts"</string>
+
+    <!-- PUBLIC HOMESCREEN -->
+    <string name="public_home_title">Welcome to SeePaw</string>
+    <string name="public_home_intro">
+    Discover lovely animals available for ownership or fostering. Browse the catalogue as a guest or sign in to access all features.
+</string>
+    <string name="public_home_login">Log in</string>
+    <string name="public_home_register">Create account</string>
+    <string name="public_home_catalogue">View animal catalogue</string>
+
+
 
 
 
