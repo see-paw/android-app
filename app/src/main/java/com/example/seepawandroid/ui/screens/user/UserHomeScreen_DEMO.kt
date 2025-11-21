@@ -13,8 +13,8 @@ import com.example.seepawandroid.ui.screens.login.AuthViewModel
 * Temporary home screen for authenticated users.
 */
 @Composable
-fun UserHomeScreen_DEMO(authViewModel: AuthViewModel) {
-    val userId = SessionManager.getUserId() ?: "Unknown"
+fun UserHomeScreen_DEMO(authViewModel: AuthViewModel, sessionManager: SessionManager) {
+    val userId = sessionManager.getUserId() ?: "Unknown"
 
     Column(
         modifier = Modifier

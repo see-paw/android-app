@@ -1,5 +1,7 @@
 package com.example.seepawandroid.data.repositories
 
+import com.example.seepawandroid.data.remote.api.services.BackendApiService
+import javax.inject.Inject
 import com.example.seepawandroid.data.providers.RetrofitInstance
 import com.example.seepawandroid.data.remote.api.services.BackendApiService
 import javax.inject.Inject
@@ -12,8 +14,7 @@ import javax.inject.Inject
  */
 class UserRepository @Inject constructor(
     private val apiService: BackendApiService
-) {
-
+){
     /**
      * Fetches the authenticated user's role from the backend.
      *

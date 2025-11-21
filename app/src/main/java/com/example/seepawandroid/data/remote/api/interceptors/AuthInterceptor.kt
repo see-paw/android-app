@@ -1,7 +1,9 @@
 package com.example.seepawandroid.data.remote.api.interceptors
 
+import com.example.seepawandroid.data.providers.SessionManager
 import okhttp3.Interceptor
 import okhttp3.Response
+import javax.inject.Inject
 
 /**
  * HTTP interceptor that automatically adds JWT authentication token to all requests.
@@ -13,10 +15,10 @@ import okhttp3.Response
  * The token is retrieved via a lambda function (tokenProvider) to ensure we always
  * get the most recent token value.
  *
- * @property tokenProvider Function that returns the current JWT token (or null if not logged in)
+ * @property sessionManager SessionManager that provides the current JWT token
  */
-class AuthInterceptor(
-    private val tokenProvider: () -> String?
+class AuthInterceptor @Inject constructor(
+    private val sessionManager: SessionManager
 ) : Interceptor {
 
     /**
@@ -32,7 +34,7 @@ class AuthInterceptor(
      * @return The HTTP response after processing
      */
     override fun intercept(chain: Interceptor.Chain): Response {
-        val token = tokenProvider()
+        val token = sessionManager.getAuthToken()
 
         val request = if (token != null) {
             chain.request().newBuilder()

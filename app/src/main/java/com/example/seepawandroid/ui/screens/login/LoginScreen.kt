@@ -20,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 
 /**
@@ -33,7 +34,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
  */
 @Composable
 fun LoginScreen(authViewModel: AuthViewModel) {
-    val viewModel: LoginViewModel = viewModel()
+    val viewModel: LoginViewModel = hiltViewModel()
     val uiState by viewModel.uiState.observeAsState(LoginUiState.Idle)
     val email by viewModel.email.observeAsState("")
     val password by viewModel.password.observeAsState("")

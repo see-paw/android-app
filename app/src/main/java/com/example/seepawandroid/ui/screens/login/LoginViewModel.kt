@@ -11,7 +11,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-
 /**
  * ViewModel for the Login screen.
  *
@@ -21,9 +20,9 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val repository: AuthRepository,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val sessionManager: SessionManager
 ) : ViewModel() {
-
 
     private val _email = MutableLiveData("")
     val email: LiveData<String> = _email
@@ -78,8 +77,8 @@ class LoginViewModel @Inject constructor(
                     val userId = userIdResult.getOrNull() ?: ""
 
                     // Save role and userId
-                    SessionManager.saveUserRole(role)
-                    SessionManager.saveUserId(userId)
+                    sessionManager.saveUserRole(role)
+                    sessionManager.saveUserId(userId)
 
                     // Update UI state
                     _uiState.value = LoginUiState.Success(userId, role)
