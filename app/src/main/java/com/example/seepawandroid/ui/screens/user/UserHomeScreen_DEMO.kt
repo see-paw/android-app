@@ -5,6 +5,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import com.example.seepawandroid.data.providers.SessionManager
 import com.example.seepawandroid.ui.screens.login.AuthViewModel
@@ -38,9 +39,10 @@ fun UserHomeScreen_DEMO(authViewModel: AuthViewModel, sessionManager: SessionMan
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        Button(onClick = {
-            authViewModel.logout()
-        }) {
+        Button(
+            onClick = {authViewModel.logout()},
+            modifier = Modifier.testTag("logoutButton")
+        ) {
             Text("Clear Token and Logout")
         }
     }
