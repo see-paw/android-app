@@ -28,7 +28,6 @@ import com.example.seepawandroid.ui.screens.public.PublicHomepageScreen
 @Composable
 fun NavGraphPublic(
     navController: NavHostController,
-    onLoginSuccess: () -> Unit,
     authViewModel: AuthViewModel
 ) {
     val isAuthenticated = false

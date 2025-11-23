@@ -34,9 +34,6 @@ fun SeePawApp(authViewModel: AuthViewModel = hiltViewModel()) {
             contentScale = ContentScale.Crop
         )
         AppScaffold(
-            onLoginSuccess = {
-                authViewModel.onLoginSuccess()
-            },
             onLogout = {
                 authViewModel.logout()
             }

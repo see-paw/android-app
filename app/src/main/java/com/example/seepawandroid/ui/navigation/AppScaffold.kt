@@ -33,7 +33,6 @@ import pt.ipp.estg.seepaw.ui.navigation.AppTopBar
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppScaffold(
-    onLoginSuccess: () -> Unit,
     onLogout: () -> Unit
 ) {
     val navController = rememberNavController()
@@ -51,7 +50,6 @@ fun AppScaffold(
     if (!isAuthenticated) {
         NavGraphPublic(
             navController = navController,
-            onLoginSuccess = onLoginSuccess,
             authViewModel = authViewModel
         )
         return
