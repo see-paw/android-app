@@ -8,7 +8,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
@@ -52,58 +51,55 @@ fun AppScaffold(
             navController = navController,
             authViewModel = authViewModel
         )
-        return
-    }
-
-    // ----- ADMIN MODE -----
-    if (userRole == UserRole.ADMIN_CAA) {
+        // ----- ADMIN MODE -----
+    } else if (userRole == UserRole.ADMIN_CAA) {
         NavGraphAdmin(
             navController = navController,
             authViewModel = authViewModel
         )
-        return
-    }
+    } else {
 
-    // ----- USER MODE -----
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentRoute = navBackStackEntry?.destination?.route
+        // ----- USER MODE -----
+        val navBackStackEntry by navController.currentBackStackEntryAsState()
+        val currentRoute = navBackStackEntry?.destination?.route
 
-    val drawerOptions = getUserDrawerOptions()
-    val selectedDrawerOption = drawerOptions.find { it.route == currentRoute }
+        val drawerOptions = getUserDrawerOptions()
+        val selectedDrawerOption = drawerOptions.find { it.route == currentRoute }
 
-    ModalNavigationDrawer(
-        drawerState = drawerState,
-        gesturesEnabled = true,
-        drawerContent = {
-            DrawerUser(
-                items = drawerOptions,
-                selected = selectedDrawerOption,
-                onSelect = {
-                    scope.launch { drawerState.close() }
-                    navController.navigate(it.route) {
-                        launchSingleTop = true
-                    }
+        ModalNavigationDrawer(
+            drawerState = drawerState,
+            gesturesEnabled = true,
+            drawerContent = {
+                DrawerUser(
+                    items = drawerOptions,
+                    selected = selectedDrawerOption,
+                    onSelect = {
+                        scope.launch { drawerState.close() }
+                        navController.navigate(it.route) {
+                            launchSingleTop = true
+                        }
+                    },
+                    onCloseDrawer = { scope.launch { drawerState.close() } }
+                )
+            }
+        ) {
+            Scaffold(
+                topBar = {
+                    AppTopBar(
+                        isAuthenticated = isAuthenticated,
+                        currentRoute = currentRoute,
+                        onMenuClick = { scope.launch { drawerState.open() } },
+                        onLogoutClick = onLogout
+                    )
                 },
-                onCloseDrawer = { scope.launch { drawerState.close() } }
-            )
-        }
-    ) {
-        Scaffold(
-            topBar = {
-                AppTopBar(
-                    isAuthenticated = isAuthenticated,
-                    currentRoute = currentRoute,
-                    onMenuClick = { scope.launch { drawerState.open() } },
-                    onLogoutClick = onLogout
-                )
-            },
-            containerColor = MaterialTheme.colorScheme.background
-        ) { padding ->
-            Box(Modifier.padding(padding)) {
-                NavGraphUser(
-                    navController = navController,
-                    authViewModel = authViewModel
-                )
+                containerColor = MaterialTheme.colorScheme.background
+            ) { padding ->
+                Box(Modifier.padding(padding)) {
+                    NavGraphUser(
+                        navController = navController,
+                        authViewModel = authViewModel
+                    )
+                }
             }
         }
     }

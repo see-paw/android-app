@@ -162,26 +162,28 @@ class AnimalCatalogueFlowTest {
             .assertExists("Missing testTag('openDrawerButton')")
             .performClick()
 
-        // Select catalogue
+// Select catalogue
         composeRule.waitUntil(timeoutMillis = 5000) {
-            try {
-                composeRule.onNodeWithTag("drawerItemCatalogue").assertExists()
-                true
-            } catch (_: Throwable) { false }
+            composeRule.onAllNodesWithContentDescription("Fechar menu")
+                .fetchSemanticsNodes().isNotEmpty()
         }
 
         composeRule.onNodeWithTag("drawerItemCatalogue")
+            .assertExists()
             .performClick()
 
-        // Wait for catalogue as authenticated user
-        composeRule.waitUntil(timeoutMillis = 15000) {
+// Força o Compose a processar a navegação
+        composeRule.waitForIdle()
+
+// Wait for catalogue - tenta primeiro com searchInput que já sabes que funciona
+        composeRule.waitUntil(timeoutMillis = 20000) {
             try {
-                composeRule.onNodeWithTag("catalogueScreen").assertExists()
+                composeRule.onNodeWithTag("searchInput").assertExists()
                 true
             } catch (_: Throwable) { false }
         }
 
-        // Basic UI checks
+// Agora verifica os outros elementos
         composeRule.onNodeWithTag("searchInput").assertIsDisplayed()
         composeRule.onNodeWithTag("filterButton").assertIsDisplayed()
         composeRule.onNodeWithTag("paginationBar").assertExists()

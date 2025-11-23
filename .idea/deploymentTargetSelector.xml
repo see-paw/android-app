@@ -17,6 +17,9 @@
       <SelectionState runConfigName="catalogue_showsLoadingIndicator()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
+      <SelectionState runConfigName="authenticatedUser_canLogin_thenOpenCatalogueInDrawer()">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
     </selectionStates>
   </component>
 </project>
