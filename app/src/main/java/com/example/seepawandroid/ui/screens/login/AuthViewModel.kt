@@ -7,7 +7,7 @@ import com.example.seepawandroid.data.providers.SessionManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
-@HiltViewModel // ← ADICIONAR
+@HiltViewModel
 class AuthViewModel @Inject constructor(
     private val sessionManager: SessionManager
 ) : ViewModel() {

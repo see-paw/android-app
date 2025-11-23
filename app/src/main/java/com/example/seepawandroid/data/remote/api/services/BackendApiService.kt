@@ -4,6 +4,7 @@ import com.example.seepawandroid.data.remote.dtos.PagedListDto
 import com.example.seepawandroid.data.remote.dtos.animals.ResAnimalDto
 import com.example.seepawandroid.data.remote.dtos.auth.ReqLoginDto
 import com.example.seepawandroid.data.remote.dtos.auth.ResLoginDto
+import com.example.seepawandroid.data.remote.dtos.user.ResUserDataDto
 import com.example.seepawandroid.data.remote.dtos.user.ResUserIdDto
 import com.example.seepawandroid.data.remote.dtos.user.ResUserRoleDto
 import retrofit2.Response
@@ -79,6 +80,15 @@ interface BackendApiService {
      */
     @GET("api/Users/id")
     suspend fun getUserId(): Response<ResUserIdDto>
+
+    /**
+     * Fetches the authenticated user's complete data.
+     * Requires valid authentication token.
+     *
+     * @return Response containing the user's data
+     */
+    @GET("api/Users/me")
+    suspend fun getUserData(): Response<ResUserDataDto>
 
     /**
      * Authenticates a user with email and password.

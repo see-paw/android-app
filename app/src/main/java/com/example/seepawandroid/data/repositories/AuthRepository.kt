@@ -1,10 +1,9 @@
 package com.example.seepawandroid.data.repositories
 
 import com.example.seepawandroid.data.providers.SessionManager
-import com.example.seepawandroid.data.remote.api.services.BackendApiService
 import com.example.seepawandroid.data.remote.dtos.auth.ReqLoginDto
 import com.example.seepawandroid.data.remote.dtos.auth.ResLoginDto
-import com.example.seepawandroid.data.remote.dtos.auth.ResErrorDto
+import com.example.seepawandroid.data.remote.api.services.BackendApiService
 import com.google.gson.Gson
 import retrofit2.Response
 import javax.inject.Inject
@@ -55,16 +54,16 @@ class AuthRepository @Inject constructor(
             Result.failure(Exception(errorMessage))
 
         } catch (e: Exception) {
-            // Handle network/connection errors
+            // Handle network/connection errors with consistent messages
             val message = when {
                 e.message?.contains("Unable to resolve host") == true ->
-                    "No internet connection"
+                    "Sem conexão à internet"
 
                 e.message?.contains("timeout") == true ->
-                    "Connection timeout. Please try again"
+                    "Tempo de conexão esgotado. Tente novamente"
 
                 else ->
-                    "Connection error. Please check your connection"
+                    "Erro de conexão. Verifique a sua ligação"
             }
 
             Result.failure(Exception(message))
@@ -74,33 +73,18 @@ class AuthRepository @Inject constructor(
     /**
      * Parses error response from the backend API.
      *
-     * Attempts to extract the error message from the response body,
-     * falling back to default messages based on HTTP status code.
+     * Returns consistent error messages in Portuguese for the user,
+     * regardless of backend response variations.
      *
      * @param response Failed HTTP response from the backend
-     * @return Human-readable error message
+     * @return Human-readable error message in Portuguese
      */
     private fun parseErrorMessage(response: Response<ResLoginDto>): String {
-        val errorBody = response.errorBody()?.string()
-
-        // Try to parse backend error message
-        val backendMessage = try {
-            if (errorBody != null) {
-                val errorDto = gson.fromJson(errorBody, ResErrorDto::class.java)
-                errorDto.message
-            } else {
-                null
-            }
-        } catch (e: Exception) {
-            null
-        }
-
-        // Return backend message or fallback based on status code
         return when (response.code()) {
-            400 -> backendMessage ?: "Invalid request"
-            401 -> backendMessage ?: "Incorrect email or password"
-            in 500..599 -> "Server is unavailable. Please try again later"
-            else -> backendMessage ?: "Login failed. Please try again"
+            400 -> "Pedido inválido. Verifique os dados inseridos"
+            401 -> "Credenciais inválidas. Insira credenciais válidas"
+            in 500..599 -> "Servidor indisponível. Tente novamente mais tarde"
+            else -> "Erro no login. Tente novamente"
         }
     }
 }
