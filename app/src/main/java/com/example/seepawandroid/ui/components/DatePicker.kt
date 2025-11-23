@@ -2,7 +2,6 @@ package com.example.seepawandroid.ui.components
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CalendarToday
-import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -17,6 +16,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
@@ -42,7 +42,9 @@ fun DatePicker(
     label: String,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    supportingText: String? = null
+    supportingText: String? = null,
+    isTestMode: Boolean = false, // Activate test mode parameter
+    testDateProvider: (() -> LocalDate)? = null  // Data for tests
 ) {
     var showDialog by remember { mutableStateOf(false) }
 
@@ -55,8 +57,17 @@ fun DatePicker(
         readOnly = true,
         trailingIcon = {
             IconButton(
-                onClick = { showDialog = true },
-                enabled = enabled
+                onClick = {
+                    if (isTestMode && testDateProvider != null) {
+                        // Modo teste: chama callback diretamente
+                        onDateSelected(testDateProvider())
+                    } else {
+                        // Modo normal: abre dialog
+                        showDialog = true
+                    }
+                },
+                enabled = enabled,
+                modifier = Modifier.testTag("birthDateIcon")
             ) {
                 Icon(
                     imageVector = Icons.Default.CalendarToday,
@@ -67,7 +78,8 @@ fun DatePicker(
         supportingText = supportingText?.let { { Text(it) } }
     )
 
-    if (showDialog) {
+    // Dialog só abre em modo normal
+    if (!isTestMode && showDialog) {
         val datePickerState = rememberDatePickerState(
             initialSelectedDateMillis = value?.atStartOfDay(ZoneId.systemDefault())?.toInstant()?.toEpochMilli()
                 ?: Instant.now().toEpochMilli()
@@ -96,7 +108,7 @@ fun DatePicker(
                 }
             }
         ) {
-            DatePicker(state = datePickerState)
+            androidx.compose.material3.DatePicker(state = datePickerState)
         }
     }
 }

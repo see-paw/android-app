@@ -50,7 +50,7 @@ object ValidationUtils {
     fun getPostalCodeError(postalCode: String): String? {
         return when {
             postalCode.isEmpty() -> "Código postal é obrigatório"
-            !isValidPostalCode(postalCode) -> "Formato inválido (use 0000-000)"
+            !isValidPostalCode(postalCode) -> "Formato inválido (use XXXX-XXX)"
             else -> null
         }
     }

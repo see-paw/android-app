@@ -30,10 +30,12 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.seepawandroid.ui.components.DatePicker
+import com.example.seepawandroid.utils.TestUtils
 
 /**
  * Registration screen composable.
@@ -69,20 +71,12 @@ fun RegisterScreen(
     val confirmPasswordError by viewModel.confirmPasswordError.observeAsState(null)
     val postalCodeError by viewModel.postalCodeError.observeAsState(null)
 
-    // Handle registration success
-//    LaunchedEffect(uiState) {
-//        if (uiState is RegisterUiState.Success) {
-//            onRegisterSuccess()
-//            viewModel.resetUiState()
-//        }
-//    }
-
     Scaffold(
         topBar = {
             TopAppBar(
                 title = { Text("Criar Conta") },
                 navigationIcon = {
-                    IconButton(onClick = onNavigateBack) {
+                    IconButton(onClick = onNavigateBack, modifier = Modifier.testTag("backButton")) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = "Voltar"
@@ -114,6 +108,7 @@ fun RegisterScreen(
                 onValueChange = { viewModel.onNameChange(it) },
                 label = { Text("Nome Completo") },
                 modifier = Modifier
+                    .testTag("nameInput")
                     .fillMaxWidth()
                     .onFocusChanged { if (!it.isFocused) viewModel.validateName() },
                 enabled = uiState !is RegisterUiState.Loading,
@@ -130,6 +125,7 @@ fun RegisterScreen(
                 onValueChange = { viewModel.onEmailChange(it) },
                 label = { Text("Email") },
                 modifier = Modifier
+                    .testTag("emailInput")
                     .fillMaxWidth()
                     .onFocusChanged { if (!it.isFocused) viewModel.validateEmail() },
                 enabled = uiState !is RegisterUiState.Loading,
@@ -147,6 +143,7 @@ fun RegisterScreen(
                 label = { Text("Password") },
                 visualTransformation = PasswordVisualTransformation(),
                 modifier = Modifier
+                    .testTag("passwordInput")
                     .fillMaxWidth()
                     .onFocusChanged { if (!it.isFocused) viewModel.validatePassword() },
                 enabled = uiState !is RegisterUiState.Loading,
@@ -170,6 +167,7 @@ fun RegisterScreen(
                 label = { Text("Confirmar Password") },
                 visualTransformation = PasswordVisualTransformation(),
                 modifier = Modifier
+                    .testTag("confirmPasswordInput")
                     .fillMaxWidth()
                     .onFocusChanged { if (!it.isFocused) viewModel.validateConfirmPassword() },
                 enabled = uiState !is RegisterUiState.Loading,
@@ -185,9 +183,13 @@ fun RegisterScreen(
                 value = birthDate,
                 onDateSelected = { viewModel.onBirthDateChange(it) },
                 label = "Data de Nascimento",
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .testTag("birthDateInput")
+                    .fillMaxWidth(),
                 enabled = uiState !is RegisterUiState.Loading,
-                supportingText = "Idade mínima: 18 anos"
+                supportingText = "Idade mínima: 18 anos",
+                isTestMode = TestUtils.isInTestMode,
+                testDateProvider = TestUtils.testDateProvider
             )
 
             Spacer(modifier = Modifier.height(12.dp))
@@ -197,7 +199,9 @@ fun RegisterScreen(
                 value = street,
                 onValueChange = { viewModel.onStreetChange(it) },
                 label = { Text("Morada") },
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .testTag("streetInput")
+                    .fillMaxWidth(),
                 enabled = uiState !is RegisterUiState.Loading,
                 singleLine = true
             )
@@ -213,7 +217,9 @@ fun RegisterScreen(
                     value = city,
                     onValueChange = { viewModel.onCityChange(it) },
                     label = { Text("Cidade") },
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier
+                        .testTag("cityInput")
+                        .weight(1f),
                     enabled = uiState !is RegisterUiState.Loading,
                     singleLine = true
                 )
@@ -223,6 +229,7 @@ fun RegisterScreen(
                     onValueChange = { viewModel.onPostalCodeChange(it) },
                     label = { Text("Código Postal") },
                     modifier = Modifier
+                        .testTag("postalCodeInput")
                         .weight(1f)
                         .onFocusChanged { if (!it.isFocused) viewModel.validatePostalCode() },
                     enabled = uiState !is RegisterUiState.Loading,
@@ -238,7 +245,9 @@ fun RegisterScreen(
             // Register button
             Button(
                 onClick = { viewModel.register() },
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .testTag("registerButton")
+                    .fillMaxWidth(),
                 enabled = uiState !is RegisterUiState.Loading &&
                         name.isNotBlank() &&
                         email.isNotBlank() &&
@@ -265,7 +274,8 @@ fun RegisterScreen(
                     Text(
                         text = state.message,
                         color = MaterialTheme.colorScheme.error,
-                        style = MaterialTheme.typography.bodyMedium
+                        style = MaterialTheme.typography.bodyMedium,
+                        modifier = Modifier.testTag("errorMessage")
                     )
                 }
                 else -> {}
@@ -275,6 +285,7 @@ fun RegisterScreen(
         // Success Dialog
         if (uiState is RegisterUiState.Success) {
             AlertDialog(
+                modifier = Modifier.testTag("successDialog"),
                 onDismissRequest = { },
                 title = { Text("Conta criada com sucesso!") },
                 text = { Text("Bem-vindo(a) à SeePaw, ${name}!") },
@@ -283,7 +294,8 @@ fun RegisterScreen(
                         onClick = {
                             viewModel.resetUiState()
                             onRegisterSuccess()
-                        }
+                        },
+                        modifier = Modifier.testTag("successDialogOkButton")
                     ) {
                         Text("OK")
                     }
