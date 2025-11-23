@@ -199,18 +199,23 @@ jobs:
           arch: x86_64
           profile: Nexus 6
           ram-size: 4096M
-          heap-size: 512M
-          disk-size: 4096M
+          heap-size: 1024M
+          disk-size: 6096M
+          cores: 4
           disable-animations: true
           disable-spellchecker: true
           disable-linux-hw-accel: false
-          emulator-boot-timeout: 600
-          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -camera-front none
+          emulator-boot-timeout: 900
+          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -camera-front none -qemu -smp 4
           script: |
             adb wait-for-device shell 'while [[ -z $(getprop sys.boot_completed) ]]; do sleep 1; done;'
             adb shell settings put global window_animation_scale 0.0
             adb shell settings put global transition_animation_scale 0.0
             adb shell settings put global animator_duration_scale 0.0
+            
+            echo "Waiting for emulator to stabilize"
+            sleep 5
+
             ./gradlew connectedDebugAndroidTest --stacktrace --max-workers=2
 
       # ==================== GERAR RELATÓRIO ====================
