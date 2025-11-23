@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.seepawandroid.R
@@ -78,6 +79,14 @@ fun DrawerUser(
         HorizontalDivider()
 
         items.forEach { item ->
+            val itemModifier =
+                if (item.route == "AnimalsCatalogue")
+                    Modifier
+                        .padding(NavigationDrawerItemDefaults.ItemPadding)
+                        .testTag("drawerItemCatalogue")
+                else
+                    Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
+
             NavigationDrawerItem(
                 label = { Text(stringResource(id = item.label)) },
                 selected = item == selected,
@@ -88,7 +97,7 @@ fun DrawerUser(
                         contentDescription = stringResource(id = item.label)
                     )
                 },
-                modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
+                modifier = itemModifier
             )
         }
     }

@@ -18,6 +18,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -64,7 +65,9 @@ fun LoginScreen(authViewModel: AuthViewModel) {
             value = email,
             onValueChange = { viewModel.onEmailChange(it) },
             label = { Text("Email") },
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .testTag("emailInput"),
             enabled = uiState !is LoginUiState.Loading
         )
 
@@ -75,7 +78,9 @@ fun LoginScreen(authViewModel: AuthViewModel) {
             onValueChange = { viewModel.onPasswordChange(it) },
             label = { Text("Password") },
             visualTransformation = PasswordVisualTransformation(),
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .testTag("passwordInput"),
             enabled = uiState !is LoginUiState.Loading
         )
 
@@ -83,7 +88,9 @@ fun LoginScreen(authViewModel: AuthViewModel) {
 
         Button(
             onClick = { viewModel.login() },
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .testTag("loginButton"),
             enabled = uiState !is LoginUiState.Loading && email.isNotBlank() && password.isNotBlank()
         ) {
             Text("Login")
@@ -98,7 +105,8 @@ fun LoginScreen(authViewModel: AuthViewModel) {
             is LoginUiState.Error -> {
                 Text(
                     text = state.message,
-                    color = MaterialTheme.colorScheme.error
+                    color = MaterialTheme.colorScheme.error,
+                    modifier = Modifier.testTag("errorMessage")
                 )
             }
             else -> {}

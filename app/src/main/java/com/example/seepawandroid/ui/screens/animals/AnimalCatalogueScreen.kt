@@ -285,10 +285,11 @@ fun AnimalCatalogueScreen(
 private fun LoadingState() {
     Box(
         Modifier
-            .fillMaxSize()
-            .testTag("loadingIndicator"),
+            .fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        CircularProgressIndicator()
+        CircularProgressIndicator(
+            modifier = Modifier.testTag("loadingIndicator")
+        )
     }
 }

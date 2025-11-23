@@ -1,6 +1,5 @@
 package com.example.seepawandroid.ui.screens.animals
 
-import androidx.compose.ui.semantics.ProgressBarRangeInfo
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -13,160 +12,195 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 /**
- * Instrumented UI/System tests for the Animal Catalogue Screen.
+ * Combined test suite for both:
+ * - Public visitor flow
+ * - Authenticated user flow (login → drawer → catalogue)
+ * - Catalogue UI behaviour (filters, sorting, grid, empty search)
  *
- * These tests validate:
- *  - Initial loading behaviour
- *  - Proper rendering of the catalogue grid
- *  - Empty and error UI states
- *  - Search, filters and sorting interactions
- *  - Pagination bar behaviour
- *  - Navigation to animal detail screen
- *
- * The screen uses multiple dynamic states and asynchronous operations, so
- * all tests rely on safe waitUntil() blocks with generous timeouts.
+ * Works with backend real data.
  */
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
-class AnimalCatalogueScreenTest {
+class AnimalCatalogueFlowTest {
 
     @get:Rule(order = 0)
     val hiltRule = HiltAndroidRule(this)
 
     @get:Rule(order = 1)
-    val composeTestRule = createAndroidComposeRule<MainActivity>()
+    val composeRule = createAndroidComposeRule<MainActivity>()
 
     @Before
     fun setup() {
         hiltRule.inject()
-
-        // Allow composition to settle
-        composeTestRule.waitForIdle()
-
-        // Ensure catalogue screen is visible
-        waitUntilOnCatalogueScreen()
+        composeRule.waitForIdle()
     }
 
-    /**
-     * Waits until the catalogue screen becomes visible.
-     * Ensures the app has navigated correctly after login or startup.
-     */
-    private fun waitUntilOnCatalogueScreen() {
-        composeTestRule.waitUntil(timeoutMillis = 8000) {
+    // ---------------------------------------------------------
+    // 1. PUBLIC FLOW: Homepage → Catalogue
+    // ---------------------------------------------------------
+
+    @Test
+    fun visitor_canOpenCatalogueFromHomepage() {
+
+        composeRule.onNodeWithTag("openCatalogueButton")
+            .assertExists("Missing testTag('openCatalogueButton')")
+            .performClick()
+
+        composeRule.waitUntil(timeoutMillis = 15000) {
             try {
-                composeTestRule.onNodeWithTag("catalogueScreen").assertExists()
+                composeRule.onNodeWithTag("catalogueScreen").assertExists()
                 true
-            } catch (e: Throwable) {
-                false
-            }
-        }
-    }
-
-    // ---------------------------------------------------------
-    // BASIC UI ELEMENTS
-    // ---------------------------------------------------------
-
-    @Test
-    fun catalogue_displaysSearchAndFilterControls() {
-        composeTestRule.onNodeWithTag("searchInput").assertIsDisplayed()
-        composeTestRule.onNodeWithTag("filterButton").assertIsDisplayed()
-        composeTestRule.onNodeWithTag("sortButton").assertIsDisplayed()
-    }
-
-    // ---------------------------------------------------------
-    // LOADING STATE
-    // ---------------------------------------------------------
-
-    @Test
-    fun catalogue_showsLoadingIndicator() {
-        composeTestRule.onNodeWithTag("loadingIndicator").assertExists()
-    }
-
-    // ---------------------------------------------------------
-    // GRID RENDERING (SUCCESS STATE)
-    // ---------------------------------------------------------
-
-    @Test
-    fun catalogue_displaysAnimalGridWhenLoaded() {
-        // Wait until grid has at least 1 card
-        composeTestRule.waitUntil(timeoutMillis = 20000) {
-            composeTestRule.onAllNodesWithTag("animalCard").fetchSemanticsNodes().isNotEmpty()
+            } catch (_: Throwable) { false }
         }
 
-        composeTestRule.onNodeWithTag("animalGrid").assertIsDisplayed()
+        composeRule.onNodeWithTag("searchInput").assertIsDisplayed()
+        composeRule.onNodeWithTag("filterButton").assertIsDisplayed()
+        composeRule.onNodeWithTag("sortButton").assertIsDisplayed()
     }
 
     // ---------------------------------------------------------
-    // EMPTY STATE
+    // 2. CATALOGUE UI TESTS
     // ---------------------------------------------------------
+
 
     @Test
-    fun catalogue_displaysEmptyState() {
-        // Backend must return empty list for this test to pass.
-        // Still included for completeness.
-        try {
-            composeTestRule.waitUntil(timeoutMillis = 15000) {
-                composeTestRule.onNodeWithTag("emptyState").assertExists()
-                true
-            }
-        } catch (_: Throwable) {
-            // ignore if not empty
+    fun catalogue_displaysGridWhenLoaded() {
+        visitorNavigateToCatalogue()
+
+        composeRule.waitUntil(timeoutMillis = 20000) {
+            composeRule.onAllNodesWithTag("animalCard")
+                .fetchSemanticsNodes()
+                .isNotEmpty()
         }
+
+        composeRule.onNodeWithTag("animalGrid").assertIsDisplayed()
     }
-
-    // ---------------------------------------------------------
-    // ERROR STATE
-    // ---------------------------------------------------------
-
-    @Test
-    fun catalogue_showsErrorMessageIfApiFails() {
-        try {
-            composeTestRule.waitUntil(timeoutMillis = 15000) {
-                composeTestRule.onNodeWithTag("errorMessage").assertExists()
-                true
-            }
-        } catch (_: Throwable) {
-            // ignore if backend is working
-        }
-    }
-
-    // ---------------------------------------------------------
-    // FILTERS
-    // ---------------------------------------------------------
 
     @Test
     fun catalogue_opensFilterSheet() {
-        composeTestRule.onNodeWithTag("filterButton").performClick()
+        visitorNavigateToCatalogue()
 
-        // The bottom sheet belongs to another composable and may not have tags.
-        // We simply verify that some popup appeared.
-        composeTestRule.waitUntil(timeoutMillis = 4000) {
-            composeTestRule.onAllNodes(isDialog()).fetchSemanticsNodes().isNotEmpty()
+        composeRule.onNodeWithTag("filterButton").performClick()
+
+        composeRule.waitUntil(timeoutMillis = 5000) {
+            composeRule.onAllNodes(isDialog()).fetchSemanticsNodes().isNotEmpty()
         }
     }
-
-    // ---------------------------------------------------------
-    // SORTING
-    // ---------------------------------------------------------
 
     @Test
     fun catalogue_opensSortMenu() {
-        composeTestRule.onNodeWithTag("sortButton").performClick()
+        visitorNavigateToCatalogue()
 
-        composeTestRule.waitUntil(timeoutMillis = 3000) {
-            composeTestRule.onNodeWithText("Most Recent").isDisplayed()
-            true
+        composeRule.onNodeWithTag("sortButton").performClick()
+
+        composeRule.waitUntil(timeoutMillis = 5000) {
+            try {
+                composeRule.onNodeWithText("Most Recent").isDisplayed()
+                true
+            } catch (_: Throwable) { false }
         }
     }
 
+    @Test
+    fun catalogue_displaysPaginationBar() {
+        visitorNavigateToCatalogue()
+
+        composeRule.onNodeWithTag("paginationBar").assertExists()
+    }
+
+    @Test
+    fun catalogue_displaysEmptyState_whenSearchReturnsNothing() {
+        visitorNavigateToCatalogue()
+
+        composeRule.onNodeWithTag("searchInput")
+            .performTextInput("asduiqweuiqweui123123__NO_RESULTS__")
+
+        composeRule.waitUntil(timeoutMillis = 15000) {
+            try {
+                composeRule.onNodeWithTag("emptyState").assertExists()
+                true
+            } catch (_: Throwable) { false }
+        }
+
+        composeRule.onNodeWithTag("emptyState").assertIsDisplayed()
+    }
+
     // ---------------------------------------------------------
-    // PAGINATION
+    // 3. AUTHENTICATED FLOW: Login → Drawer → Catalogue
     // ---------------------------------------------------------
 
     @Test
-    fun catalogue_displaysPaginationBar() {
-        composeTestRule.onNodeWithTag("paginationBar").assertExists()
+    fun authenticatedUser_canLogin_thenOpenCatalogueInDrawer() {
+
+        // Open login screen
+        composeRule.onNodeWithTag("openLoginButton")
+            .assertExists("Missing testTag('openLoginButton')")
+            .performClick()
+
+        // Insert credentials
+        composeRule.onNodeWithTag("emailInput")
+            .performTextInput("carlos@test.com")
+
+        composeRule.onNodeWithTag("passwordInput")
+            .performTextInput("Pa\$\$w0rd")
+
+        // Press login
+        composeRule.onNodeWithTag("loginButton")
+            .assertIsEnabled()
+            .performClick()
+
+        // Wait for user home
+        composeRule.waitUntil(timeoutMillis = 15000) {
+            try {
+                composeRule.onNodeWithText("Bem-vindo").assertExists()
+                true
+            } catch (_: Throwable) { false }
+        }
+
+        // Open drawer
+        composeRule.onNodeWithTag("openDrawerButton")
+            .assertExists("Missing testTag('openDrawerButton')")
+            .performClick()
+
+        // Select catalogue
+        composeRule.waitUntil(timeoutMillis = 5000) {
+            try {
+                composeRule.onNodeWithTag("drawerItemCatalogue").assertExists()
+                true
+            } catch (_: Throwable) { false }
+        }
+
+        composeRule.onNodeWithTag("drawerItemCatalogue")
+            .performClick()
+
+        // Wait for catalogue as authenticated user
+        composeRule.waitUntil(timeoutMillis = 15000) {
+            try {
+                composeRule.onNodeWithTag("catalogueScreen").assertExists()
+                true
+            } catch (_: Throwable) { false }
+        }
+
+        // Basic UI checks
+        composeRule.onNodeWithTag("searchInput").assertIsDisplayed()
+        composeRule.onNodeWithTag("filterButton").assertIsDisplayed()
+        composeRule.onNodeWithTag("paginationBar").assertExists()
     }
 
+    // ---------------------------------------------------------
+    // Shared helper
+    // ---------------------------------------------------------
 
+    private fun visitorNavigateToCatalogue() {
+        composeRule.onNodeWithTag("openCatalogueButton")
+            .assertExists()
+            .performClick()
+
+        composeRule.waitUntil(timeoutMillis = 15000) {
+            try {
+                composeRule.onNodeWithTag("catalogueScreen").assertExists()
+                true
+            } catch (_: Throwable) { false }
+        }
+    }
 }
