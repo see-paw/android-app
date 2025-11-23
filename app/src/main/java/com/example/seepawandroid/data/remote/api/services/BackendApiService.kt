@@ -22,6 +22,30 @@ import retrofit2.http.Query
  */
 interface BackendApiService {
 
+    /**
+     * Fetches a paginated list of animals from the backend API with optional filtering
+     * and sorting criteria.
+     *
+     * This endpoint supports multiple query parameters that allow the client
+     * to refine the search results based on species, age, size, color, sex, name,
+     * shelter name, breed, sorting field, sorting order, and pagination.
+     *
+     * All parameters are optional unless specified otherwise.
+     *
+     * @param species Optional species filter (e.g., "Dog", "Cat").
+     * @param age Optional age filter (in years).
+     * @param size Optional size filter (e.g., "Small", "Medium", "Large").
+     * @param color Optional color filter (string match).
+     * @param sex Optional sex filter ("Male" or "Female").
+     * @param name Optional search filter for animal name.
+     * @param shelterName Optional filter for the name of the shelter.
+     * @param breed Optional breed filter.
+     * @param sortBy Optional sorting field (e.g., "name", "age", "size").
+     * @param order Optional sorting direction ("asc" or "desc").
+     * @param pageNumber The page index to request. Defaults to 1.
+     *
+     * @return A paginated response containing a list of animal DTOs.
+     */
     @GET("api/animals")
     suspend fun getAnimals(
         @Query("species") species: String? = null,

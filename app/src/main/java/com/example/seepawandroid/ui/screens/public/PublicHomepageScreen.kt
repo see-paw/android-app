@@ -13,6 +13,19 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.seepawandroid.R
 
+/**
+ * Homepage shown to unauthenticated (public) users.
+ *
+ * Provides:
+ * - Title and introduction text
+ * - Button to login
+ * - Button to register
+ * - Link to access the animal catalogue in guest mode
+ *
+ * @param onLogin Navigates to the login screen
+ * @param onRegister Navigates to the registration screen
+ * @param onOpenCatalogue Opens the animal catalogue (guest mode)
+ */
 @Composable
 fun PublicHomepageScreen(
     onLogin: () -> Unit,

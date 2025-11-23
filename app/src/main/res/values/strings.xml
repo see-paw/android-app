@@ -11,6 +11,34 @@
     <string name="catalog_loading">A carregar…</string>
     <string name="catalog_error">Ocorreu um erro: %1$s</string>
 
+    <!-- SORT OPTIONS -->
+    <string name="sort_most_recent">Mais recentes</string>
+    <string name="sort_oldest">Mais antigos</string>
+    <string name="sort_name_asc">Nome A–Z</string>
+    <string name="sort_name_desc">Nome Z–A</string>
+    <string name="sort_age_asc">Idade crescente</string>
+    <string name="sort_age_desc">Idade decrescente</string>
+
+    <!-- FILTER UI -->
+    <string name="filter_title">Filtros</string>
+    <string name="filter_species">Espécie</string>
+    <string name="filter_size">Porte</string>
+    <string name="filter_sex">Sexo</string>
+    <string name="filter_breed">Raça</string>
+    <string name="filter_shelter">Abrigo</string>
+    <string name="filter_apply">Aplicar</string>
+    <string name="filter_reset">Limpar filtros</string>
+    <string name="species_dog_label">Cão</string>
+    <string name="species_cat_label">Gato</string>
+    <string name="size_small_label">Pequeno</string>
+    <string name="size_medium_label">Médio</string>
+    <string name="size_large_label">Grande</string>
+    <string name="sex_male_label">Macho</string>
+    <string name="sex_female_label">Fêmea</string>
+
+
+
+
     <!-- Animal Card -->
     <string name="animal_years_suffix">anos</string>
     <string name="favorite">Favorito</string>

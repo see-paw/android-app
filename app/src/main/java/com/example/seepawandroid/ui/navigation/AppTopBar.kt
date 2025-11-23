@@ -7,8 +7,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ExitToApp
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.Pets
-import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -16,22 +14,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.compose.ui.res.stringResource
 import com.example.seepawandroid.R
 
-
 /**
- * Barra superior da aplicação SeePaw
- * VERSÃO SIMPLES - Sem dependências de recursos (strings.xml ou drawables)
+ * Main top app bar displayed in authenticated screens.
  *
- * @param isLoggedIn Indica se o utilizador está autenticado
- * @param currentRoute Rota atual da navegação
- * @param onMenuClick Callback para abrir o menu drawer
- * @param onLogoutClick Callback para fazer logout
- * @param onNotificationsClick Callback para ver notificações
+ * Shows:
+ * - App logo
+ * - Navigation menu icon (authenticated users only)
+ * - Logout button
+ *
+ * @param isAuthenticated Indicates whether the user is authenticated.
+ * @param currentRoute Current active navigation route.
+ * @param onMenuClick Opens the side drawer.
+ * @param onLogoutClick Executes logout action.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -41,7 +38,6 @@ fun AppTopBar(
     onMenuClick: () -> Unit,
     onLogoutClick: () -> Unit
 ) {
-    // Menu só aparece quando o utilizador está autenticado
     val showMenuIcon = isAuthenticated
 
     TopAppBar(
@@ -54,7 +50,6 @@ fun AppTopBar(
                         .size(40.dp)
                         .padding(end = 8.dp)
                 )
-
             }
         },
         navigationIcon = {
@@ -70,8 +65,6 @@ fun AppTopBar(
         },
         actions = {
             if (isAuthenticated) {
-
-                // Botão de logout
                 IconButton(onClick = onLogoutClick) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Outlined.ExitToApp,

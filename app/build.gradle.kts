@@ -17,7 +17,7 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "com.example.seepawandroid.HiltTestRunner"
     }
 
     buildTypes {
@@ -62,6 +62,7 @@ dependencies {
     implementation(libs.androidx.compose.runtime.livedata)
     implementation(libs.androidx.compose.runtime.livedata)
     implementation(libs.androidx.compose.material3.window.size.class1)
+    implementation(libs.androidx.compose.runtime.saveable)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -94,11 +95,9 @@ dependencies {
     implementation("androidx.compose.runtime:runtime-livedata")
 
     // Espresso Tests
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-    androidTestImplementation("androidx.test:runner:1.7.0")
-    androidTestImplementation("androidx.test:rules:1.7.0")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.9.4")
+    //    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+//    androidTestImplementation("androidx.test.ext:junit:1.1.5")
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.9.5")
 
     // Material Icons Extended (ícones extra úteis)
     implementation("androidx.compose.material:material-icons-extended:1.7.8")
@@ -134,4 +133,12 @@ dependencies {
 
     // Hilt for Jetpack Compose
     implementation("androidx.hilt:hilt-navigation-compose:1.3.0")
+
+    // Hilt Testing
+    androidTestImplementation("com.google.dagger:hilt-android-testing:2.57.2")
+    kaptAndroidTest("com.google.dagger:hilt-android-compiler:2.57.2")
+
+    // Compose Testing
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.9.5")
+    debugImplementation("androidx.compose.ui:ui-test-manifest:1.9.5")
 }

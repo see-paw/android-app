@@ -11,13 +11,7 @@ import androidx.compose.material.icons.outlined.CalendarMonth
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.ListAlt
 import androidx.compose.material.icons.outlined.Pets
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.ModalDrawerSheet
-import androidx.compose.material3.NavigationDrawerItem
-import androidx.compose.material3.NavigationDrawerItemDefaults
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -27,11 +21,11 @@ import androidx.compose.ui.unit.dp
 import com.example.seepawandroid.R
 
 /**
- * Represents a menu drawer option.
+ * Represents a navigation drawer item for authenticated users.
  *
- * @param label String resource ID for the drawer option text.
- * @param icon Material icon to display.
- * @param route Navigation route associated with the option.
+ * @param label String resource ID for the displayed text.
+ * @param icon Icon to show in the drawer.
+ * @param route Navigation route associated with this option.
  */
 data class DrawerOption(
     @StringRes val label: Int,
@@ -40,7 +34,7 @@ data class DrawerOption(
 )
 
 /**
- * Returns the list of drawer options available for authenticated users.
+ * Returns all drawer options available for authenticated users.
  */
 fun getUserDrawerOptions() = listOf(
     DrawerOption(R.string.catalogue, Icons.Outlined.Pets, "AnimalsCatalogue"),
@@ -51,12 +45,12 @@ fun getUserDrawerOptions() = listOf(
 )
 
 /**
- * Drawer component for authenticated users.
+ * Drawer component used in authenticated user screens.
  *
- * @param items List of drawer options to display.
- * @param selected Currently selected drawer option.
- * @param onSelect Callback executed when a drawer option is selected.
- * @param onCloseDrawer Callback to close the drawer.
+ * @param items All available drawer options.
+ * @param selected Currently selected item.
+ * @param onSelect Triggered when the user selects a drawer option.
+ * @param onCloseDrawer Called to close the navigation drawer.
  */
 @Composable
 fun DrawerUser(

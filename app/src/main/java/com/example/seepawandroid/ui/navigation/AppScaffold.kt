@@ -17,6 +17,18 @@ import com.example.seepawandroid.data.models.enums.UserRole
 import com.example.seepawandroid.ui.screens.login.AuthViewModel
 import pt.ipp.estg.seepaw.ui.navigation.AppTopBar
 
+/**
+ * Main scaffold of the application.
+ *
+ * Controls:
+ * - Authentication flow (public, user, admin)
+ * - Drawer navigation for authenticated users
+ * - Top app bar
+ * - Navigation graphs
+ *
+ * @param onLoginSuccess Callback triggered after successful authentication.
+ * @param onLogout Callback used to execute logout actions.
+ */
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -30,11 +42,12 @@ fun AppScaffold(
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
 
-    // Estado de autenticação
+    // Authentication state
     val isAuthenticated by authViewModel.isAuthenticated.observeAsState(false)
     val role by authViewModel.userRole.observeAsState("")
     val userRole = UserRole.fromString(role)
 
+    // ----- PUBLIC MODE -----
     if (!isAuthenticated) {
         NavGraphPublic(
             navController = navController,
@@ -44,6 +57,7 @@ fun AppScaffold(
         return
     }
 
+    // ----- ADMIN MODE -----
     if (userRole == UserRole.ADMIN_CAA) {
         NavGraphAdmin(
             navController = navController,
@@ -52,6 +66,7 @@ fun AppScaffold(
         return
     }
 
+    // ----- USER MODE -----
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
@@ -87,12 +102,10 @@ fun AppScaffold(
             containerColor = MaterialTheme.colorScheme.background
         ) { padding ->
             Box(Modifier.padding(padding)) {
-
                 NavGraphUser(
                     navController = navController,
                     authViewModel = authViewModel
                 )
-
             }
         }
     }

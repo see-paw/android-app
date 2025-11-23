@@ -13,6 +13,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.seepawandroid.R
 
+/**
+ * Home screen displayed to authenticated users.
+ *
+ * Provides:
+ * - A welcome message
+ * - Introductory text
+ * - A simple slogan reinforcing the mission of the application
+ *
+ * The screen is static and serves as a friendly entry point after login.
+ */
 @Composable
 fun UserHomepageScreen() {
     Box(
