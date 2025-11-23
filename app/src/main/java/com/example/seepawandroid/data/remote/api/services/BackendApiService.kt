@@ -2,6 +2,7 @@ package com.example.seepawandroid.data.remote.api.services
 
 import com.example.seepawandroid.data.remote.dtos.auth.ReqLoginDto
 import com.example.seepawandroid.data.remote.dtos.auth.ResLoginDto
+import com.example.seepawandroid.data.remote.dtos.auth.ReqRegisterUserDto
 import com.example.seepawandroid.data.remote.dtos.user.ResUserDataDto
 import com.example.seepawandroid.data.remote.dtos.user.ResUserIdDto
 import com.example.seepawandroid.data.remote.dtos.user.ResUserRoleDto
@@ -56,5 +57,15 @@ interface BackendApiService {
      * @return Response containing authentication token and user info on success
      */
     @POST("api/login")
+
     suspend fun login(@Body credentials: ReqLoginDto): Response<ResLoginDto>
+
+    /**
+     * Registers a new user account.
+     *
+     * @param registerData User registration data
+     * @return Response with no body on success (200 OK)
+     */
+    @POST("api/Account/register")
+    suspend fun register(@Body registerData: ReqRegisterUserDto): Response<Unit>
 }

@@ -12,6 +12,8 @@ object NavigationRoutes {
     // User routes (authentication required)
     const val USER_HOME = "user_home"
 
+    const val REGISTER = "register"
+
     // Admin routes (authentication required)
     const val ADMIN_HOME = "admin_home"
 }
