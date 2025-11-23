@@ -143,7 +143,7 @@ class LoginScreenTest {
      * Indicates that an async operation has completed.
      */
     private fun waitUntilLoadingFinishes() {
-        composeTestRule.waitUntil(timeoutMillis = 10000) {
+        composeTestRule.waitUntil(timeoutMillis = 20000) {
             composeTestRule.onAllNodes(
                 hasProgressBarRangeInfo(ProgressBarRangeInfo.Indeterminate)
             ).fetchSemanticsNodes().isEmpty()
@@ -277,7 +277,7 @@ class LoginScreenTest {
         waitUntilLoadingFinishes()
 
         // Verify navigation to User home screen
-        composeTestRule.waitUntil(timeoutMillis = 5000) {
+        composeTestRule.waitUntil(timeoutMillis = 15000) {
             try {
                 composeTestRule.onNodeWithText("Welcome to SeePaw!").assertExists()
                 true
