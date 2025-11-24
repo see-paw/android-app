@@ -66,7 +66,7 @@ fun AppTopBar(
         },
         actions = {
             if (isAuthenticated) {
-                IconButton(onClick = onLogoutClick) {
+                IconButton(onClick = onLogoutClick, modifier = Modifier.testTag("logoutButton")) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Outlined.ExitToApp,
                         contentDescription = stringResource(R.string.logout),

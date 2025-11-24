@@ -77,7 +77,7 @@ fun NavGraphPublic(
                 onNavigateBack = { navController.popBackStack() },
                 onRegisterSuccess = {
                     navController.navigate(NavigationRoutes.LOGIN) {
-                        popUpTo(NavigationRoutes.LOGIN) { inclusive = true }
+                        popUpTo(NavigationRoutes.HOMEPAGE) { inclusive = false }
                     }
                 }
             )

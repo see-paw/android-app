@@ -122,7 +122,7 @@ class RegisterScreenTest {
 //                false
 //            }
 //        }
-        // Step 1: Wait for PublicHomepage to load
+        // Wait for PublicHomepage to load
         // We use the "openLoginButton" testTag as indicator that homepage is ready
         composeTestRule.waitUntil(timeoutMillis = 5000) {
             composeTestRule
@@ -130,24 +130,24 @@ class RegisterScreenTest {
                 .fetchSemanticsNodes().isNotEmpty()
         }
 
-        // Step 2: Click the Login button to navigate from HOMEPAGE → LOGIN
+        // Click the Login button to navigate from HOMEPAGE to LOGIN
         composeTestRule
             .onNodeWithTag("openLoginButton")
             .performClick()
 
-        // Step 3: Wait for Login screen to load
+        // Wait for Login screen to load
         composeTestRule.waitUntil(timeoutMillis = 5000) {
             composeTestRule
                 .onAllNodesWithText("SeePaw Login")
                 .fetchSemanticsNodes().isNotEmpty()
         }
 
-        // Step 4: Click "Criar conta" button to navigate from LOGIN → REGISTER (existing logic)
+        // Click "Criar conta" button to navigate from LOGIN to REGISTER (existing logic)
         composeTestRule
             .onNodeWithText("Criar conta")
             .performClick()
 
-        // Step 5: Wait for Register screen to load
+        // Wait for Register screen to load
         composeTestRule.waitUntil(timeoutMillis = 5000) {
             composeTestRule
                 .onAllNodesWithTag("nameInput")

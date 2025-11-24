@@ -13,6 +13,8 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import javax.inject.Inject
+import com.example.seepawandroid.R
+
 
 /**
  * Instrumented tests for the Login screen.
@@ -106,6 +108,32 @@ class LoginScreenTest {
      * Waits for the "SeePaw Login" title to appear.
      */
     private fun ensureOnLoginScreen() {
+        // First check if we're already on LOGIN screen
+        try {
+            composeTestRule.waitUntil(timeoutMillis = 2000) {
+                composeTestRule
+                    .onAllNodesWithText("SeePaw Login")
+                    .fetchSemanticsNodes().isNotEmpty()
+            }
+            // Already on LOGIN, we're done
+            return
+        } catch (e: Throwable) {
+            // Not on LOGIN, need to navigate from HOMEPAGE
+        }
+
+        // Wait for HOMEPAGE to load (using the login button as indicator)
+        composeTestRule.waitUntil(timeoutMillis = 5000) {
+            composeTestRule
+                .onAllNodesWithTag("openLoginButton")
+                .fetchSemanticsNodes().isNotEmpty()
+        }
+
+        // Click the Login button to navigate HOMEPAGE → LOGIN
+        composeTestRule
+            .onNodeWithTag("openLoginButton")
+            .performClick()
+
+        // Wait for LOGIN screen to load
         composeTestRule.waitUntil(timeoutMillis = 5000) {
             try {
                 composeTestRule.onNodeWithText("SeePaw Login").assertExists()
@@ -164,7 +192,7 @@ class LoginScreenTest {
 
     @Test
     fun loginButton_initiallyDisabled() {
-        composeTestRule.onNodeWithText("Login").assertIsNotEnabled()
+        composeTestRule.onNodeWithTag("loginButton").assertIsNotEnabled()
     }
 
     /** -----------------------------------------
@@ -176,7 +204,7 @@ class LoginScreenTest {
         composeTestRule.onNodeWithTag("emailInput").performTextInput(VALID_EMAIL)
         composeTestRule.onNodeWithTag("passwordInput").performTextInput(VALID_PASSWORD)
 
-        composeTestRule.onNodeWithText("Login").assertIsEnabled()
+        composeTestRule.onNodeWithTag("loginButton").assertIsEnabled()
     }
 
     /** -----------------------------------------
@@ -187,7 +215,7 @@ class LoginScreenTest {
     fun login_withInvalidPassword_showsError() {
         composeTestRule.onNodeWithTag("emailInput").performTextInput(VALID_EMAIL)
         composeTestRule.onNodeWithTag("passwordInput").performTextInput(INVALID_PASSWORD)
-        composeTestRule.onNodeWithText("Login").performClick()
+        composeTestRule.onNodeWithTag("loginButton").performClick()
 
         // Wait for error message to appear using testTag
         // Increased timeout to handle variable network conditions
@@ -208,7 +236,7 @@ class LoginScreenTest {
     fun login_withInvalidEmail_showsError() {
         composeTestRule.onNodeWithTag("emailInput").performTextInput(INVALID_EMAIL)
         composeTestRule.onNodeWithTag("passwordInput").performTextInput(VALID_PASSWORD)
-        composeTestRule.onNodeWithText("Login").performClick()
+        composeTestRule.onNodeWithTag("loginButton").performClick()
 
         composeTestRule.waitUntil(timeoutMillis = 3000) {
             try {
@@ -226,7 +254,7 @@ class LoginScreenTest {
     fun login_withBothInvalid_showsError() {
         composeTestRule.onNodeWithTag("emailInput").performTextInput(INVALID_EMAIL)
         composeTestRule.onNodeWithTag("passwordInput").performTextInput(INVALID_PASSWORD)
-        composeTestRule.onNodeWithText("Login").performClick()
+        composeTestRule.onNodeWithTag("loginButton").performClick()
 
         composeTestRule.waitUntil(timeoutMillis = 3000) {
             try {
@@ -248,24 +276,24 @@ class LoginScreenTest {
     fun login_withValidCredentials_navigatesToUserHome() {
         composeTestRule.onNodeWithTag("emailInput").performTextInput(VALID_EMAIL)
         composeTestRule.onNodeWithTag("passwordInput").performTextInput(VALID_PASSWORD)
-        composeTestRule.onNodeWithText("Login").performClick()
+        composeTestRule.onNodeWithTag("loginButton").performClick()
 
         // Wait until loading finishes
         waitUntilLoadingFinishes()
 
         // Verify navigation to User home screen
+        val expectedTitle = composeTestRule.activity.getString(R.string.home_title)
+
         composeTestRule.waitUntil(timeoutMillis = 3000) {
             try {
-                composeTestRule.onNodeWithText("Welcome to SeePaw!").assertExists()
+                composeTestRule.onNodeWithText(expectedTitle).assertExists()
                 true
             } catch (e: Throwable) {
                 false
             }
         }
 
-        // Verify we're on the User home screen
-        composeTestRule.onNodeWithText("Welcome to SeePaw!").assertIsDisplayed()
-        composeTestRule.onNodeWithText("Logged in as: User").assertIsDisplayed()
+        composeTestRule.onNodeWithText(expectedTitle).assertIsDisplayed()
     }
 
     /** -----------------------------------------
@@ -277,7 +305,7 @@ class LoginScreenTest {
         // First attempt with wrong credentials
         composeTestRule.onNodeWithTag("emailInput").performTextInput(VALID_EMAIL)
         composeTestRule.onNodeWithTag("passwordInput").performTextInput(INVALID_PASSWORD)
-        composeTestRule.onNodeWithText("Login").performClick()
+        composeTestRule.onNodeWithTag("loginButton").performClick()
 
         // Wait for error to appear
         composeTestRule.waitUntil(timeoutMillis = 3000) {
@@ -299,21 +327,23 @@ class LoginScreenTest {
         // Retry with correct credentials
         composeTestRule.onNodeWithTag("emailInput").performTextInput(VALID_EMAIL)
         composeTestRule.onNodeWithTag("passwordInput").performTextInput(VALID_PASSWORD)
-        composeTestRule.onNodeWithText("Login").performClick()
+        composeTestRule.onNodeWithTag("loginButton").performClick()
 
         // Wait for login process to complete
         waitUntilLoadingFinishes()
 
         // Verify success - should be on User home screen
+        val expectedTitle = composeTestRule.activity.getString(R.string.home_title)
+
         composeTestRule.waitUntil(timeoutMillis = 3000) {
             try {
-                composeTestRule.onNodeWithText("Welcome to SeePaw!").assertExists()
+                composeTestRule.onNodeWithText(expectedTitle).assertExists()
                 true
             } catch (e: Throwable) {
                 false
             }
         }
 
-        composeTestRule.onNodeWithText("Welcome to SeePaw!").assertIsDisplayed()
+        composeTestRule.onNodeWithText(expectedTitle).assertIsDisplayed()
     }
 }
