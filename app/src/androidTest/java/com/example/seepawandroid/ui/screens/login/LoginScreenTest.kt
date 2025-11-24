@@ -274,7 +274,7 @@ class LoginScreenTest {
         composeTestRule.onNodeWithText("Login").performClick()
 
         // Wait until loading finishes
-//        waitUntilLoadingFinishes()
+        waitUntilLoadingFinishes()
 
         // Verify navigation to User home screen
         composeTestRule.waitUntil(timeoutMillis = 15000) {

@@ -216,7 +216,25 @@ jobs:
             echo "Waiting for emulator to stabilize"
             sleep 5
 
-            ./gradlew connectedDebugAndroidTest --stacktrace
+            # Limpar logcat e começar a capturar
+            adb logcat -c
+            adb logcat > emulator-logcat.txt &
+            LOGCAT_PID=$!
+
+            ./gradlew connectedDebugAndroidTest --stacktrace || true
+
+            # Parar captura
+            kill $LOGCAT_PID || true
+
+      # =================== LOG CAT =============================
+      
+      - name: Upload Emulator Logcat
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: emulator-logcat
+          path: emulator-logcat.txt
+          retention-days: 3
 
       # ==================== GERAR RELATÓRIO ====================
       - name: Generate Test Report
