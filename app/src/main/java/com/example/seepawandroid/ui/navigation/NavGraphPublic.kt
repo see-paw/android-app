@@ -6,6 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.seepawandroid.ui.screens.login.AuthViewModel
 import com.example.seepawandroid.ui.screens.login.LoginScreen
+import com.example.seepawandroid.ui.screens.register.RegisterScreen
 
 /**
  * Navigation graph for public (unauthenticated) screens.
@@ -23,8 +24,24 @@ fun NavGraphPublic(
         navController = navController,
         startDestination = NavigationRoutes.LOGIN
     ) {
+        // Login Screen
         composable(NavigationRoutes.LOGIN) {
-            LoginScreen(authViewModel = authViewModel)
+            LoginScreen(
+                authViewModel = authViewModel,
+                onNavigateToRegister = { navController.navigate(NavigationRoutes.REGISTER) }
+            )
+        }
+
+        // Register Screen
+        composable(NavigationRoutes.REGISTER) {
+            RegisterScreen(
+                onNavigateBack = { navController.popBackStack() },
+                onRegisterSuccess = {
+                    navController.navigate(NavigationRoutes.LOGIN) {
+                        popUpTo(NavigationRoutes.LOGIN) { inclusive = true }
+                    }
+                }
+            )
         }
     }
 }

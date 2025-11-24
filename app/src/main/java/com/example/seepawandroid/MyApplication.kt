@@ -1,15 +1,13 @@
 package com.example.seepawandroid
 
 import android.app.Application
-import com.example.seepawandroid.data.providers.SessionManager
+import dagger.hilt.android.HiltAndroidApp
 
+@HiltAndroidApp
 class MyApplication : Application() {
     override fun onCreate() {
         super.onCreate()
 
         // Initializations
-
-        // Authentication tokens manager
-        SessionManager.init(this)
     }
 }

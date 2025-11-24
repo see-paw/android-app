@@ -18,9 +18,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.seepawandroid.ui.navigation.NavigationRoutes
 
 /**
  * Login screen composable.
@@ -32,8 +35,11 @@ import androidx.lifecycle.viewmodel.compose.viewModel
  * @param onLoginSuccess Callback invoked when login succeeds, receives userId and role
  */
 @Composable
-fun LoginScreen(authViewModel: AuthViewModel) {
-    val viewModel: LoginViewModel = viewModel()
+fun LoginScreen(
+    authViewModel: AuthViewModel,
+    onNavigateToRegister: () -> Unit = {}
+) {
+    val viewModel: LoginViewModel = hiltViewModel()
     val uiState by viewModel.uiState.observeAsState(LoginUiState.Idle)
     val email by viewModel.email.observeAsState("")
     val password by viewModel.password.observeAsState("")
@@ -63,7 +69,9 @@ fun LoginScreen(authViewModel: AuthViewModel) {
             value = email,
             onValueChange = { viewModel.onEmailChange(it) },
             label = { Text("Email") },
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .testTag("emailInput"),
             enabled = uiState !is LoginUiState.Loading
         )
 
@@ -74,7 +82,9 @@ fun LoginScreen(authViewModel: AuthViewModel) {
             onValueChange = { viewModel.onPasswordChange(it) },
             label = { Text("Password") },
             visualTransformation = PasswordVisualTransformation(),
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .testTag("passwordInput"),
             enabled = uiState !is LoginUiState.Loading
         )
 
@@ -88,6 +98,16 @@ fun LoginScreen(authViewModel: AuthViewModel) {
             Text("Login")
         }
 
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Button(
+            onClick = onNavigateToRegister,
+            modifier = Modifier.fillMaxWidth(),
+            enabled = uiState !is LoginUiState.Loading
+        ) {
+            Text("Criar conta")
+        }
+
         Spacer(modifier = Modifier.height(16.dp))
 
         when (val state = uiState) {
@@ -97,7 +117,8 @@ fun LoginScreen(authViewModel: AuthViewModel) {
             is LoginUiState.Error -> {
                 Text(
                     text = state.message,
-                    color = MaterialTheme.colorScheme.error
+                    color = MaterialTheme.colorScheme.error,
+                    modifier = Modifier.testTag("errorMessage")
                 )
             }
             else -> {}

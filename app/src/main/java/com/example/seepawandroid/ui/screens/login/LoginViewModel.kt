@@ -7,7 +7,9 @@ import androidx.lifecycle.viewModelScope
 import com.example.seepawandroid.data.providers.SessionManager
 import com.example.seepawandroid.data.repositories.AuthRepository
 import com.example.seepawandroid.data.repositories.UserRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 /**
  * ViewModel for the Login screen.
@@ -15,11 +17,12 @@ import kotlinx.coroutines.launch
  * Manages login business logic and UI state.
  * Communicates with AuthRepository to perform authentication.
  */
-class LoginViewModel : ViewModel() {
-
-    private val repository = AuthRepository()
-
-    private val userRepository = UserRepository()
+@HiltViewModel
+class LoginViewModel @Inject constructor(
+    private val authRepository: AuthRepository,
+    private val userRepository: UserRepository,
+    private val sessionManager: SessionManager
+) : ViewModel() {
 
     private val _email = MutableLiveData("")
     val email: LiveData<String> = _email
@@ -62,25 +65,20 @@ class LoginViewModel : ViewModel() {
             _uiState.value = LoginUiState.Loading
 
             // Authenticate user
-            val loginResult = repository.login(_email.value ?: "", _password.value ?: "")
+            val loginResult = authRepository.login(_email.value ?: "", _password.value ?: "")
 
             if (loginResult.isSuccess) {
                 //Fetch user role and ID
-                val roleResult = userRepository.fetchUserRole()
-                val userIdResult = userRepository.fetchUserId()
-
-                if (roleResult.isSuccess && userIdResult.isSuccess) {
-                    val role = roleResult.getOrNull() ?: "User"
-                    val userId = userIdResult.getOrNull() ?: ""
-
-                    // Save role and userId
-                    SessionManager.saveUserRole(role)
-                    SessionManager.saveUserId(userId)
+                userRepository.fetchUserData().onSuccess { userData ->
+                    sessionManager.saveUserId(userData.userId)
+                    sessionManager.saveUserRole(userData.role)
 
                     // Update UI state
-                    _uiState.value = LoginUiState.Success(userId, role)
-                } else {
-                    _uiState.value = LoginUiState.Error("Failed to fetch user data")
+                    _uiState.value = LoginUiState.Success(userData.userId, userData.role)
+                }.onFailure {
+                    _uiState.value = LoginUiState.Error(
+                        "Failed to fetch user data: ${it.message}"
+                    )
                 }
             } else {
                 _uiState.value = LoginUiState.Error(

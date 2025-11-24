@@ -1,9 +1,11 @@
 package com.example.seepawandroid.ui.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.seepawandroid.ui.screens.DemoViewModel
 import com.example.seepawandroid.ui.screens.login.AuthViewModel
 import com.example.seepawandroid.ui.screens.user.UserHomeScreen_DEMO
 
@@ -21,7 +23,8 @@ fun NavGraphUser(navController: NavHostController, authViewModel: AuthViewModel)
         startDestination = NavigationRoutes.USER_HOME
     ) {
         composable(NavigationRoutes.USER_HOME) {
-            UserHomeScreen_DEMO(authViewModel)
+            val demoViewModel: DemoViewModel = hiltViewModel() // Para Demo funcionar
+            UserHomeScreen_DEMO(authViewModel, demoViewModel.sessionManager)
         }
     }
 }

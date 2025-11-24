@@ -1,7 +1,9 @@
-package com.example.seepawandroid.services
+package com.example.seepawandroid.data.remote.api.services
 
 import com.example.seepawandroid.data.remote.dtos.auth.ReqLoginDto
 import com.example.seepawandroid.data.remote.dtos.auth.ResLoginDto
+import com.example.seepawandroid.data.remote.dtos.auth.ReqRegisterUserDto
+import com.example.seepawandroid.data.remote.dtos.user.ResUserDataDto
 import com.example.seepawandroid.data.remote.dtos.user.ResUserIdDto
 import com.example.seepawandroid.data.remote.dtos.user.ResUserRoleDto
 import retrofit2.Response
@@ -38,6 +40,15 @@ interface BackendApiService {
     suspend fun getUserId(): Response<ResUserIdDto>
 
     /**
+     * Fetches the authenticated user's complete data.
+     * Requires valid authentication token.
+     *
+     * @return Response containing the user's data
+     */
+    @GET("api/Users/me")
+    suspend fun getUserData(): Response<ResUserDataDto>
+
+    /**
      * Authenticates a user with email and password.
      *
      * Endpoint: POST /api/login
@@ -46,5 +57,15 @@ interface BackendApiService {
      * @return Response containing authentication token and user info on success
      */
     @POST("api/login")
+
     suspend fun login(@Body credentials: ReqLoginDto): Response<ResLoginDto>
+
+    /**
+     * Registers a new user account.
+     *
+     * @param registerData User registration data
+     * @return Response with no body on success (200 OK)
+     */
+    @POST("api/Account/register")
+    suspend fun register(@Body registerData: ReqRegisterUserDto): Response<Unit>
 }

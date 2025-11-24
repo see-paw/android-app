@@ -4,18 +4,23 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.seepawandroid.data.providers.SessionManager
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class AuthViewModel : ViewModel() {
+@HiltViewModel
+class AuthViewModel @Inject constructor(
+    private val sessionManager: SessionManager
+) : ViewModel() {
 
-    private val _isAuthenticated = MutableLiveData(SessionManager.isAuthenticated())
+    private val _isAuthenticated = MutableLiveData(sessionManager.isAuthenticated())
     val isAuthenticated: LiveData<Boolean> = _isAuthenticated
 
-    private val _userRole = MutableLiveData(SessionManager.getUserRole() ?: "")
+    private val _userRole = MutableLiveData(sessionManager.getUserRole() ?: "")
     val userRole: LiveData<String> = _userRole
 
     fun checkAuthState() {
-        _isAuthenticated.value = SessionManager.isAuthenticated()
-        _userRole.value = SessionManager.getUserRole() ?: ""
+        _isAuthenticated.value = sessionManager.isAuthenticated()
+        _userRole.value = sessionManager.getUserRole() ?: ""
 
         // DEBUG
         android.util.Log.d("AuthViewModel", "isAuthenticated: ${_isAuthenticated.value}")
@@ -32,7 +37,7 @@ class AuthViewModel : ViewModel() {
      * Clears all session data and updates authentication state.
      */
     fun logout() {
-        SessionManager.clearSession()
+        sessionManager.clearSession()
         checkAuthState()
     }
 }
