@@ -191,7 +191,7 @@ class LoginScreenTest {
 
         // Wait for error message to appear using testTag
         // Increased timeout to handle variable network conditions
-        composeTestRule.waitUntil(timeoutMillis = 10000) {
+        composeTestRule.waitUntil(timeoutMillis = 3000) {
             try {
                 composeTestRule.onNodeWithTag("errorMessage").assertExists()
                 true
@@ -210,7 +210,7 @@ class LoginScreenTest {
         composeTestRule.onNodeWithTag("passwordInput").performTextInput(VALID_PASSWORD)
         composeTestRule.onNodeWithText("Login").performClick()
 
-        composeTestRule.waitUntil(timeoutMillis = 10000) {
+        composeTestRule.waitUntil(timeoutMillis = 3000) {
             try {
                 composeTestRule.onNodeWithTag("errorMessage").assertExists()
                 true
@@ -228,7 +228,7 @@ class LoginScreenTest {
         composeTestRule.onNodeWithTag("passwordInput").performTextInput(INVALID_PASSWORD)
         composeTestRule.onNodeWithText("Login").performClick()
 
-        composeTestRule.waitUntil(timeoutMillis = 10000) {
+        composeTestRule.waitUntil(timeoutMillis = 3000) {
             try {
                 composeTestRule.onNodeWithTag("errorMessage").assertExists()
                 true
@@ -254,7 +254,7 @@ class LoginScreenTest {
         waitUntilLoadingFinishes()
 
         // Verify navigation to User home screen
-        composeTestRule.waitUntil(timeoutMillis = 15000) {
+        composeTestRule.waitUntil(timeoutMillis = 3000) {
             try {
                 composeTestRule.onNodeWithText("Welcome to SeePaw!").assertExists()
                 true
@@ -280,7 +280,7 @@ class LoginScreenTest {
         composeTestRule.onNodeWithText("Login").performClick()
 
         // Wait for error to appear
-        composeTestRule.waitUntil(timeoutMillis = 10000) {
+        composeTestRule.waitUntil(timeoutMillis = 3000) {
             try {
                 composeTestRule.onNodeWithTag("errorMessage").assertExists()
                 true
@@ -305,7 +305,7 @@ class LoginScreenTest {
         waitUntilLoadingFinishes()
 
         // Verify success - should be on User home screen
-        composeTestRule.waitUntil(timeoutMillis = 5000) {
+        composeTestRule.waitUntil(timeoutMillis = 3000) {
             try {
                 composeTestRule.onNodeWithText("Welcome to SeePaw!").assertExists()
                 true
