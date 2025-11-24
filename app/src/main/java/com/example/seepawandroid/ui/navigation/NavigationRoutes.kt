@@ -32,6 +32,8 @@ object NavigationRoutes {
     const val ANIMALS_CATALOGUE = "AnimalsCatalogue"
 
 
+    const val REGISTER = "register"
+
     // Admin routes (authentication required)
     const val ADMIN_HOME = "admin_home"
 

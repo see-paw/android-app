@@ -4,9 +4,11 @@ import com.example.seepawandroid.data.providers.SessionManager
 import com.example.seepawandroid.data.remote.dtos.auth.ReqLoginDto
 import com.example.seepawandroid.data.remote.dtos.auth.ResLoginDto
 import com.example.seepawandroid.data.remote.api.services.BackendApiService
+import com.example.seepawandroid.data.remote.dtos.auth.ReqRegisterUserDto
 import com.google.gson.Gson
 import retrofit2.Response
 import javax.inject.Inject
+import android.util.Log
 
 /**
  * Repository responsible for authentication operations.
@@ -46,6 +48,10 @@ class AuthRepository @Inject constructor(
                     .toString()
 
                 sessionManager.saveAuthToken(loginData.accessToken, expirationTime)
+
+                // Delay to debug pipeline
+//                kotlinx.coroutines.delay(1000) // 200ms delay
+
                 return Result.success(loginData)
             }
 
@@ -67,6 +73,32 @@ class AuthRepository @Inject constructor(
             }
 
             Result.failure(Exception(message))
+        }
+    }
+
+    /**
+     * Registers a new user account.
+     *
+     * @param registerData User registration data
+     * @return Result<Unit> indicating success or failure
+     * @throws Exception if registration fails
+     */
+    suspend fun register(registerData: ReqRegisterUserDto): Result<Unit> {
+        return try {
+            Log.d("AuthRepository", "Registering user: ${registerData}") //debug
+
+            val response = apiService.register(registerData)
+
+            if (response.isSuccessful) {
+                Result.success(Unit)
+            } else {
+                val errorBody = response.errorBody()?.string() // debug
+                Log.e("AuthRepository", "Registration failed: ${response.code()} - $errorBody") // debug
+                Result.failure(Exception("Registration failed: ${response.message()}"))
+            }
+        } catch (e: Exception) {
+            Log.e("AuthRepository", "Registration exception", e) // debug
+            Result.failure(e)
         }
     }
 

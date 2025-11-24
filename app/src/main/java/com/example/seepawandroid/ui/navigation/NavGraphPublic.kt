@@ -12,16 +12,20 @@ import com.example.seepawandroid.ui.screens.animals.AnimalCatalogueScreen
 import com.example.seepawandroid.ui.screens.animals.viewmodel.AnimalViewModel
 import com.example.seepawandroid.ui.screens.login.AuthViewModel
 import com.example.seepawandroid.ui.screens.login.LoginScreen
+import com.example.seepawandroid.ui.screens.register.RegisterScreen
 import com.example.seepawandroid.ui.screens.public.PublicHomepageScreen
 
 /**
  * Navigation graph for public (unauthenticated) screens.
  *
+ * Contains routes accessible without authentication.
  * Includes:
  * - Homepage
  * - Login
  * - Register
  * - Animal catalogue in guest mode
+ *
+ * @param navController Navigation controller managing the navigation stack
  */
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
@@ -47,10 +51,6 @@ fun NavGraphPublic(
             )
         }
 
-        composable(NavigationRoutes.LOGIN) {
-            LoginScreen(authViewModel = authViewModel)
-        }
-
         composable(NavigationRoutes.ANIMALS_CATALOGUE_GUEST) {
             AnimalCatalogueScreen(
                 viewModel = animalViewModel,
@@ -59,6 +59,26 @@ fun NavGraphPublic(
                     navController.navigate(
                         NavigationRoutes.animalDetailPageGuest(animalId)
                     )
+                }
+            )
+        }
+
+        // Login Screen
+        composable(NavigationRoutes.LOGIN) {
+            LoginScreen(
+                authViewModel = authViewModel,
+                onNavigateToRegister = { navController.navigate(NavigationRoutes.REGISTER) }
+            )
+        }
+
+        // Register Screen
+        composable(NavigationRoutes.REGISTER) {
+            RegisterScreen(
+                onNavigateBack = { navController.popBackStack() },
+                onRegisterSuccess = {
+                    navController.navigate(NavigationRoutes.LOGIN) {
+                        popUpTo(NavigationRoutes.LOGIN) { inclusive = true }
+                    }
                 }
             )
         }

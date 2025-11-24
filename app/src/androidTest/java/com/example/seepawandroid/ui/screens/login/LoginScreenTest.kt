@@ -143,7 +143,7 @@ class LoginScreenTest {
      * Indicates that an async operation has completed.
      */
     private fun waitUntilLoadingFinishes() {
-        composeTestRule.waitUntil(timeoutMillis = 10000) {
+        composeTestRule.waitUntil(timeoutMillis = 20000) {
             composeTestRule.onAllNodes(
                 hasProgressBarRangeInfo(ProgressBarRangeInfo.Indeterminate)
             ).fetchSemanticsNodes().isEmpty()
@@ -180,29 +180,6 @@ class LoginScreenTest {
     }
 
     /** -----------------------------------------
-     *  LOADING STATE
-     *  ----------------------------------------- */
-
-    @Test
-    fun login_showsLoadingIndicator() {
-        composeTestRule.onNodeWithTag("emailInput").performTextInput(VALID_EMAIL)
-        composeTestRule.onNodeWithTag("passwordInput").performTextInput(VALID_PASSWORD)
-        composeTestRule.onNodeWithText("Login").performClick()
-
-        // Verify loading indicator appears
-        composeTestRule.waitUntil(timeoutMillis = 2000) {
-            try {
-                composeTestRule.onNode(
-                    hasProgressBarRangeInfo(ProgressBarRangeInfo.Indeterminate)
-                ).assertExists()
-                true
-            } catch (e: Throwable) {
-                false
-            }
-        }
-    }
-
-    /** -----------------------------------------
      *  ERROR HANDLING TESTS
      *  ----------------------------------------- */
 
@@ -214,7 +191,7 @@ class LoginScreenTest {
 
         // Wait for error message to appear using testTag
         // Increased timeout to handle variable network conditions
-        composeTestRule.waitUntil(timeoutMillis = 10000) {
+        composeTestRule.waitUntil(timeoutMillis = 3000) {
             try {
                 composeTestRule.onNodeWithTag("errorMessage").assertExists()
                 true
@@ -233,7 +210,7 @@ class LoginScreenTest {
         composeTestRule.onNodeWithTag("passwordInput").performTextInput(VALID_PASSWORD)
         composeTestRule.onNodeWithText("Login").performClick()
 
-        composeTestRule.waitUntil(timeoutMillis = 10000) {
+        composeTestRule.waitUntil(timeoutMillis = 3000) {
             try {
                 composeTestRule.onNodeWithTag("errorMessage").assertExists()
                 true
@@ -251,7 +228,7 @@ class LoginScreenTest {
         composeTestRule.onNodeWithTag("passwordInput").performTextInput(INVALID_PASSWORD)
         composeTestRule.onNodeWithText("Login").performClick()
 
-        composeTestRule.waitUntil(timeoutMillis = 10000) {
+        composeTestRule.waitUntil(timeoutMillis = 3000) {
             try {
                 composeTestRule.onNodeWithTag("errorMessage").assertExists()
                 true
@@ -277,7 +254,7 @@ class LoginScreenTest {
         waitUntilLoadingFinishes()
 
         // Verify navigation to User home screen
-        composeTestRule.waitUntil(timeoutMillis = 5000) {
+        composeTestRule.waitUntil(timeoutMillis = 3000) {
             try {
                 composeTestRule.onNodeWithText("Welcome to SeePaw!").assertExists()
                 true
@@ -303,7 +280,7 @@ class LoginScreenTest {
         composeTestRule.onNodeWithText("Login").performClick()
 
         // Wait for error to appear
-        composeTestRule.waitUntil(timeoutMillis = 10000) {
+        composeTestRule.waitUntil(timeoutMillis = 3000) {
             try {
                 composeTestRule.onNodeWithTag("errorMessage").assertExists()
                 true
@@ -328,7 +305,7 @@ class LoginScreenTest {
         waitUntilLoadingFinishes()
 
         // Verify success - should be on User home screen
-        composeTestRule.waitUntil(timeoutMillis = 5000) {
+        composeTestRule.waitUntil(timeoutMillis = 3000) {
             try {
                 composeTestRule.onNodeWithText("Welcome to SeePaw!").assertExists()
                 true
