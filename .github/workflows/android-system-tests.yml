@@ -13,6 +13,7 @@ env:
   JAVA_VERSION: "17"
   ANDROID_API_LEVEL: 36
   ANDROID_BUILD_TOOLS: "35.0.0"
+  BACKEND_IMAGE: ghcr.io/see-paw/backend:main
 
 jobs:
   system-tests:
@@ -58,7 +59,7 @@ jobs:
       - name: Pull Backend Docker Image
         run: |
           echo "🐳 Pulling backend image..."
-          docker pull ghcr.io/see-paw/backend:main
+          docker pull ${{ env.BACKEND_IMAGE }}
 
       - name: Start Backend Container
         env:
@@ -84,7 +85,7 @@ jobs:
             -e JWT__Issuer="${JWT__Issuer}" \
             -e JWT__Audience="${JWT__Audience}" \
             -e JWT__SigningKey="${JWT__SigningKey}" \
-            ghcr.io/see-paw/backend:main-032134b
+            ${{ env.BACKEND_IMAGE }}
           
           echo "⏳ Waiting for backend to initialize..."
           sleep 10
