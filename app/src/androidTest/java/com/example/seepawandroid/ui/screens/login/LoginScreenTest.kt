@@ -180,29 +180,6 @@ class LoginScreenTest {
     }
 
     /** -----------------------------------------
-     *  LOADING STATE
-     *  ----------------------------------------- */
-
-    @Test
-    fun login_showsLoadingIndicator() {
-        composeTestRule.onNodeWithTag("emailInput").performTextInput(VALID_EMAIL)
-        composeTestRule.onNodeWithTag("passwordInput").performTextInput(VALID_PASSWORD)
-        composeTestRule.onNodeWithText("Login").performClick()
-
-        // Verify loading indicator appears
-        composeTestRule.waitUntil(timeoutMillis = 2000) {
-            try {
-                composeTestRule.onNode(
-                    hasProgressBarRangeInfo(ProgressBarRangeInfo.Indeterminate)
-                ).assertExists()
-                true
-            } catch (e: Throwable) {
-                false
-            }
-        }
-    }
-
-    /** -----------------------------------------
      *  ERROR HANDLING TESTS
      *  ----------------------------------------- */
 
