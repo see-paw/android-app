@@ -69,6 +69,7 @@ class AnimalViewModel @Inject constructor(
                 if (paged.items.isEmpty()) {
                     _uiState.value = AnimalCatalogueUiState.Empty
                 } else {
+                    // Extract unique breed list from current page
                     val breedList = paged.items
                         .mapNotNull { it.breedName }
                         .filter { it.isNotBlank() }
@@ -111,11 +112,27 @@ class AnimalViewModel @Inject constructor(
      * Applies user-selected filters and reloads animals.
      */
     fun applyFilters(newFilters: AnimalFilterDto?) {
-        filters = (newFilters ?: AnimalFilterDto()).copy(
+
+        if (newFilters == null) {
+            // Reset only filters — keep search & sorting
+            filters = if (searchQuery.isNotBlank()) {
+                AnimalFilterDto(name = searchQuery)
+            } else null
+
+            currentPage = 1
+            loadAnimals(1)
+            return
+        }
+
+        filters = newFilters.copy(
             name = if (searchQuery.isBlank()) null else searchQuery
         )
+
+        currentPage = 1
         loadAnimals(1)
     }
+
+
 
     /**
      * Applies sorting and reloads the first page.
@@ -123,6 +140,8 @@ class AnimalViewModel @Inject constructor(
     fun applySorting(sort: String?, direction: String?) {
         sortBy = sort
         order = direction
+
+        currentPage = 1
         loadAnimals(1)
     }
 
@@ -153,4 +172,22 @@ class AnimalViewModel @Inject constructor(
 
         return if (updated == AnimalFilterDto()) null else updated
     }
+
+    /**
+     * Utility method used by the UI to determine if any filters
+     * (species, size, sex, breed, shelter or name/search query)
+     * are currently active.
+     *
+     * This does not perform any backend logic — it simply checks
+     * whether the internal filter state represents a non-empty
+     * filter set. The Screen uses this information to decide
+     * whether an "empty results" message should appear due to
+     * filters/search, instead of the generic empty catalogue state.
+     *
+     * @return True if at least one filter field is active; false otherwise.
+     */
+    fun currentFiltersNotEmpty(): Boolean {
+        return filters != null && filters != AnimalFilterDto()
+    }
+
 }

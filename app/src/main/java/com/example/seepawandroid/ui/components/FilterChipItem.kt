@@ -5,6 +5,7 @@ import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 
 /**
  * Reusable selectable chip component used in filters.
@@ -17,7 +18,8 @@ import androidx.compose.runtime.Composable
 fun FilterChipItem(
     label: String,
     selected: Boolean,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     AssistChip(
         onClick = onClick,

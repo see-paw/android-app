@@ -151,6 +151,7 @@ fun AnimalCatalogueScreen(
                             ) {
                                 DropdownMenuItem(
                                     text = { Text(stringResource(R.string.sort_most_recent)) },
+                                    modifier = Modifier.testTag("sort_recent_desc"),
                                     onClick = {
                                         viewModel.applySorting("created", "desc")
                                         sortMenuExpanded = false
@@ -158,6 +159,7 @@ fun AnimalCatalogueScreen(
                                 )
                                 DropdownMenuItem(
                                     text = { Text(stringResource(R.string.sort_oldest)) },
+                                    modifier = Modifier.testTag("sort_oldest_asc"),
                                     onClick = {
                                         viewModel.applySorting("created", "asc")
                                         sortMenuExpanded = false
@@ -165,6 +167,7 @@ fun AnimalCatalogueScreen(
                                 )
                                 DropdownMenuItem(
                                     text = { Text(stringResource(R.string.sort_name_asc)) },
+                                    modifier = Modifier.testTag("sort_name_asc"),
                                     onClick = {
                                         viewModel.applySorting("name", "asc")
                                         sortMenuExpanded = false
@@ -172,6 +175,7 @@ fun AnimalCatalogueScreen(
                                 )
                                 DropdownMenuItem(
                                     text = { Text(stringResource(R.string.sort_name_desc)) },
+                                    modifier = Modifier.testTag("sort_name_desc"),
                                     onClick = {
                                         viewModel.applySorting("name", "desc")
                                         sortMenuExpanded = false
@@ -179,6 +183,7 @@ fun AnimalCatalogueScreen(
                                 )
                                 DropdownMenuItem(
                                     text = { Text(stringResource(R.string.sort_age_asc)) },
+                                    modifier = Modifier.testTag("sort_age_asc"),
                                     onClick = {
                                         viewModel.applySorting("age", "asc")
                                         sortMenuExpanded = false
@@ -186,6 +191,7 @@ fun AnimalCatalogueScreen(
                                 )
                                 DropdownMenuItem(
                                     text = { Text(stringResource(R.string.sort_age_desc)) },
+                                    modifier = Modifier.testTag("sort_age_desc"),
                                     onClick = {
                                         viewModel.applySorting("age", "desc")
                                         sortMenuExpanded = false
@@ -219,7 +225,15 @@ fun AnimalCatalogueScreen(
                             .testTag("emptyState"),
                         contentAlignment = Alignment.Center
                     ) {
-                        Text(stringResource(R.string.catalog_empty))
+                        Text(
+                            text = stringResource(
+                                if (searchText.isNotBlank() || viewModel.currentFiltersNotEmpty())
+                                    R.string.catalog_no_results
+                                else
+                                    R.string.catalog_empty
+                            )
+                        )
+
                     }
                 }
 

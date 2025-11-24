@@ -10,6 +10,7 @@
     <string name="catalog_empty">No animals found.</string>
     <string name="catalog_loading">Loading…</string>
     <string name="catalog_error">An error occurred: %1$s</string>
+    <string name="catalog_no_results">No animals match your search or filters.</string>
 
     <!-- SORT OPTIONS -->
     <string name="sort_most_recent">Most recent</string>

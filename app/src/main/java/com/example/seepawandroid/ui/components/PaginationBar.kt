@@ -11,6 +11,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 
 /**
@@ -51,26 +52,32 @@ fun PaginationBar(
     ) {
         IconButton(
             onClick = onPrev,
-            enabled = currentPage > 1
+            enabled = currentPage > 1,
+            modifier = Modifier.testTag("previousPageButton")
         ) {
             Text("<")
         }
 
         for (page in 1..totalPages) {
-            TextButton(onClick = { onSelect(page) }) {
+            TextButton(onClick = { onSelect(page) },  modifier = Modifier.testTag("pageButton_$page")) {
                 Text(
                     text = page.toString(),
                     style = if (page == currentPage)
                         MaterialTheme.typography.titleMedium
                     else
-                        MaterialTheme.typography.bodyMedium
+                        MaterialTheme.typography.bodyMedium,
+                    modifier = if (page == currentPage)
+                        Modifier.testTag("currentPageText")
+                    else
+                        Modifier
                 )
             }
         }
 
         IconButton(
             onClick = onNext,
-            enabled = currentPage < totalPages
+            enabled = currentPage < totalPages,
+            modifier = Modifier.testTag("nextPageButton")
         ) {
             Text(">")
         }

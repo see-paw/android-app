@@ -5,19 +5,19 @@
       <SelectionState runConfigName="app">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="AnimalCatalogueScreenTest">
+      <SelectionState runConfigName="resetFilters_restoresOriginalResults()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="catalogue_displaysEmptyState()">
+      <SelectionState runConfigName="sort_canOpenAndSelectOption()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="AnimalCatalogueFlowTest">
+      <SelectionState runConfigName="sort_mostRecent_changesResults()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="catalogue_showsLoadingIndicator()">
+      <SelectionState runConfigName="applyFilters_filtersResults()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="authenticatedUser_canLogin_thenOpenCatalogueInDrawer()">
+      <SelectionState runConfigName="catalogueScreen_showsNoResultsMessageWhenSearchHasNoMatches()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>

@@ -41,6 +41,7 @@ android {
         compose = true
         buildConfig = true
     }
+
 }
 
 kapt {
@@ -48,7 +49,7 @@ kapt {
 }
 
 dependencies {
-
+    implementation("com.google.guava:guava:31.1-android")
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -62,6 +63,8 @@ dependencies {
     implementation(libs.androidx.compose.runtime.livedata)
     implementation(libs.androidx.compose.runtime.livedata)
     implementation(libs.androidx.compose.material3.window.size.class1)
+    implementation(libs.androidx.room.ktx)
+    implementation(libs.androidx.compiler)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

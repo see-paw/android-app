@@ -23,6 +23,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.seepawandroid.R
@@ -73,34 +74,78 @@ fun FilterBottomSheet(
                 style = MaterialTheme.typography.headlineSmall
             )
 
+            // -----------------------------
             // SPECIES
+            // -----------------------------
             Text(stringResource(R.string.filter_species))
             Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                FilterChipItem(stringResource(R.string.species_dog_label), species == "Dog") { species = "Dog" }
-                FilterChipItem(stringResource(R.string.species_cat_label), species == "Cat") { species = "Cat" }
+                FilterChipItem(
+                    stringResource(R.string.species_dog_label),
+                    species == "Dog",
+                    onClick = { species = "Dog" },
+                    modifier = Modifier.testTag("filter_species_dog")
+                )
+                FilterChipItem(
+                    stringResource(R.string.species_cat_label),
+                    species == "Cat",
+                    onClick = { species = "Cat" },
+                    modifier = Modifier.testTag("filter_species_cat")
+                )
             }
 
+            // -----------------------------
             // SIZE
+            // -----------------------------
             Text(stringResource(R.string.filter_size))
             Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                FilterChipItem(label = stringResource(R.string.size_small_label), size == "Small") { size = "Small" }
-                FilterChipItem(stringResource(R.string.size_medium_label), size == "Medium") { size = "Medium" }
-                FilterChipItem(stringResource(R.string.size_large_label), size == "Large") { size = "Large" }
+                FilterChipItem(
+                    stringResource(R.string.size_small_label),
+                    size == "Small",
+                    onClick = { size = "Small" },
+                    modifier = Modifier.testTag("filter_size_small")
+                )
+                FilterChipItem(
+                    stringResource(R.string.size_medium_label),
+                    size == "Medium",
+                    onClick = { size = "Medium" },
+                    modifier = Modifier.testTag("filter_size_medium")
+                )
+                FilterChipItem(
+                    stringResource(R.string.size_large_label),
+                    size == "Large",
+                    onClick = { size = "Large" },
+                    modifier = Modifier.testTag("filter_size_large")
+                )
             }
 
+            // -----------------------------
             // SEX
+            // -----------------------------
             Text(stringResource(R.string.filter_sex))
             Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                FilterChipItem(stringResource(R.string.sex_male_label), sex == "Male") { sex = "Male" }
-                FilterChipItem(stringResource(R.string.sex_female_label), sex == "Female") { sex = "Female" }
+                FilterChipItem(
+                    stringResource(R.string.sex_male_label),
+                    sex == "Male",
+                    onClick = { sex = "Male" },
+                    modifier = Modifier.testTag("filter_sex_male")
+                )
+                FilterChipItem(
+                    stringResource(R.string.sex_female_label),
+                    sex == "Female",
+                    onClick = { sex = "Female" },
+                    modifier = Modifier.testTag("filter_sex_female")
+                )
             }
 
-            // BREED DROPDOWN
+            // -----------------------------
+            // BREED (DROPDOWN)
+            // -----------------------------
             Text(stringResource(R.string.filter_breed))
 
             ExposedDropdownMenuBox(
                 expanded = expandedBreed,
-                onExpandedChange = { expandedBreed = !expandedBreed }
+                onExpandedChange = { expandedBreed = !expandedBreed },
+                modifier = Modifier.testTag("filter_breed_dropdown")
             ) {
                 OutlinedTextField(
                     value = breed,
@@ -121,6 +166,7 @@ fun FilterBottomSheet(
                     breedOptions.forEach { option ->
                         DropdownMenuItem(
                             text = { Text(option) },
+                            modifier = Modifier.testTag("filter_breed_option_${option}"),
                             onClick = {
                                 breed = option
                                 expandedBreed = false
@@ -130,36 +176,48 @@ fun FilterBottomSheet(
                 }
             }
 
+            // -----------------------------
             // SHELTER
+            // -----------------------------
             OutlinedTextField(
                 value = shelter,
                 onValueChange = { shelter = it },
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .testTag("filter_shelter"),
                 label = { Text(stringResource(R.string.filter_shelter)) }
             )
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            // APPLY + RESET BUTTONS
+            // -----------------------------
+            // RESET / APPLY BUTTONS
+            // -----------------------------
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                TextButton(onClick = onReset) {
+                TextButton(
+                    onClick = onReset,
+                    modifier = Modifier.testTag("resetFiltersButton")
+                ) {
                     Text(stringResource(R.string.filter_reset))
                 }
 
-                Button(onClick = {
-                    onApply(
-                        AnimalFilterDto(
-                            species = species,
-                            size = size,
-                            sex = sex,
-                            breed = breed.ifBlank { null },
-                            shelterName = shelter.ifBlank { null }
+                Button(
+                    onClick = {
+                        onApply(
+                            AnimalFilterDto(
+                                species = species,
+                                size = size,
+                                sex = sex,
+                                breed = breed.ifBlank { null },
+                                shelterName = shelter.ifBlank { null }
+                            )
                         )
-                    )
-                }) {
+                    },
+                    modifier = Modifier.testTag("applyFiltersButton")
+                ) {
                     Text(stringResource(R.string.filter_apply))
                 }
             }
