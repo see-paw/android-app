@@ -50,7 +50,7 @@ class AuthRepository @Inject constructor(
                 sessionManager.saveAuthToken(loginData.accessToken, expirationTime)
 
                 // Delay to debug pipeline
-                kotlinx.coroutines.delay(1000) // 200ms delay
+//                kotlinx.coroutines.delay(1000) // 200ms delay
 
                 return Result.success(loginData)
             }
