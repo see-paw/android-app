@@ -7,6 +7,8 @@ import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.hasProgressBarRangeInfo
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.onAllNodesWithTag
+import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
@@ -103,22 +105,53 @@ class RegisterScreenTest {
     }
 
     private fun navigateToRegisterScreen() {
+//        composeTestRule.waitUntil(timeoutMillis = 5000) {
+//            try {
+//                composeTestRule.onNodeWithText("SeePaw Login").assertExists()
+//                true
+//            } catch (e: Throwable) {
+//                false
+//            }
+//        }
+//        composeTestRule.onNodeWithText("Criar conta").performClick()
+//        composeTestRule.waitUntil(timeoutMillis = 3000) {
+//            try {
+//                composeTestRule.onNodeWithText("Criar Conta").assertExists()
+//                true
+//            } catch (e: Throwable) {
+//                false
+//            }
+//        }
+        // Step 1: Wait for PublicHomepage to load
+        // We use the "openLoginButton" testTag as indicator that homepage is ready
         composeTestRule.waitUntil(timeoutMillis = 5000) {
-            try {
-                composeTestRule.onNodeWithText("SeePaw Login").assertExists()
-                true
-            } catch (e: Throwable) {
-                false
-            }
+            composeTestRule
+                .onAllNodesWithTag("openLoginButton")
+                .fetchSemanticsNodes().isNotEmpty()
         }
-        composeTestRule.onNodeWithText("Criar conta").performClick()
-        composeTestRule.waitUntil(timeoutMillis = 3000) {
-            try {
-                composeTestRule.onNodeWithText("Criar Conta").assertExists()
-                true
-            } catch (e: Throwable) {
-                false
-            }
+
+        // Step 2: Click the Login button to navigate from HOMEPAGE → LOGIN
+        composeTestRule
+            .onNodeWithTag("openLoginButton")
+            .performClick()
+
+        // Step 3: Wait for Login screen to load
+        composeTestRule.waitUntil(timeoutMillis = 5000) {
+            composeTestRule
+                .onAllNodesWithText("SeePaw Login")
+                .fetchSemanticsNodes().isNotEmpty()
+        }
+
+        // Step 4: Click "Criar conta" button to navigate from LOGIN → REGISTER (existing logic)
+        composeTestRule
+            .onNodeWithText("Criar conta")
+            .performClick()
+
+        // Step 5: Wait for Register screen to load
+        composeTestRule.waitUntil(timeoutMillis = 5000) {
+            composeTestRule
+                .onAllNodesWithTag("nameInput")
+                .fetchSemanticsNodes().isNotEmpty()
         }
     }
 
@@ -254,7 +287,7 @@ class RegisterScreenTest {
      * Waits until the loading indicator disappears.
      */
     private fun waitUntilLoadingFinishes() {
-        composeTestRule.waitUntil(timeoutMillis = 10000) {
+        composeTestRule.waitUntil(timeoutMillis = 3000) {
             composeTestRule.onAllNodes(
                 hasProgressBarRangeInfo(ProgressBarRangeInfo.Indeterminate)
             ).fetchSemanticsNodes().isEmpty()
@@ -299,7 +332,7 @@ class RegisterScreenTest {
         composeTestRule.onNodeWithTag("registerButton").performClick()
 
         // Wait for error
-        composeTestRule.waitUntil(timeoutMillis = 10000) {
+        composeTestRule.waitUntil(timeoutMillis = 3000) {
             try {
                 composeTestRule.onNodeWithTag("errorMessage").assertExists()
                 true
@@ -326,7 +359,7 @@ class RegisterScreenTest {
         waitUntilLoadingFinishes()
 
         // Wait for success dialog
-        composeTestRule.waitUntil(timeoutMillis = 10000) {
+        composeTestRule.waitUntil(timeoutMillis = 3000) {
             try {
                 composeTestRule.onNodeWithTag("successDialog").assertExists()
                 true
@@ -353,7 +386,7 @@ class RegisterScreenTest {
         waitUntilLoadingFinishes()
 
         // Wait for success dialog
-        composeTestRule.waitUntil(timeoutMillis = 10000) {
+        composeTestRule.waitUntil(timeoutMillis = 3000) {
             try {
                 composeTestRule.onNodeWithTag("successDialog").assertExists()
                 true
@@ -403,7 +436,7 @@ class RegisterScreenTest {
         composeTestRule.onNodeWithTag("registerButton").performClick()
 
         // Wait for error
-        composeTestRule.waitUntil(timeoutMillis = 10000) {
+        composeTestRule.waitUntil(timeoutMillis = 3000) {
             try {
                 composeTestRule.onNodeWithTag("errorMessage").assertExists()
                 true
@@ -424,7 +457,7 @@ class RegisterScreenTest {
         waitUntilLoadingFinishes()
 
         // Should show success dialog
-        composeTestRule.waitUntil(timeoutMillis = 10000) {
+        composeTestRule.waitUntil(timeoutMillis = 3000) {
             try {
                 composeTestRule.onNodeWithTag("successDialog").assertExists()
                 true
