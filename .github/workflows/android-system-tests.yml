@@ -58,7 +58,7 @@ jobs:
       - name: Pull Backend Docker Image
         run: |
           echo "🐳 Pulling backend image..."
-          docker pull ghcr.io/see-paw/backend:main-032134b
+          docker pull ghcr.io/see-paw/backend:latest
 
       - name: Start Backend Container
         env:
