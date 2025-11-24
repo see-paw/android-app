@@ -216,7 +216,7 @@ jobs:
             echo "Waiting for emulator to stabilize"
             sleep 5
 
-            ./gradlew connectedDebugAndroidTest --stacktrace --max-workers=2
+            ./gradlew connectedDebugAndroidTest --stacktrace
 
       # ==================== GERAR RELATÓRIO ====================
       - name: Generate Test Report
