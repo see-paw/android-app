@@ -1,3 +1,42 @@
+## [1.1.0](https://github.com/see-paw/android-app/compare/v1.0.0...v1.1.0) (2025-11-24)
+
+
+### Features
+
+* add register user screen and funcionality ([3f68610](https://github.com/see-paw/android-app/commit/3f68610f4d64026676a843ce5c87c574b843d496))
+
+
+### Bug Fixes
+
+* pipeline now fetches latest backend version ([7ad76e6](https://github.com/see-paw/android-app/commit/7ad76e60c5571b0d4f0ce48dcc662c864a7bd78b))
+* Use environment variable for backend Docker image ([c5e3eff](https://github.com/see-paw/android-app/commit/c5e3effb81c5c414d19b74c4ed38d3ee86143c0b))
+
+
+### Code Refactoring
+
+* **di:** implement Hilt dependency injection ([2da0309](https://github.com/see-paw/android-app/commit/2da030991a2a72ce325635271cc51abeb5942415))
+* updated user info with api/Users/me endpoint ([ff6096f](https://github.com/see-paw/android-app/commit/ff6096fac7cfae91239ccd935b4f6e7b6e4e56b9))
+
+
+### Tests
+
+* add system tests for login screen ([2fad710](https://github.com/see-paw/android-app/commit/2fad710fd84dd4b13a3c2f36842fa1ed72894a82))
+* changed timeout in tests ([e58eb39](https://github.com/see-paw/android-app/commit/e58eb39ad8b5c2737f3491405622662118312458))
+
+
+### Chores
+
+* add delay in authRepository to debug pipeline ([da3b08f](https://github.com/see-paw/android-app/commit/da3b08f200eee0ce68dee6ca735543dbcd2e5a9a))
+* add logcat to failing tests in pipeline ([3ebaa6c](https://github.com/see-paw/android-app/commit/3ebaa6c8b5b8447224bed10886b68913cd066939))
+* add more time for tests to wait for result in pipeline ([8a02063](https://github.com/see-paw/android-app/commit/8a0206347813d055766dca2de60c95891c3140c1))
+* attempt to fix failing tests in pipeline by removing --max-workers=2 ([0a18fe5](https://github.com/see-paw/android-app/commit/0a18fe5ae7c4eab4156ed7b2ebdd1de7b0cd01fb))
+* commented code to debug pipeline test failure ([9ca2743](https://github.com/see-paw/android-app/commit/9ca27432c5a0ac26e8e07d6c1c3e5c4cfc52cab1))
+* trigger pipeline ([b059759](https://github.com/see-paw/android-app/commit/b059759f3118bd084566cd8395489a2c5a9b9af8))
+* trigger pipeline ([dd8da53](https://github.com/see-paw/android-app/commit/dd8da53df3795bbe22e924c953ecc43eff4ffe13))
+* trigger pipeline ([3276269](https://github.com/see-paw/android-app/commit/32762696961ec25b74f4a5bd5b12a765288ef2f7))
+* update pipeline for emulator use more resources ([c88b60a](https://github.com/see-paw/android-app/commit/c88b60a23a8dac3907c5324d1fb884607ab38e42))
+* updated pipeline to use latest main backend container ([5768687](https://github.com/see-paw/android-app/commit/5768687f3fa2df6751690cd167d70b61b3cc2dd2))
+
 ## 1.0.0 (2025-11-19)
 
 
