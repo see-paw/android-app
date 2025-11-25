@@ -23,6 +23,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.seepawandroid.ui.navigation.NavigationRoutes
 
 /**
  * Login screen composable.
@@ -34,7 +35,10 @@ import androidx.lifecycle.viewmodel.compose.viewModel
  * @param onLoginSuccess Callback invoked when login succeeds, receives userId and role
  */
 @Composable
-fun LoginScreen(authViewModel: AuthViewModel) {
+fun LoginScreen(
+    authViewModel: AuthViewModel,
+    onNavigateToRegister: () -> Unit = {}
+) {
     val viewModel: LoginViewModel = hiltViewModel()
     val uiState by viewModel.uiState.observeAsState(LoginUiState.Idle)
     val email by viewModel.email.observeAsState("")
@@ -94,6 +98,16 @@ fun LoginScreen(authViewModel: AuthViewModel) {
             enabled = uiState !is LoginUiState.Loading && email.isNotBlank() && password.isNotBlank()
         ) {
             Text("Login")
+        }
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Button(
+            onClick = onNavigateToRegister,
+            modifier = Modifier.fillMaxWidth(),
+            enabled = uiState !is LoginUiState.Loading
+        ) {
+            Text("Criar conta")
         }
 
         Spacer(modifier = Modifier.height(16.dp))

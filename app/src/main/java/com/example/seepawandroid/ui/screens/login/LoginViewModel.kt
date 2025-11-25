@@ -76,7 +76,9 @@ class LoginViewModel @Inject constructor(
                     // Update UI state
                     _uiState.value = LoginUiState.Success(userData.userId, userData.role)
                 }.onFailure {
-                    println("Warning: Failed to fetch user data: ${it.message}")
+                    _uiState.value = LoginUiState.Error(
+                        "Failed to fetch user data: ${it.message}"
+                    )
                 }
             } else {
                 _uiState.value = LoginUiState.Error(

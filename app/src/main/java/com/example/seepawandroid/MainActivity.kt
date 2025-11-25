@@ -1,5 +1,6 @@
 package com.example.seepawandroid
 
+import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -7,6 +8,7 @@ import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
 import com.example.seepawandroid.ui.SeePawApp
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.Locale
 
 /**
  * Main entry point Activity for the SeePaw Android application.
@@ -19,7 +21,6 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 @RequiresApi(Build.VERSION_CODES.O)
 class MainActivity : ComponentActivity() {
-
     /**
      * Called when the activity is first created.
      * Sets up the Jetpack Compose UI content for the entire app.
