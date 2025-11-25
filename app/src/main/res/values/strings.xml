@@ -1,3 +1,87 @@
 <resources>
-    <string name="app_name">SeePawAndroid</string>
+    <!-- App Name -->
+    <string name="app_name">SeePaw</string>
+    <string name="app_logo_description">SeePaw Logo</string>
+
+    <!-- Animals Catalogue -->
+    <string name="catalog_search_placeholder">Pesquisar</string>
+    <string name="catalog_filter">Filtros</string>
+    <string name="catalog_sort">Ordenar</string>
+    <string name="catalog_empty">Nenhum animal encontrado.</string>
+    <string name="catalog_loading">A carregar…</string>
+    <string name="catalog_error">Ocorreu um erro: %1$s</string>
+    <string name="catalog_no_results">Nenhum animal corresponde à sua pesquisa ou filtros.</string>
+
+    <!-- SORT OPTIONS -->
+    <string name="sort_most_recent">Mais recentes</string>
+    <string name="sort_oldest">Mais antigos</string>
+    <string name="sort_name_asc">Nome A–Z</string>
+    <string name="sort_name_desc">Nome Z–A</string>
+    <string name="sort_age_asc">Idade crescente</string>
+    <string name="sort_age_desc">Idade decrescente</string>
+
+    <!-- FILTER UI -->
+    <string name="filter_title">Filtros</string>
+    <string name="filter_species">Espécie</string>
+    <string name="filter_size">Porte</string>
+    <string name="filter_sex">Sexo</string>
+    <string name="filter_breed">Raça</string>
+    <string name="filter_shelter">Abrigo</string>
+    <string name="filter_apply">Aplicar</string>
+    <string name="filter_reset">Limpar filtros</string>
+    <string name="species_dog_label">Cão</string>
+    <string name="species_cat_label">Gato</string>
+    <string name="size_small_label">Pequeno</string>
+    <string name="size_medium_label">Médio</string>
+    <string name="size_large_label">Grande</string>
+    <string name="sex_male_label">Macho</string>
+    <string name="sex_female_label">Fêmea</string>
+
+
+
+
+    <!-- Animal Card -->
+    <string name="animal_years_suffix">anos</string>
+    <string name="favorite">Favorito</string>
+    <string name="favorite_locked">Favorito bloqueado</string>
+
+    <!-- Images -->
+    <string name="animal_image_desc">Imagem do animal %1$s</string>
+
+
+    <!-- Navigation Drawer Options -->
+    <string name="catalogue">Catálogo de Animais</string>
+    <string name="favorites">Favoritos</string>
+    <string name="schedule_activities">Agendar Atividades</string>
+    <string name="requests">Meus Pedidos de Ownership</string>
+    <string name="active_activities">Atividades ativas</string>
+
+
+    <!-- Top Bar -->
+    <string name="open_menu">Abrir Menu</string>
+    <string name="close_menu">Fechar Menu</string>
+    <string name="notifications">Notificações</string>
+    <string name="logout">Sair</string>
+    <string name="logo_description">Logótipo da aplicação SeePaw</string>
+
+
+    <!-- User Homepage Screen -->
+    <string name="home_title">Bem-vindo à plataforma SeePaw</string>
+    <string name="home_intro_1">
+    A SeePaw é uma plataforma que centraliza, num só local, informação sobre animais disponíveis para adoção e apadrinhamento, recolhida de abrigos que desejam divulgar os seus patudos.
+</string>
+    <string name="home_intro_2">
+    Acreditamos que a tecnologia pode ser uma aliada poderosa no combate ao abandono animal, bem como no apoio às associações que muitas vezes só sobrevivem graças à sua ajuda monetária. Cada ajuda é uma vida transformada — juntos, fazemos a diferença!
+</string>
+    <string name="home_slogan">"Humanos Porreiros Adotam Rafeiros"</string>
+
+    <!-- PUBLIC HOMESCREEN -->
+    <string name="public_home_title">Bem-vindo à SeePaw</string>
+    <string name="public_home_intro">
+    Encontre animais adoráveis para adoção ou apadrinhamento. Explore o catálogo sem conta ou autentique-se para aceder a todas as funcionalidades.
+</string>
+    <string name="public_home_login">Iniciar sessão</string>
+    <string name="public_home_register">Criar conta</string>
+    <string name="public_home_catalogue">Ver catálogo de animais</string>
+
 </resources>

@@ -92,7 +92,9 @@ fun LoginScreen(
 
         Button(
             onClick = { viewModel.login() },
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .testTag("loginButton"),
             enabled = uiState !is LoginUiState.Loading && email.isNotBlank() && password.isNotBlank()
         ) {
             Text("Login")

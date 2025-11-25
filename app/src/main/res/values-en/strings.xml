@@ -1,3 +1,89 @@
 <resources>
-    <string name="app_name">SeePawAndroid</string>
+    <!-- App Name -->
+    <string name="app_name">SeePaw</string>
+    <string name="app_logo_description">SeePaw Logo</string>
+
+    <!-- Animals Catalogue -->
+    <string name="catalog_search_placeholder">Search</string>
+    <string name="catalog_filter">Filters</string>
+    <string name="catalog_sort">Sort</string>
+    <string name="catalog_empty">No animals found.</string>
+    <string name="catalog_loading">Loading…</string>
+    <string name="catalog_error">An error occurred: %1$s</string>
+    <string name="catalog_no_results">No animals match your search or filters.</string>
+
+    <!-- SORT OPTIONS -->
+    <string name="sort_most_recent">Most recent</string>
+    <string name="sort_oldest">Oldest</string>
+    <string name="sort_name_asc">Name A–Z</string>
+    <string name="sort_name_desc">Name Z–A</string>
+    <string name="sort_age_asc">Age ascending</string>
+    <string name="sort_age_desc">Age descending</string>
+
+    <!-- FILTER UI -->
+    <string name="filter_title">Filters</string>
+    <string name="filter_species">Species</string>
+    <string name="filter_size">Size</string>
+    <string name="filter_sex">Sex</string>
+    <string name="filter_breed">Breed</string>
+    <string name="filter_shelter">Shelter</string>
+    <string name="filter_apply">Apply</string>
+    <string name="filter_reset">Reset filters</string>
+    <string name="species_dog_label">Dog</string>
+    <string name="species_cat_label">Cat</string>
+    <string name="size_small_label">Small</string>
+    <string name="size_medium_label">Medium</string>
+    <string name="size_large_label">Large</string>
+    <string name="sex_male_label">Male</string>
+    <string name="sex_female_label">Female</string>
+
+
+
+    <!-- Animal Card -->
+    <string name="animal_years_suffix">years</string>
+    <string name="favorite">Favorite</string>
+    <string name="favorite_locked">Favorite locked</string>
+
+    <!-- Images -->
+    <string name="animal_image_desc">Animal image %1$s</string>
+
+    <!-- Navigation Drawer Options -->
+    <string name="catalogue">Animals Catalogue</string>
+    <string name="favorites">Favorites</string>
+    <string name="schedule_activities">Schedule Ativities</string>
+    <string name="requests">My Ownership Requests</string>
+    <string name="active_activities">Active Ativities</string>
+
+
+    <!-- Top Bar -->
+    <string name="open_menu">Open Menu</string>
+    <string name="close_menu">Close Menu</string>
+    <string name="notifications">Notifications</string>
+    <string name="logout">Logout</string>
+    <string name="logo_description">SeePaw application logo</string>
+
+    <!-- User homepage screen -->
+    <string name="home_title">Welcome to the SeePaw platform</string>
+    <string name="home_intro_1">
+    SeePaw is a platform that centralizes, in one place, information about animals available for ownership and fostering, collected from shelters that wish to share their pets with the world.
+</string>
+    <string name="home_intro_2">
+    We believe technology can be a powerful ally in the fight against animal abandonment, as well as in supporting rescue associations that often survive only thanks to yours generosity. Every contribution transforms a life — together, we make a difference!
+</string>
+    <string name="home_slogan">"Cool Humans Adopt Mutts"</string>
+
+    <!-- PUBLIC HOMESCREEN -->
+    <string name="public_home_title">Welcome to SeePaw</string>
+    <string name="public_home_intro">
+    Discover lovely animals available for ownership or fostering. Browse the catalogue as a guest or sign in to access all features.
+</string>
+    <string name="public_home_login">Log in</string>
+    <string name="public_home_register">Create account</string>
+    <string name="public_home_catalogue">View animal catalogue</string>
+
+
+
+
+
+
 </resources>
