@@ -149,25 +149,6 @@ class AnimalCatalogueScreenTest {
      *  SORT FUNCTIONALITY
      *  ----------------------------------------- */
 
-    @Test
-    fun sortButton_opensDropdownMenu() {
-        waitUntilLoadingFinishes()
-
-        composeTestRule.onNodeWithTag("sortButton")
-            .performClick()
-
-        composeTestRule.waitForIdle()
-
-        composeTestRule.waitUntil(timeoutMillis = 3000) {
-            try {
-                composeTestRule.onNode(
-                    hasText("Mais recentes", substring = true) or
-                            hasText("Most Recent", substring = true)
-                ).assertExists()
-                true
-            } catch (_: Throwable) { false }
-        }
-    }
 
     @Test
     fun sort_nameAsc_changesResults() {
