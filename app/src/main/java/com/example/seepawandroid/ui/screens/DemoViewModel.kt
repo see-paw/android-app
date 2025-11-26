@@ -1,7 +1,7 @@
 package com.example.seepawandroid.ui.screens
 
 import androidx.lifecycle.ViewModel
-import com.example.seepawandroid.data.providers.SessionManager
+import com.example.seepawandroid.data.managers.SessionManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

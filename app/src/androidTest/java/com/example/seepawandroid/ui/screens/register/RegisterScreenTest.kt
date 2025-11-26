@@ -17,7 +17,7 @@ import androidx.compose.ui.test.performTextClearance
 import androidx.compose.ui.test.performTextInput
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.seepawandroid.MainActivity
-import com.example.seepawandroid.data.providers.SessionManager
+import com.example.seepawandroid.data.managers.SessionManager
 import com.example.seepawandroid.utils.TestUtils
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest

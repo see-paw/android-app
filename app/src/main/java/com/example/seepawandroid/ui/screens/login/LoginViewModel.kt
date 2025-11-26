@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.seepawandroid.data.providers.SessionManager
+import com.example.seepawandroid.data.managers.SessionManager
 import com.example.seepawandroid.data.repositories.AuthRepository
 import com.example.seepawandroid.data.repositories.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel

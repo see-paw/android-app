@@ -81,9 +81,77 @@
     <string name="public_home_register">Create account</string>
     <string name="public_home_catalogue">View animal catalogue</string>
 
+    <!-- Animal Detail Screen -->
+    <string name="animal_details">Animal Details</string>
+    <string name="animal_description_label">Description</string>
+    <string name="animal_info_label">Animal Information</string>
+    <string name="animal_features_label">Features</string>
+    <string name="breed">Breed</string>
+    <string name="size">Size</string>
+    <string name="sex">Sex</string>
+    <string name="colour">Color</string>
+    <string name="sterilized">Sterilized</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="fostering_button">Foster</string>
+    <string name="ownership_button">Special Adoption</string>
+    <string name="offline_actions_disabled">Actions disabled (no internet)</string>
+    <string name="login_required">Login Required</string>
+    <string name="login_required_message">You must be logged in to perform this action.</string>
+    <string name="cancel">Cancel</string>
+    <string name="back">Back</string>
+    <string name="needs_internet_for_details">Internet connection required to view this animal\'s details.</string>
+    <string name="error_loading_animal">Error loading animal: %1$s</string>
+    <string name="retry">Retry</string>
 
+    <!-- Screen Title -->
+    <string name="ownership_request_title">Adoption Request</string>
 
+    <!-- Terms Screen -->
+    <string name="ownership_terms_title">Important Information</string>
+    <string name="ownership_terms_subtitle">About adopting %1$s</string>
+    <string name="ownership_terms_content">
+By submitting this adoption request, you agree to the following terms and conditions:\n\n
+1. RESPONSIBILITY\n
+You will be responsible for the animal’s complete well-being, including food, veterinary care, and a safe and healthy environment. This responsibility is included in the monthly payment.\n\n
+2. FINANCIAL COMMITMENT\n
+Adoption involves ongoing costs. Ensure you have the financial capacity to care for the animal throughout its life. The special adoption contract is lifelong and these terms do not replace the official contract with the shelter.\n\n
+3. STERILIZATION\n
+If the animal has not yet been neutered, you agree to carry out the procedure according to veterinary guidance.\n\n
+4. IDENTIFICATION\n
+The animal must be registered and kept with proper identification (microchip) according to current legislation, if not already sterilized.\n\n
+5. ACTIVITY SCHEDULING\n
+Special adoption allows the animal to remain housed at the shelter with associated costs. You will be able to schedule activities with the animal through this platform. Activities may be long duration (taking the animal with you for extended periods) or short-time visits lasting only a few hours.\n\n
+6. LIFELONG CONTRACTUAL BOND\n
+Accepting these terms serves only to explain how special adoptions work. It does not replace the official contract with the animal shelter, which is governed by shelter rules. Only after the contract is signed by both parties can the administrator approve the special adoption on this platform.\n\n
+Please read all terms carefully before proceeding with a special adoption request.
+</string>
 
+    <string name="accept_terms">Accept and Continue</string>
 
+    <!-- Form Screen -->
+    <string name="ownership_form_title">Payment Details</string>
+    <string name="ownership_form_subtitle">Complete adoption of %1$s</string>
+    <string name="account_number">Account Number</string>
+    <string name="holder_name">Account Holder</string>
+    <string name="cvv">CVV</string>
+    <string name="citizen_card">Citizen Card</string>
+    <string name="password">Password</string>
+    <string name="submit_ownership_request">Submit Request</string>
+
+    <!-- Success Screen -->
+    <string name="ownership_success_title">Thank you, %1$s!</string>
+    <string name="ownership_success_message">Your adoption request for %1$s has been successfully submitted to the shelter %2$s.</string>
+    <string name="ownership_success_notification">You will be notified once your request is reviewed.</string>
+    <string name="done">Finish</string>
+
+    <!-- ========== OWNERSHIP VERIFICATION & ADOPTED ANIMAL STRINGS ========== -->
+
+    <!-- Ownership Exists Dialog -->
+    <string name="ownership_exists_title">Pedido Existente</string>
+    <string name="ownership_exists_message">Já fizeste um pedido de adoção especial para %1$s!</string>
+
+    <!-- Adopted Animal Card -->
+    <string name="animal_adopted">O %1$s foi adotado! 💚</string>
 
 </resources>

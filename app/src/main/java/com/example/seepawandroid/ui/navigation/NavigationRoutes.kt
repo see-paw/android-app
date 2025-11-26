@@ -18,8 +18,8 @@ object NavigationRoutes {
     const val ANIMALS_CATALOGUE_GUEST = "AnimalsCatalogueGuest"
 
     //Animal detail page (guest mode – no ownership action)
-    const val ANIMAL_DETAIL_PAGE_GUEST = "animal_detail_page_guest"
-    fun animalDetailPageGuest(animalId: String) = "$ANIMAL_DETAIL_PAGE_GUEST/$animalId"
+    const val ANIMAL_DETAIL_PAGE_GUEST = "animal_detail_page_guest/{animalId}"
+    const val ANIMAL_DETAIL_PAGE_GUEST_BASE = "animal_detail_page_guest"
 
     // ========== USER ROUTES (AUTHENTICATED) ==========
     const val USER_HOMEPAGE = "user_homepage"
@@ -31,6 +31,11 @@ object NavigationRoutes {
     const val ADMIN_HOME = "admin_home"
 
     //Animal detail page (authenticated mode – ownership available)
-    const val ANIMAL_DETAIL_PAGE = "animal_detail_page"
-    fun animalDetailPage(animalId: String) = "$ANIMAL_DETAIL_PAGE/$animalId"
+    const val ANIMAL_DETAIL_PAGE = "animal_detail_page/{animalId}"
+    const val ANIMAL_DETAIL_PAGE_BASE = "animal_detail_page"
+
+    //Ownership request (authenticated mode - request animal adoption)
+    // USER ROUTES
+    const val OWNERSHIP_REQUEST = "ownership_request/{animalId}?animalName={animalName}&shelterId={shelterId}"
+    const val OWNERSHIP_REQUEST_BASE = "ownership_request"
 }

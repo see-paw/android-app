@@ -1,6 +1,6 @@
 package com.example.seepawandroid.di
 
-import com.example.seepawandroid.data.providers.SessionManager
+import com.example.seepawandroid.data.managers.SessionManager
 import com.example.seepawandroid.data.remote.api.interceptors.AuthInterceptor
 import com.example.seepawandroid.data.remote.api.services.BackendApiService
 import dagger.Module

@@ -2,7 +2,7 @@ package com.example.seepawandroid
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
-import com.example.seepawandroid.data.providers.SessionManager
+import com.example.seepawandroid.data.managers.SessionManager
 import com.example.seepawandroid.utils.NetworkUtils
 
 /**
