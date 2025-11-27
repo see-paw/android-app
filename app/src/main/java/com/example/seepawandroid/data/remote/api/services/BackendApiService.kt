@@ -6,6 +6,7 @@ import com.example.seepawandroid.data.remote.dtos.animals.ResOwnedAnimalDto
 import com.example.seepawandroid.data.remote.dtos.auth.ReqLoginDto
 import com.example.seepawandroid.data.remote.dtos.auth.ResLoginDto
 import com.example.seepawandroid.data.remote.dtos.auth.ReqRegisterUserDto
+import com.example.seepawandroid.data.remote.dtos.notifications.ResNotificationDto
 import com.example.seepawandroid.data.remote.dtos.ownerships.ReqOwnershipRequestDto
 import com.example.seepawandroid.data.remote.dtos.ownerships.ResOwnershipRequestDto
 import com.example.seepawandroid.data.remote.dtos.ownerships.ResOwnershipRequestListDto
@@ -15,8 +16,10 @@ import com.example.seepawandroid.data.remote.dtos.user.ResUserIdDto
 import com.example.seepawandroid.data.remote.dtos.user.ResUserRoleDto
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -145,6 +148,19 @@ interface BackendApiService {
     @GET("api/OwnershipRequests/owned-animals")
     suspend fun getOwnedAnimals(): Response<List<ResOwnedAnimalDto>>
 
+    /**
+     * Fetches notifications for the authenticated user.
+     *
+     * Requires authentication via bearer token.
+     *
+     * @param unreadOnly Optional filter to fetch only unread notifications.
+     * @return Response containing list of notifications.
+     */
+    @GET("api/Notifications")
+    suspend fun getNotifications(
+        @Query("unreadOnly") unreadOnly: Boolean? = null
+    ): Response<List<ResNotificationDto>>
+
     @POST("api/OwnershipRequests")
     suspend fun createOwnershipRequest(@Body request: ReqOwnershipRequestDto): Response<ResOwnershipRequestDto>
 
@@ -167,5 +183,31 @@ interface BackendApiService {
      */
     @POST("api/Account/register")
     suspend fun register(@Body registerData: ReqRegisterUserDto): Response<Unit>
+
+    /**
+     * Marks a notification as read.
+     *
+     * Requires authentication via bearer token.
+     *
+     * @param id The unique identifier of the notification.
+     * @return Response with no body on success (200 OK).
+     */
+    @PUT("api/Notifications/{id}/read")
+    suspend fun markNotificationAsRead(
+        @Path("id") id: String
+    ): Response<Unit>
+
+    /**
+     * Deletes a notification.
+     *
+     * Requires authentication via bearer token.
+     *
+     * @param id The unique identifier of the notification.
+     * @return Response with no body on success (200 OK).
+     */
+    @DELETE("api/Notifications/{id}")
+    suspend fun deleteNotification(
+        @Path("id") id: String
+    ): Response<Unit>
 
 }

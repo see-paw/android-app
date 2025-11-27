@@ -48,6 +48,7 @@ class SessionManager @Inject constructor(
         private const val KEY_USER_ROLE = "user_role"
         private const val KEY_USER_ID = "user_id"
 
+        private const val KEY_USER_NAME = "user_name"
         private const val TRANSFORMATION = "AES/GCM/NoPadding"
         private const val GCM_TAG_LENGTH = 128
     }
@@ -219,5 +220,19 @@ class SessionManager @Inject constructor(
      */
     fun getUserId(): String? {
         return getDecrypted(KEY_USER_ID)
+    }
+
+    /**
+     * Saves the authenticated user's name.
+     */
+    fun saveUserName(name: String) {
+        saveEncrypted(KEY_USER_NAME, name)
+    }
+
+    /**
+     * Retrieves the stored user name.
+     */
+    fun getUserName(): String? {
+        return getDecrypted(KEY_USER_NAME)
     }
 }

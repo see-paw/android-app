@@ -60,7 +60,6 @@
     <!-- Top Bar -->
     <string name="open_menu">Abrir Menu</string>
     <string name="close_menu">Fechar Menu</string>
-    <string name="notifications">Notificações</string>
     <string name="logout">Sair</string>
     <string name="logo_description">Logótipo da aplicação SeePaw</string>
 
@@ -150,6 +149,10 @@ Por favor, lê atentamente todos os termos antes de prosseguir com um pedido de 
     <string name="ownership_success_notification">Será notificado quando o seu pedido for analisado.</string>
     <string name="done">Concluir</string>
 
+    <!-- Ownership Accepted Pop-up -->
+    <string name="ownership_approved_title">Obrigado %1$s!</string>
+    <string name="ownership_approved_subtitle">Ansioso(a) por te conhecer</string>
+
     <!-- ========== OWNERSHIP VERIFICATION & ADOPTED ANIMAL STRINGS ========== -->
 
     <!-- Ownership Exists Dialog -->
@@ -195,5 +198,11 @@ Por favor, lê atentamente todos os termos antes de prosseguir com um pedido de 
 
     <!-- ========== OWNERSHIP LIST - LABELS ========== -->
     <string name="ownership_approved_at">Aprovado em %1$s</string>
+
+    <!-- NOTIFICATIONS -->
+    <string name="notifications">Notificações</string>
+    <string name="no_notifications">Sem notificações para mostrar</string>
+    <string name="delete_notification">Apagar</string>
+    <string name="close">Fechar</string>
 
 </resources>

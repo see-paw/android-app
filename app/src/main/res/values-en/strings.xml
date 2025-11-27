@@ -58,7 +58,6 @@
     <!-- Top Bar -->
     <string name="open_menu">Open Menu</string>
     <string name="close_menu">Close Menu</string>
-    <string name="notifications">Notifications</string>
     <string name="logout">Logout</string>
     <string name="logo_description">SeePaw application logo</string>
 
@@ -145,6 +144,10 @@ Please read all terms carefully before proceeding with a special adoption reques
     <string name="ownership_success_notification">You will be notified once your request is reviewed.</string>
     <string name="done">Finish</string>
 
+    <!-- Ownership Accepted Pop-up -->
+    <string name="ownership_approved_title">Thank you %1$s!</string>
+    <string name="ownership_approved_subtitle">Excited to meet you</string>
+
     <!-- ========== OWNERSHIP VERIFICATION & ADOPTED ANIMAL STRINGS ========== -->
 
     <!-- Ownership Exists Dialog -->
@@ -190,4 +193,10 @@ Please read all terms carefully before proceeding with a special adoption reques
 
     <!-- ========== OWNERSHIP LIST - LABELS ========== -->
     <string name="ownership_approved_at">Approved on %1$s</string>
+
+    <!-- NOTIFICATIONS -->
+    <string name="notifications">Notifications</string>
+    <string name="no_notifications">No notifications to show</string>
+    <string name="delete_notification">Delete</string>
+    <string name="close">Close</string>
 </resources>

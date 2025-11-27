@@ -1,7 +1,12 @@
 package com.example.seepawandroid.data.managers
 
-import com.example.seepawandroid.data.models.enums.OwnershipStatus
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import com.example.seepawandroid.data.models.enums.NotificationType
 import com.example.seepawandroid.data.remote.api.services.NotificationService
+import com.example.seepawandroid.data.remote.dtos.notifications.ResNotificationDto
+import com.example.seepawandroid.data.repositories.NotificationRepository
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -16,13 +21,38 @@ import javax.inject.Singleton
  * - Process real-time notifications from NotificationService
  * - Update OwnershipStateManager when ownership status changes
  * - Mark notifications as read
+ * - Delete notifications
+ * - Cache notifications in memory (NO Room database)
  */
 @Singleton
 class NotificationManager @Inject constructor(
     private val notificationService: NotificationService,
+    private val notificationRepository: NotificationRepository,
     private val ownershipStateManager: OwnershipStateManager,
     private val sessionManager: SessionManager
 ) {
+
+    // ========== IN-MEMORY CACHE (LiveData) ==========
+
+    private val _notifications = MutableLiveData<List<ResNotificationDto>>(emptyList())
+    val notifications: LiveData<List<ResNotificationDto>> = _notifications
+
+    private val _ownershipApprovedEvent = MutableLiveData<OwnershipApprovedEvent?>()
+    val ownershipApprovedEvent: LiveData<OwnershipApprovedEvent?> = _ownershipApprovedEvent
+
+    private val _unreadCount = MutableLiveData(0)
+    val unreadCount: LiveData<Int> = _unreadCount
+
+    private val _isLoading = MutableLiveData(false)
+    val isLoading: LiveData<Boolean> = _isLoading
+
+    /**
+     * Event data for ownership approved notification.
+     */
+    data class OwnershipApprovedEvent(
+        val notificationId: String,
+        val animalId: String
+    )
 
     init {
         // Register callback for real-time notifications from SignalR
@@ -32,6 +62,13 @@ class NotificationManager @Inject constructor(
     }
 
     // ========== REAL-TIME NOTIFICATIONS ==========
+
+    /**
+     * Clears the ownership approved event after consumption.
+     */
+    fun clearOwnershipApprovedEvent() {
+        _ownershipApprovedEvent.postValue(null)
+    }
 
     /**
      * Connects to SignalR for real-time notifications.
@@ -55,145 +92,172 @@ class NotificationManager @Inject constructor(
     /**
      * Processes a real-time notification received from SignalR.
      *
-     * @param type The notification type (e.g., "OwnershipStatusChanged").
+     * @param type The notification type (e.g., "OWNERSHIP_REQUEST_APPROVED").
      * @param payload The notification data.
      */
     private fun processRealtimeNotification(type: String, payload: Map<String, Any>) {
-        when (type) {
-            "OwnershipStatusChanged" -> handleOwnershipStatusChanged(payload)
-            "NEW_OWNERSHIP_REQUEST" -> handleNewOwnershipRequest(payload)
-            "OWNERSHIP_REQUEST_APPROVED" -> handleOwnershipApproved(payload)
-            "OWNERSHIP_REQUEST_ANALYZING" -> handleOwnershipAnalyzing(payload)
-            "OWNERSHIP_REQUEST_REJECTED" -> handleOwnershipRejected(payload)
-            // Add more notification types as needed
+        // Parse payload into ResNotificationDto
+        val notification = ResNotificationDto(
+            id = payload["id"] as? String ?: return,
+            type = type,
+            message = payload["message"] as? String ?: "",
+            animalId = payload["animalId"] as? String,
+            ownershipRequestId = payload["ownershipRequestId"] as? String,
+            isRead = false,
+            createdAt = payload["createdAt"] as? String ?: ""
+        )
+
+        // Add to cache
+        addNotificationToCache(notification)
+
+        // Process notification logic
+        processNotification(notification)
+    }
+
+    /**
+     * Processes a notification and triggers appropriate actions.
+     *
+     * @param notification The notification to process.
+     */
+    private fun processNotification(notification: ResNotificationDto) {
+        val notificationType = NotificationType.fromString(notification.type) ?: return
+
+        when (notificationType) {
+            NotificationType.OWNERSHIP_REQUEST_APPROVED -> {
+                // Emit event for UI to show dialog
+                if (notification.animalId != null) {
+                    _ownershipApprovedEvent.postValue(
+                        OwnershipApprovedEvent(
+                            notificationId = notification.id,
+                            animalId = notification.animalId
+                        )
+                    )
+                }
+
+                // Trigger refetch of ownership requests
+                kotlinx.coroutines.GlobalScope.launch {
+                    ownershipStateManager.fetchAndUpdateState()
+                }
+            }
+            NotificationType.OWNERSHIP_REQUEST_ANALYZING,
+            NotificationType.OWNERSHIP_REQUEST_REJECTED -> {
+                kotlinx.coroutines.GlobalScope.launch {
+                    ownershipStateManager.fetchAndUpdateState()
+                }
+            }
             else -> {
-                // Unknown notification type - log or ignore
+                // Other notification types don't require ownership refetch
             }
         }
     }
 
     /**
-     * Handles ownership status change notification.
+     * Handles showing the ownership approved pop-up.
+     * Fetches animal data and user data to display in dialog.
      */
-    private fun handleOwnershipStatusChanged(payload: Map<String, Any>) {
-        val requestId = payload["requestId"] as? String ?: return
-        val newStatusStr = payload["newStatus"] as? String ?: return
+    private suspend fun handleOwnershipApprovedPopup(notification: ResNotificationDto) {
+        // TODO: Get NotificationViewModel instance and call showOwnershipApprovedDialog
+        // This requires passing NotificationViewModel to NotificationManager
+        // OR having NotificationManager expose a LiveData that triggers the dialog
 
-        // Convert string to enum
-        val newStatus = try {
-            OwnershipStatus.valueOf(newStatusStr)
-        } catch (e: IllegalArgumentException) {
-            return // Invalid status
-        }
-
-        // Update state manager
-        ownershipStateManager.updateOwnershipRequestStatus(requestId, newStatus)
-    }
-
-    /**
-     * Handles new ownership request notification (admin).
-     * For regular users, this might just trigger a refresh.
-     */
-    private fun handleNewOwnershipRequest(payload: Map<String, Any>) {
-        // Could trigger a refresh or show a notification
-        // For now, we don't need to do anything for users
-    }
-
-    /**
-     * Handles ownership request approved notification.
-     */
-    private fun handleOwnershipApproved(payload: Map<String, Any>) {
-        val requestId = payload["requestId"] as? String ?: return
-        ownershipStateManager.updateOwnershipRequestStatus(requestId, OwnershipStatus.Approved)
-    }
-
-    /**
-     * Handles ownership request analyzing notification.
-     */
-    private fun handleOwnershipAnalyzing(payload: Map<String, Any>) {
-        val requestId = payload["requestId"] as? String ?: return
-        ownershipStateManager.updateOwnershipRequestStatus(requestId, OwnershipStatus.Analysing)
-    }
-
-    /**
-     * Handles ownership request rejected notification.
-     */
-    private fun handleOwnershipRejected(payload: Map<String, Any>) {
-        val requestId = payload["requestId"] as? String ?: return
-        ownershipStateManager.updateOwnershipRequestStatus(requestId, OwnershipStatus.Rejected)
+        // For now, this is a placeholder
+        // We'll need to refactor to properly show the dialog from AppScaffold
     }
 
     // ========== OFFLINE NOTIFICATIONS ==========
 
     /**
      * Fetches offline notifications (notifications that arrived while user was offline).
-     * Should be called after login if SignalR wasn't connected.
-     *
-     * TODO: Implement when backend notifications endpoint is ready.
+     * Should be called after login.
      *
      * @return Result indicating success or failure.
      */
     suspend fun fetchOfflineNotifications(): Result<Unit> {
-        // TODO: Implement when backend has GET /api/notifications endpoint
-        // return try {
-        //     val response = apiService.getUnreadNotifications()
-        //     if (response.isSuccessful && response.body() != null) {
-        //         val notifications = response.body()!!
-        //         notifications.forEach { notification ->
-        //             processOfflineNotification(notification)
-        //         }
-        //         Result.success(Unit)
-        //     } else {
-        //         Result.failure(Exception("Failed to fetch notifications"))
-        //     }
-        // } catch (e: Exception) {
-        //     Result.failure(e)
-        // }
+        _isLoading.postValue(true)
 
-        return Result.success(Unit) // Placeholder
-    }
+        return try {
+            val result = notificationRepository.getNotifications(unreadOnly = null)
 
-    /**
-     * Processes an offline notification.
-     * Similar to real-time processing but with notification object.
-     *
-     * TODO: Implement when backend notifications model is defined.
-     */
-    private fun processOfflineNotification(notification: Any) {
-        // TODO: Parse notification and call appropriate handler
-        // Example:
-        // when (notification.type) {
-        //     NotificationType.OWNERSHIP_REQUEST_APPROVED -> {
-        //         ownershipStateManager.updateOwnershipRequestStatus(
-        //             notification.ownershipRequestId,
-        //             OwnershipStatus.Approved
-        //         )
-        //     }
-        //     // ... other types
-        // }
+            if (result.isSuccess) {
+                val notifications = result.getOrNull()!!
+                _notifications.postValue(notifications)
+                updateUnreadCount(notifications)
+                Result.success(Unit)
+            } else {
+                Result.failure(result.exceptionOrNull() ?: Exception("Unknown error"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        } finally {
+            _isLoading.postValue(false)
+        }
     }
 
     /**
      * Marks a notification as read.
      *
-     * TODO: Implement when backend endpoint is ready.
-     *
      * @param notificationId The ID of the notification to mark as read.
      */
     suspend fun markNotificationAsRead(notificationId: String): Result<Unit> {
-        // TODO: Implement PUT/PATCH to backend
-        // return try {
-        //     val response = apiService.markNotificationAsRead(notificationId)
-        //     if (response.isSuccessful) {
-        //         Result.success(Unit)
-        //     } else {
-        //         Result.failure(Exception("Failed to mark notification as read"))
-        //     }
-        // } catch (e: Exception) {
-        //     Result.failure(e)
-        // }
+        val result = notificationRepository.markAsRead(notificationId)
 
-        return Result.success(Unit) // Placeholder
+        if (result.isSuccess) {
+            // Update cache
+            val updatedList = _notifications.value?.map { notification ->
+                if (notification.id == notificationId) {
+                    notification.copy(isRead = true)
+                } else {
+                    notification
+                }
+            } ?: emptyList()
+
+            _notifications.postValue(updatedList)
+            updateUnreadCount(updatedList)
+        }
+
+        return result
+    }
+
+    /**
+     * Deletes a notification.
+     *
+     * @param notificationId The ID of the notification to delete.
+     */
+    suspend fun deleteNotification(notificationId: String): Result<Unit> {
+        val result = notificationRepository.deleteNotification(notificationId)
+
+        if (result.isSuccess) {
+            // Remove from cache
+            val updatedList = _notifications.value?.filter { it.id != notificationId } ?: emptyList()
+            _notifications.postValue(updatedList)
+            updateUnreadCount(updatedList)
+        }
+
+        return result
+    }
+
+    // ========== CACHE HELPERS ==========
+
+    /**
+     * Adds a new notification to the in-memory cache.
+     * Used when receiving real-time notifications.
+     */
+    private fun addNotificationToCache(notification: ResNotificationDto) {
+        val currentList = _notifications.value.orEmpty().toMutableList()
+
+        // Add at the beginning (most recent first)
+        currentList.add(0, notification)
+
+        _notifications.postValue(currentList)
+        updateUnreadCount(currentList)
+    }
+
+    /**
+     * Updates the unread notification count.
+     */
+    private fun updateUnreadCount(notifications: List<ResNotificationDto>) {
+        val count = notifications.count { !it.isRead }
+        _unreadCount.postValue(count)
     }
 
     // ========== STATE SYNCHRONIZATION ==========
@@ -224,6 +288,23 @@ class NotificationManager @Inject constructor(
      */
     fun cleanupOnLogout() {
         disconnectRealtime()
-        // Clear any notification cache if we add one later
+        _notifications.postValue(emptyList())
+        _unreadCount.postValue(0)
+    }
+
+    // ========== PUBLIC HELPERS ==========
+
+    /**
+     * Gets current notifications synchronously.
+     */
+    fun getCurrentNotifications(): List<ResNotificationDto> {
+        return _notifications.value.orEmpty()
+    }
+
+    /**
+     * Gets current unread count synchronously.
+     */
+    fun getCurrentUnreadCount(): Int {
+        return _unreadCount.value ?: 0
     }
 }

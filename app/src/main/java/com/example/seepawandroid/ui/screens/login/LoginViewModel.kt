@@ -72,6 +72,7 @@ class LoginViewModel @Inject constructor(
                 userRepository.fetchUserData().onSuccess { userData ->
                     sessionManager.saveUserId(userData.userId)
                     sessionManager.saveUserRole(userData.role)
+                    sessionManager.saveUserName(userData.name)
 
                     // Update UI state
                     _uiState.value = LoginUiState.Success(userData.userId, userData.role)

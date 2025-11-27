@@ -30,10 +30,6 @@ import com.example.seepawandroid.data.models.enums.OwnershipStatus
 import com.example.seepawandroid.data.remote.dtos.animals.ResOwnedAnimalDto
 import com.example.seepawandroid.data.remote.dtos.ownerships.ResOwnershipRequestListDto
 import com.example.seepawandroid.utils.DateUtils
-import java.time.Instant
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
-import java.util.Locale
 
 /**
  * Ownership List Screen - Displays user's ownership requests and owned animals.

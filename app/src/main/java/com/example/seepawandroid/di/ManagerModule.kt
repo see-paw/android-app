@@ -4,6 +4,7 @@ import com.example.seepawandroid.data.managers.NotificationManager
 import com.example.seepawandroid.data.managers.OwnershipStateManager
 import com.example.seepawandroid.data.managers.SessionManager
 import com.example.seepawandroid.data.remote.api.services.NotificationService
+import com.example.seepawandroid.data.repositories.NotificationRepository
 import com.example.seepawandroid.data.repositories.OwnershipRepository
 import dagger.Module
 import dagger.Provides
@@ -25,17 +26,25 @@ object ManagerModule {
 
     @Provides
     @Singleton
-    fun provideNotificationService(): NotificationService {
-        return NotificationService()
+    fun provideNotificationService(
+        baseUrl: String
+    ): NotificationService {
+        return NotificationService(baseUrl)
     }
 
     @Provides
     @Singleton
     fun provideNotificationManager(
         notificationService: NotificationService,
+        notificationRepository: NotificationRepository,
         ownershipStateManager: OwnershipStateManager,
         sessionManager: SessionManager
     ): NotificationManager {
-        return NotificationManager(notificationService, ownershipStateManager, sessionManager)
+        return NotificationManager(
+            notificationService,
+            notificationRepository,
+            ownershipStateManager,
+            sessionManager
+        )
     }
 }

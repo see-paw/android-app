@@ -79,4 +79,13 @@ object NetworkModule {
     fun provideBackendApiService(retrofit: Retrofit): BackendApiService {
         return retrofit.create(BackendApiService::class.java)
     }
+
+    /**
+     * Provides the base URL for API and SignalR connections.
+     */
+    @Provides
+    @Singleton
+    fun provideBaseUrl(): String {
+        return BASE_URL
+    }
 }

@@ -5,7 +5,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.seepawandroid.ui.screens.DemoViewModel
+import com.example.seepawandroid.ui.viewmodels.DemoViewModel
 import com.example.seepawandroid.ui.screens.admin.AdminHomeScreen_DEMO
 import com.example.seepawandroid.ui.screens.login.AuthViewModel
 

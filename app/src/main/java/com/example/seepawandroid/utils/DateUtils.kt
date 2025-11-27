@@ -45,4 +45,25 @@ object DateUtils {
             }
         }
     }
+
+    /**
+     * Formats ISO timestamp to relative time.
+     */
+    fun formatTimestampRelative(isoTimestamp: String): String {
+        return try {
+            val instant = Instant.parse(isoTimestamp)
+            val now = Instant.now()
+            val duration = java.time.Duration.between(instant, now)
+
+            when {
+                duration.toMinutes() < 1 -> "Agora" // TODO: usar stringResource
+                duration.toMinutes() < 60 -> "${duration.toMinutes()}m"
+                duration.toHours() < 24 -> "${duration.toHours()}h"
+                duration.toDays() < 7 -> "${duration.toDays()}d"
+                else -> formatToPortugueseDate(isoTimestamp)
+            }
+        } catch (e: Exception) {
+            isoTimestamp
+        }
+    }
 }
