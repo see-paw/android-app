@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.example.seepawandroid.data.models.enums.NotificationType
 import com.example.seepawandroid.data.remote.api.services.NotificationService
 import com.example.seepawandroid.data.remote.dtos.notifications.ResNotificationDto
+import com.example.seepawandroid.data.remote.dtos.notifications.ResSignalRNotificationDto
 import com.example.seepawandroid.data.repositories.NotificationRepository
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -56,8 +57,8 @@ class NotificationManager @Inject constructor(
 
     init {
         // Register callback for real-time notifications from SignalR
-        notificationService.setOnNotificationReceivedCallback { type, payload ->
-            processRealtimeNotification(type, payload)
+        notificationService.setOnNotificationReceivedCallback { signalRNotification ->
+            processRealtimeNotification(signalRNotification)
         }
     }
 
@@ -92,20 +93,14 @@ class NotificationManager @Inject constructor(
     /**
      * Processes a real-time notification received from SignalR.
      *
-     * @param type The notification type (e.g., "OWNERSHIP_REQUEST_APPROVED").
-     * @param payload The notification data.
+     * @param signalRNotification The notification DTO from SignalR.
      */
-    private fun processRealtimeNotification(type: String, payload: Map<String, Any>) {
-        // Parse payload into ResNotificationDto
-        val notification = ResNotificationDto(
-            id = payload["id"] as? String ?: return,
-            type = type,
-            message = payload["message"] as? String ?: "",
-            animalId = payload["animalId"] as? String,
-            ownershipRequestId = payload["ownershipRequestId"] as? String,
-            isRead = false,
-            createdAt = payload["createdAt"] as? String ?: ""
-        )
+    private fun processRealtimeNotification(signalRNotification: ResSignalRNotificationDto) {
+        //debug
+        android.util.Log.d("NotificationManager", ">>> processRealtimeNotification CALLED: ${signalRNotification.id}")
+
+        // Convert to standard DTO (adds isRead = false)
+        val notification = signalRNotification.toResNotificationDto()
 
         // Add to cache
         addNotificationToCache(notification)
@@ -149,19 +144,6 @@ class NotificationManager @Inject constructor(
                 // Other notification types don't require ownership refetch
             }
         }
-    }
-
-    /**
-     * Handles showing the ownership approved pop-up.
-     * Fetches animal data and user data to display in dialog.
-     */
-    private suspend fun handleOwnershipApprovedPopup(notification: ResNotificationDto) {
-        // TODO: Get NotificationViewModel instance and call showOwnershipApprovedDialog
-        // This requires passing NotificationViewModel to NotificationManager
-        // OR having NotificationManager expose a LiveData that triggers the dialog
-
-        // For now, this is a placeholder
-        // We'll need to refactor to properly show the dialog from AppScaffold
     }
 
     // ========== OFFLINE NOTIFICATIONS ==========
@@ -245,10 +227,17 @@ class NotificationManager @Inject constructor(
     private fun addNotificationToCache(notification: ResNotificationDto) {
         val currentList = _notifications.value.orEmpty().toMutableList()
 
+        //debug
+        android.util.Log.d("NotificationManager", ">>> addNotificationToCache - before: ${currentList.size}")
+
         // Add at the beginning (most recent first)
         currentList.add(0, notification)
 
         _notifications.postValue(currentList)
+
+        //debug
+        android.util.Log.d("NotificationManager", ">>> addNotificationToCache - after: ${currentList.size}")
+
         updateUnreadCount(currentList)
     }
 

@@ -24,10 +24,21 @@ class AuthViewModel @Inject constructor(
     val userRole: LiveData<String> = _userRole
 
     fun checkAuthState() {
+        val wasAuthenticated = _isAuthenticated.value ?: false
         _isAuthenticated.value = sessionManager.isAuthenticated()
         _userRole.value = sessionManager.getUserRole() ?: ""
 
-        // DEBUG
+        if (_isAuthenticated.value == true && !wasAuthenticated) {
+            viewModelScope.launch(Dispatchers.IO) {
+                try {
+                    notificationManager.initializeOnLogin()
+                    android.util.Log.d("AuthViewModel", "NotificationManager initialized on app start")
+                } catch (e: Exception) {
+                    android.util.Log.e("AuthViewModel", "Error initializing NotificationManager", e)
+                }
+            }
+        }
+        // Debug
         android.util.Log.d("AuthViewModel", "isAuthenticated: ${_isAuthenticated.value}")
         android.util.Log.d("AuthViewModel", "role: ${_userRole.value}")
     }

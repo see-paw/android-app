@@ -1,6 +1,7 @@
 package com.example.seepawandroid.data.remote.api.services
 
 import android.util.Log
+import com.example.seepawandroid.data.remote.dtos.notifications.ResSignalRNotificationDto
 import com.microsoft.signalr.HubConnection
 import com.microsoft.signalr.HubConnectionBuilder
 import com.microsoft.signalr.HubConnectionState
@@ -36,10 +37,9 @@ class NotificationService @Inject constructor(
         /**
          * Called when a notification is received from the backend.
          *
-         * @param type The type of notification (e.g., "OWNERSHIP_REQUEST_APPROVED").
-         * @param payload The notification data as a map.
+         * @param notification The notification DTO received from SignalR.
          */
-        fun onReceived(type: String, payload: Map<String, Any>)
+        fun onReceived(notification: ResSignalRNotificationDto)
     }
 
     private var hubConnection: HubConnection? = null
@@ -68,33 +68,15 @@ class NotificationService @Inject constructor(
                 .build()
 
             // Register event handler for "ReceiveNotification"
+            // Backend sends a single object, not multiple parameters
             hubConnection?.on(
                 "ReceiveNotification",
-                { id: String, type: String, message: String,
-                  animalId: String?, ownershipRequestId: String?, createdAt: String ->
-
-                    Log.d(TAG, "Received notification: type=$type, id=$id")
-
-                    // Build payload map
-                    val payload = mutableMapOf<String, Any>(
-                        "id" to id,
-                        "type" to type,
-                        "message" to message,
-                        "createdAt" to createdAt
-                    )
-
-                    animalId?.let { payload["animalId"] = it }
-                    ownershipRequestId?.let { payload["ownershipRequestId"] = it }
-
-                    // Notify callback
-                    callback?.onReceived(type, payload)
+                { notification: ResSignalRNotificationDto ->
+                    Log.d(TAG, "Received notification: type=${notification.type}, id=${notification.id}")
+                    Log.d(TAG, "Callback is null: ${callback == null}")
+                    callback?.onReceived(notification)
                 },
-                String::class.java,  // id
-                String::class.java,  // type
-                String::class.java,  // message
-                String::class.java,  // animalId (nullable)
-                String::class.java,  // ownershipRequestId (nullable)
-                String::class.java   // createdAt
+                ResSignalRNotificationDto::class.java
             )
 
             // Set connection state handlers
@@ -141,7 +123,6 @@ class NotificationService @Inject constructor(
             Log.e(TAG, "Error during disconnect", e)
         } finally {
             isConnected = false
-            callback = null
             hubConnection = null
         }
     }
