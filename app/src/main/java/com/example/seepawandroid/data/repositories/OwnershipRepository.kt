@@ -1,8 +1,10 @@
 package com.example.seepawandroid.data.repositories
 
 import com.example.seepawandroid.data.remote.api.services.BackendApiService
+import com.example.seepawandroid.data.remote.dtos.animals.ResOwnedAnimalDto
 import com.example.seepawandroid.data.remote.dtos.ownerships.ReqOwnershipRequestDto
 import com.example.seepawandroid.data.remote.dtos.ownerships.ResOwnershipRequestDto
+import com.example.seepawandroid.data.remote.dtos.ownerships.ResOwnershipRequestListDto
 import javax.inject.Inject
 
 /**
@@ -40,9 +42,11 @@ class OwnershipRepository @Inject constructor(
     /**
      * Fetches all ownership requests made by the authenticated user.
      *
-     * @return Result containing list of ownership requests or an error.
+     * Returns extended DTO with animal images and state.
+     *
+     * @return Result containing list of ownership requests (with images) or an error.
      */
-    suspend fun getUserOwnershipRequests(): Result<List<ResOwnershipRequestDto>> {
+    suspend fun getUserOwnershipRequests(): Result<List<ResOwnershipRequestListDto>> {
         return try {
             val response = apiService.getUserOwnershipRequests()
 
@@ -50,6 +54,26 @@ class OwnershipRepository @Inject constructor(
                 Result.success(response.body()!!)
             } else {
                 Result.failure(Exception("Failed to fetch ownership requests: ${response.code()}"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    /**
+     * Fetches animals owned by the authenticated user.
+     * These are ownership requests that were approved.
+     *
+     * @return Result containing list of owned animals or an error.
+     */
+    suspend fun getOwnedAnimals(): Result<List<ResOwnedAnimalDto>> {
+        return try {
+            val response = apiService.getOwnedAnimals()
+
+            if (response.isSuccessful && response.body() != null) {
+                Result.success(response.body()!!)
+            } else {
+                Result.failure(Exception("Failed to fetch owned animals: ${response.code()}"))
             }
         } catch (e: Exception) {
             Result.failure(e)

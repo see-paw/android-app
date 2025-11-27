@@ -2,11 +2,13 @@ package com.example.seepawandroid.data.remote.api.services
 
 import com.example.seepawandroid.data.remote.dtos.PagedListDto
 import com.example.seepawandroid.data.remote.dtos.animals.ResAnimalDto
+import com.example.seepawandroid.data.remote.dtos.animals.ResOwnedAnimalDto
 import com.example.seepawandroid.data.remote.dtos.auth.ReqLoginDto
 import com.example.seepawandroid.data.remote.dtos.auth.ResLoginDto
 import com.example.seepawandroid.data.remote.dtos.auth.ReqRegisterUserDto
 import com.example.seepawandroid.data.remote.dtos.ownerships.ReqOwnershipRequestDto
 import com.example.seepawandroid.data.remote.dtos.ownerships.ResOwnershipRequestDto
+import com.example.seepawandroid.data.remote.dtos.ownerships.ResOwnershipRequestListDto
 import com.example.seepawandroid.data.remote.dtos.shelter.ResShelterDto
 import com.example.seepawandroid.data.remote.dtos.user.ResUserDataDto
 import com.example.seepawandroid.data.remote.dtos.user.ResUserIdDto
@@ -116,12 +118,13 @@ interface BackendApiService {
     /**
      * Fetches all ownership requests made by the authenticated user.
      *
+     * Returns list format with animal images and extended information.
      * Requires authentication via bearer token.
      *
-     * @return Response containing list of ownership requests.
+     * @return Response containing list of ownership requests with images.
      */
     @GET("api/OwnershipRequests/user-requests")
-    suspend fun getUserOwnershipRequests(): Response<List<ResOwnershipRequestDto>>
+    suspend fun getUserOwnershipRequests(): Response<List<ResOwnershipRequestListDto>>
 
     /**
      * Creates a new ownership request for an animal.
@@ -131,6 +134,17 @@ interface BackendApiService {
      * @param request The ownership request body containing animalId.
      * @return Response containing the created ownership request.
      */
+
+    /**
+     * Fetches animals owned by the authenticated user (approved ownership requests).
+     *
+     * Requires authentication via bearer token.
+     *
+     * @return Response containing list of owned animals.
+     */
+    @GET("api/OwnershipRequests/owned-animals")
+    suspend fun getOwnedAnimals(): Response<List<ResOwnedAnimalDto>>
+
     @POST("api/OwnershipRequests")
     suspend fun createOwnershipRequest(@Body request: ReqOwnershipRequestDto): Response<ResOwnershipRequestDto>
 

@@ -15,6 +15,7 @@ import com.example.seepawandroid.ui.screens.animals.AnimalCatalogueScreen
 import com.example.seepawandroid.ui.screens.animals.AnimalDetailScreen
 import com.example.seepawandroid.ui.screens.animals.viewmodel.AnimalViewModel
 import com.example.seepawandroid.ui.screens.login.AuthViewModel
+import com.example.seepawandroid.ui.screens.ownership.OwnershipListScreen
 import com.example.seepawandroid.ui.screens.ownerships.OwnershipRequestScreen
 import com.example.seepawandroid.ui.screens.user.UserHomepageScreen
 
@@ -104,6 +105,21 @@ fun NavGraphUser(
                     navController.navigate(NavigationRoutes.USER_HOMEPAGE) {
                         popUpTo(NavigationRoutes.USER_HOMEPAGE) { inclusive = false }
                     }
+                }
+            )
+        }
+
+        // OWNERSHIP LIST (User's ownerships)
+        composable(NavigationRoutes.OWNERSHIP_LIST) {
+            OwnershipListScreen(
+                onNavigateBack = { navController.popBackStack() },
+                onNavigateToCatalogue = {
+                    navController.navigate(NavigationRoutes.ANIMALS_CATALOGUE) {
+                        popUpTo(NavigationRoutes.USER_HOMEPAGE) { inclusive = false }
+                    }
+                },
+                onNavigateToAnimal = { animalId ->
+                    navController.navigate("${NavigationRoutes.ANIMAL_DETAIL_PAGE_BASE}/$animalId")
                 }
             )
         }

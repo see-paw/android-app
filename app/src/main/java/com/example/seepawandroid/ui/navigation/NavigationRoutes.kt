@@ -36,6 +36,10 @@ object NavigationRoutes {
 
     //Ownership request (authenticated mode - request animal adoption)
     // USER ROUTES
-    const val OWNERSHIP_REQUEST = "ownership_request/{animalId}?animalName={animalName}&shelterId={shelterId}"
+    const val OWNERSHIP_REQUEST =
+        "ownership_request/{animalId}?animalName={animalName}&shelterId={shelterId}"
     const val OWNERSHIP_REQUEST_BASE = "ownership_request"
+
+    //Ownership list (authenticated mode - view user's ownership requests)
+    const val OWNERSHIP_LIST = "ownership_list"
 }

@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.seepawandroid.data.managers.NotificationManager
 import com.example.seepawandroid.data.managers.SessionManager
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -39,7 +40,7 @@ class AuthViewModel @Inject constructor(
         checkAuthState()
 
         // Initialize ownership state and notifications
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             try {
                 notificationManager.initializeOnLogin()
                 android.util.Log.d("AuthViewModel", "NotificationManager initialized successfully")

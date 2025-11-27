@@ -3,7 +3,9 @@ package com.example.seepawandroid.data.managers
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.seepawandroid.data.models.enums.OwnershipStatus
+import com.example.seepawandroid.data.remote.dtos.animals.ResOwnedAnimalDto
 import com.example.seepawandroid.data.remote.dtos.ownerships.ResOwnershipRequestDto
+import com.example.seepawandroid.data.remote.dtos.ownerships.ResOwnershipRequestListDto
 import com.example.seepawandroid.data.repositories.OwnershipRepository
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -11,13 +13,11 @@ import javax.inject.Singleton
 /**
  * Singleton manager that holds the cached state of user's ownership requests.
  *
- * Provides a single source of truth for ownership data across the entire app.
- * All ViewModels should observe the LiveData exposed by this manager.
+ * Uses ResOwnershipRequestListDto (with images) for cache since it contains
+ * all necessary information for display.
  *
- * Responsibilities:
- * - In-memory cache of ownership requests (LiveData)
- * - State updates from various sources (API, SignalR, local actions)
- * - Synchronization with backend via OwnershipRepository
+ * When a new request is created (ResOwnershipRequestDto), we fetch the list
+ * again to get the full data with images.
  */
 @Singleton
 class OwnershipStateManager @Inject constructor(
@@ -28,14 +28,26 @@ class OwnershipStateManager @Inject constructor(
 
     /**
      * Internal mutable LiveData for ownership requests cache.
+     * Uses ListDto because it has images and full info.
      */
-    private val _ownershipRequests = MutableLiveData<List<ResOwnershipRequestDto>>(emptyList())
+    private val _ownershipRequests = MutableLiveData<List<ResOwnershipRequestListDto>>(emptyList())
 
     /**
      * Public read-only LiveData exposing user's ownership requests.
      * All ViewModels should observe this for reactive updates.
      */
-    val ownershipRequests: LiveData<List<ResOwnershipRequestDto>> = _ownershipRequests
+    val ownershipRequests: LiveData<List<ResOwnershipRequestListDto>> = _ownershipRequests
+
+    /**
+     * Internal mutable LiveData for owned animals cache.
+     */
+    private val _ownedAnimals = MutableLiveData<List<ResOwnedAnimalDto>>(emptyList())
+
+    /**
+     * Public read-only LiveData exposing user's owned animals.
+     * All ViewModels should observe this for reactive updates.
+     */
+    val ownedAnimals: LiveData<List<ResOwnedAnimalDto>> = _ownedAnimals
 
     // ========== LOADING STATE ==========
 
@@ -54,13 +66,22 @@ class OwnershipStateManager @Inject constructor(
         _isLoading.postValue(true)
 
         return try {
-            val result = ownershipRepository.getUserOwnershipRequests()
+            // Fetch active requests
+            val requestsResult = ownershipRepository.getUserOwnershipRequests()
 
-            if (result.isSuccess) {
-                _ownershipRequests.postValue(result.getOrNull()!!)
+            // Fetch owned animals
+            val ownedResult = ownershipRepository.getOwnedAnimals()
+
+            if (requestsResult.isSuccess && ownedResult.isSuccess) {
+                _ownershipRequests.postValue(requestsResult.getOrNull()!!)
+                _ownedAnimals.postValue(ownedResult.getOrNull()!!)
                 Result.success(Unit)
             } else {
-                Result.failure(result.exceptionOrNull() ?: Exception("Unknown error"))
+                // Return first failure found
+                val error = requestsResult.exceptionOrNull()
+                    ?: ownedResult.exceptionOrNull()
+                    ?: Exception("Unknown error")
+                Result.failure(error)
             }
         } finally {
             _isLoading.postValue(false)
@@ -68,15 +89,16 @@ class OwnershipStateManager @Inject constructor(
     }
 
     /**
-     * Adds a new ownership request to the cache.
-     * Called after successfully creating a request.
+     * Called after successfully creating a new ownership request.
      *
-     * @param request The newly created ownership request.
+     * Since POST returns ResOwnershipRequestDto (without image), we immediately
+     * fetch the full list to get the complete data with images.
+     *
+     * @param basicRequest The newly created ownership request (basic DTO).
      */
-    fun addOwnershipRequest(request: ResOwnershipRequestDto) {
-        val currentList = _ownershipRequests.value.orEmpty()
-        val updatedList = currentList + request
-        _ownershipRequests.postValue(updatedList)
+    suspend fun addOwnershipRequest(basicRequest: ResOwnershipRequestDto) {
+        // Immediately fetch updated list with images
+        fetchAndUpdateState()
     }
 
     /**
@@ -128,7 +150,7 @@ class OwnershipStateManager @Inject constructor(
      * @param animalId The ID of the animal.
      * @return The ownership request or null if not found.
      */
-    fun getOwnershipRequestForAnimal(animalId: String): ResOwnershipRequestDto? {
+    fun getOwnershipRequestForAnimal(animalId: String): ResOwnershipRequestListDto? {
         return _ownershipRequests.value?.firstOrNull { it.animalId == animalId }
     }
 
@@ -138,6 +160,7 @@ class OwnershipStateManager @Inject constructor(
      */
     fun clearState() {
         _ownershipRequests.postValue(emptyList())
+        _ownedAnimals.postValue(emptyList())
     }
 
     /**
@@ -146,7 +169,7 @@ class OwnershipStateManager @Inject constructor(
      *
      * @return Current list of ownership requests.
      */
-    fun getCurrentRequests(): List<ResOwnershipRequestDto> {
+    fun getCurrentRequests(): List<ResOwnershipRequestListDto> {
         return _ownershipRequests.value.orEmpty()
     }
 }

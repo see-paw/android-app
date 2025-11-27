@@ -42,7 +42,7 @@ fun getUserDrawerOptions() = listOf(
     DrawerOption(R.string.favorites, Icons.Outlined.FavoriteBorder, "Favorites"),
     DrawerOption(R.string.schedule_activities, Icons.Outlined.CalendarMonth, "ScheduleActivities"),
     DrawerOption(R.string.active_activities, Icons.Outlined.CalendarMonth, "ActiveActivities"),
-    DrawerOption(R.string.requests, Icons.Outlined.ListAlt, "Requests"),
+    DrawerOption(R.string.requests, Icons.Outlined.ListAlt, NavigationRoutes.OWNERSHIP_LIST),
 )
 
 /**

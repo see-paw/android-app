@@ -53,7 +53,7 @@
     <string name="catalogue">Catálogo de Animais</string>
     <string name="favorites">Favoritos</string>
     <string name="schedule_activities">Agendar Atividades</string>
-    <string name="requests">Meus Pedidos de Ownership</string>
+    <string name="requests">Os Meus Ownerships</string>
     <string name="active_activities">Atividades ativas</string>
 
 
@@ -158,5 +158,42 @@ Por favor, lê atentamente todos os termos antes de prosseguir com um pedido de 
 
     <!-- Adopted Animal Card -->
     <string name="animal_adopted">O %1$s foi adotado! 💚</string>
+
+    <!-- ========== OWNERSHIP LIST STRINGS (PORTUGUÊS) ========== -->
+
+    <!-- Screen Title -->
+    <string name="ownership_list_title">Os Meus Pedidos</string>
+
+    <!-- Empty State -->
+    <string name="ownership_list_empty_title">Sem Pedidos</string>
+    <string name="ownership_list_empty_message">Ainda não fez nenhum pedido de adoção especial.\n\nExplore o catálogo e encontre o seu novo amigo!</string>
+    <string name="ownership_list_empty_action">Ver Animais</string>
+
+    <!-- Error State -->
+    <string name="ownership_list_error">Erro ao carregar pedidos</string>
+    <string name="ownership_list_retry">Tentar Novamente</string>
+
+    <!-- Status Labels -->
+    <string name="ownership_status_pending">Pendente</string>
+    <string name="ownership_status_analysing">Em Análise</string>
+    <string name="ownership_status_approved">Aprovado</string>
+    <string name="ownership_status_rejected">Rejeitado</string>
+
+    <!-- Card Content -->
+    <string name="ownership_requested_at">Pedido em %1$s</string>
+
+    <!-- Pull to Refresh -->
+    <string name="ownership_list_refreshing">A atualizar…</string>
+
+    <!-- ========== OWNERSHIP LIST - TABS ========== -->
+    <string name="ownership_active_requests">Pedidos Ativos</string>
+    <string name="ownership_owned_animals">Os Meus Animais</string>
+
+    <!-- ========== OWNERSHIP LIST - EMPTY TAB STATES ========== -->
+    <string name="ownership_no_active_requests">Sem pedidos ativos</string>
+    <string name="ownership_no_owned_animals">Ainda não adotou nenhum animal</string>
+
+    <!-- ========== OWNERSHIP LIST - LABELS ========== -->
+    <string name="ownership_approved_at">Aprovado em %1$s</string>
 
 </resources>

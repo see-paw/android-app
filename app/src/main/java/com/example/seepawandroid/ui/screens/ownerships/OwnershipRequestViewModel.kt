@@ -184,7 +184,6 @@ class OwnershipRequestViewModel @Inject constructor(
 
                     val newRequest = ownershipResult.getOrNull()!!
 
-                    // ✅ Update cache in OwnershipStateManager
                     ownershipStateManager.addOwnershipRequest(newRequest)
 
                     // Success!
