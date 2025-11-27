@@ -180,12 +180,12 @@ private fun SuccessContent(
     onPreviousPage: () -> Unit,
     onNextPage: () -> Unit
 ) {
-    Column {
-        // Notifications list
+    Column(modifier = Modifier.fillMaxWidth()) {
+        // Notifications list - FIXED: use fixed height instead of weight
         LazyColumn(
             modifier = Modifier
                 .fillMaxWidth()
-                .weight(1f)
+                .height(300.dp)  // ✅ Fixed height instead of weight(1f)
         ) {
             items(
                 items = notifications,
