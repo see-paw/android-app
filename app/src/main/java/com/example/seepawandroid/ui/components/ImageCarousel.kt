@@ -7,7 +7,12 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -61,16 +66,34 @@ fun ImageCarousel(
                     .height(300.dp)
                     .testTag("animalImageCarousel")
             ) { page ->
-                AsyncImage(
-                    model = imageUrls[page],
-                    placeholder = painterResource(R.drawable.no_image_found),
-                    error = painterResource(R.drawable.no_image_found),
-                    contentDescription = "Image ${page + 1} of $animalName",
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .testTag("animalImage_$page")
-                )
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    var isLoading by remember { mutableStateOf(true) }
+
+                    AsyncImage(
+                        model = imageUrls[page],
+                        placeholder = painterResource(R.drawable.no_image_found),
+                        error = painterResource(R.drawable.no_image_found),
+                        contentDescription = "Image ${page + 1} of $animalName",
+                        contentScale = ContentScale.Crop,
+                        onLoading = { isLoading = true },
+                        onSuccess = { isLoading = false },
+                        onError = { isLoading = false },
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .testTag("animalImage_$page")
+                    )
+
+                    // Loading indicator on top of placeholder
+                    if (isLoading) {
+                        CircularProgressIndicator(
+                            modifier = Modifier.testTag("imageLoadingIndicator_$page"),
+                            color = Color(0xFF37474F)
+                        )
+                    }
+                }
             }
 
             // Page indicators
