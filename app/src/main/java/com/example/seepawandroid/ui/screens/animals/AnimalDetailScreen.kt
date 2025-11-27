@@ -22,6 +22,7 @@ import com.example.seepawandroid.data.models.enums.AnimalState
 import com.example.seepawandroid.data.remote.dtos.animals.ResAnimalDto
 import com.example.seepawandroid.ui.components.ImageCarousel
 import com.example.seepawandroid.ui.navigation.NavigationRoutes
+import android.util.Log
 
 /**
  * Animal Detail Screen - Stateless
@@ -248,6 +249,7 @@ private fun AnimalDetailContent(
     ) {
         // Image carousel
         val imageUrls = animal.images?.map { it.url } ?: emptyList()
+        Log.d("AnimalDetail", "Image URLs: $imageUrls")
         ImageCarousel(
             imageUrls = imageUrls,
             animalName = animal.name
