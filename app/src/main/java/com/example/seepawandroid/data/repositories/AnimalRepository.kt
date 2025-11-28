@@ -2,11 +2,13 @@ package com.example.seepawandroid.data.repositories
 
 import com.example.seepawandroid.data.local.dao.AnimalDao
 import com.example.seepawandroid.data.local.entities.Animal
-import com.example.seepawandroid.data.models.PagedAnimals
+import com.example.seepawandroid.data.remote.dtos.animals.PagedAnimals
 import com.example.seepawandroid.data.models.mappers.toEntity
 import com.example.seepawandroid.data.remote.api.services.BackendApiService
 import com.example.seepawandroid.data.remote.dtos.Animals.AnimalFilterDto
+import com.example.seepawandroid.data.remote.dtos.animals.ResAnimalDto
 import com.example.seepawandroid.utils.NetworkUtils
+import com.example.seepawandroid.data.models.mappers.toDto
 import javax.inject.Inject
 
 /**
@@ -112,6 +114,69 @@ class AnimalRepository @Inject constructor(
                 totalPages = 1,
                 totalCount = cached.size
             )
+        }
+    }
+
+    /**
+     * Retrieves detailed information about a single animal by ID.
+     *
+     * Behavior:
+     * - If there is **network connection**, fetches from the backend and updates local cache.
+     * - If **offline** or the API fails, returns the cached animal from Room.
+     * - If the animal is not in cache and there's no internet, returns an error.
+     *
+     * @param animalId The unique identifier of the animal.
+     * @return Result containing either the animal data or an error.
+     *         Success includes a boolean indicating if data came from cache (offline mode).
+     */
+    suspend fun getAnimalById(animalId: String): Result<Pair<ResAnimalDto, Boolean>> {
+        return try {
+            // Check internet connection
+            val isOnline = NetworkUtils.isConnected()
+
+            if (isOnline) {
+                // Try to fetch from backend
+                val response = apiService.getAnimalById(animalId)
+
+                if (response.isSuccessful && response.body() != null) {
+                    val animalDto = response.body()!!
+
+                    // Save to cache
+                    val entity = animalDto.toEntity()
+                    dao.insertAnimal(entity)
+
+                    // Return with online flag
+                    Result.success(Pair(animalDto, false))
+                } else {
+                    // API failed, try cache
+                    val cached = dao.getAnimalById(animalId)
+                    if (cached != null) {
+                        // Convert entity to DTO (you'll need a mapper for this)
+                        val dto = cached.toDto()
+                        Result.success(Pair(dto, true))
+                    } else {
+                        Result.failure(Exception("Animal not found"))
+                    }
+                }
+            } else {
+                // Offline mode - try cache
+                val cached = dao.getAnimalById(animalId)
+                if (cached != null) {
+                    val dto = cached.toDto()
+                    Result.success(Pair(dto, true))
+                } else {
+                    Result.failure(Exception("No internet connection and animal not cached"))
+                }
+            }
+        } catch (e: Exception) {
+            // On exception, try cache as fallback
+            val cached = dao.getAnimalById(animalId)
+            if (cached != null) {
+                val dto = cached.toDto()
+                Result.success(Pair(dto, true))
+            } else {
+                Result.failure(e)
+            }
         }
     }
 }

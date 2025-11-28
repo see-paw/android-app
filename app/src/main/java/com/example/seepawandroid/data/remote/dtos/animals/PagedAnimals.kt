@@ -1,4 +1,4 @@
-package com.example.seepawandroid.data.models
+package com.example.seepawandroid.data.remote.dtos.animals
 
 import com.example.seepawandroid.data.local.entities.Animal
 

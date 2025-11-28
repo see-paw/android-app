@@ -31,4 +31,22 @@ interface AnimalDao {
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(list: List<Animal>)
+
+    /**
+     * Retrieves a single animal by its unique ID.
+     *
+     * @param id The unique identifier of the animal.
+     * @return The Animal entity if found, null otherwise.
+     */
+    @Query("SELECT * FROM animals WHERE id = :id LIMIT 1")
+    suspend fun getAnimalById(id: String): Animal?
+
+    /**
+     * Inserts or updates a single Animal entity.
+     * If an animal with the same ID exists, it will be replaced.
+     *
+     * @param animal The animal to insert or update.
+     */
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAnimal(animal: Animal)
 }

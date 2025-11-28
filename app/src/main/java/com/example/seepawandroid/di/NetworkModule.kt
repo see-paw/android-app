@@ -1,6 +1,6 @@
 package com.example.seepawandroid.di
 
-import com.example.seepawandroid.data.providers.SessionManager
+import com.example.seepawandroid.data.managers.SessionManager
 import com.example.seepawandroid.data.remote.api.interceptors.AuthInterceptor
 import com.example.seepawandroid.data.remote.api.services.BackendApiService
 import dagger.Module
@@ -78,5 +78,14 @@ object NetworkModule {
     @Singleton
     fun provideBackendApiService(retrofit: Retrofit): BackendApiService {
         return retrofit.create(BackendApiService::class.java)
+    }
+
+    /**
+     * Provides the base URL for API and SignalR connections.
+     */
+    @Provides
+    @Singleton
+    fun provideBaseUrl(): String {
+        return BASE_URL
     }
 }

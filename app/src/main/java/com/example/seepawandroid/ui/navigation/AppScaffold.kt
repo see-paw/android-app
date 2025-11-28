@@ -15,6 +15,8 @@ import kotlinx.coroutines.launch
 import com.example.seepawandroid.data.models.enums.UserRole
 import com.example.seepawandroid.ui.screens.login.AuthViewModel
 import pt.ipp.estg.seepaw.ui.navigation.AppTopBar
+import pt.ipp.estg.seepawandroid.ui.components.OwnershipApprovedDialog
+import com.example.seepawandroid.ui.screens.notifications.NotificationViewModel
 
 /**
  * Main scaffold of the application.
@@ -24,8 +26,8 @@ import pt.ipp.estg.seepaw.ui.navigation.AppTopBar
  * - Drawer navigation for authenticated users
  * - Top app bar
  * - Navigation graphs
+ * - Global dialogs (ownership approved)
  *
- * @param onLoginSuccess Callback triggered after successful authentication.
  * @param onLogout Callback used to execute logout actions.
  */
 @RequiresApi(Build.VERSION_CODES.O)
@@ -36,6 +38,7 @@ fun AppScaffold(
 ) {
     val navController = rememberNavController()
     val authViewModel: AuthViewModel = hiltViewModel()
+    val notificationViewModel: NotificationViewModel = hiltViewModel()
 
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
@@ -44,6 +47,9 @@ fun AppScaffold(
     val isAuthenticated by authViewModel.isAuthenticated.observeAsState(false)
     val role by authViewModel.userRole.observeAsState("")
     val userRole = UserRole.fromString(role)
+
+    // Ownership approved dialog state
+    val showOwnershipDialog by notificationViewModel.showOwnershipApprovedDialog.observeAsState()
 
     // ----- PUBLIC MODE -----
     if (!isAuthenticated) {
@@ -89,7 +95,8 @@ fun AppScaffold(
                         isAuthenticated = isAuthenticated,
                         currentRoute = currentRoute,
                         onMenuClick = { scope.launch { drawerState.open() } },
-                        onLogoutClick = onLogout
+                        onLogoutClick = onLogout,
+                        notificationViewModel = notificationViewModel
                     )
                 },
                 containerColor = MaterialTheme.colorScheme.background
@@ -101,6 +108,16 @@ fun AppScaffold(
                     )
                 }
             }
+        }
+
+        // Global dialogs - Ownership Approved
+        showOwnershipDialog?.let { dialogData ->
+            OwnershipApprovedDialog(
+                userName = dialogData.userName,
+                animalName = dialogData.animalName,
+                animalImageUrl = dialogData.animalImageUrl,
+                onDismiss = { notificationViewModel.dismissOwnershipApprovedDialog() }
+            )
         }
     }
 }

@@ -42,7 +42,7 @@ fun getUserDrawerOptions() = listOf(
     DrawerOption(R.string.favorites, Icons.Outlined.FavoriteBorder, "Favorites"),
     DrawerOption(R.string.schedule_activities, Icons.Outlined.CalendarMonth, "ScheduleActivities"),
     DrawerOption(R.string.active_activities, Icons.Outlined.CalendarMonth, "ActiveActivities"),
-    DrawerOption(R.string.requests, Icons.Outlined.ListAlt, "Requests"),
+    DrawerOption(R.string.requests, Icons.Outlined.ListAlt, NavigationRoutes.OWNERSHIP_LIST),
 )
 
 /**
@@ -84,6 +84,11 @@ fun DrawerUser(
                     Modifier
                         .padding(NavigationDrawerItemDefaults.ItemPadding)
                         .testTag("drawerItemCatalogue")
+                // Test tag
+                else if (item.route == NavigationRoutes.OWNERSHIP_LIST)
+                    Modifier
+                        .padding(NavigationDrawerItemDefaults.ItemPadding)
+                        .testTag("drawerItemOwnershipList")
                 else
                     Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
 

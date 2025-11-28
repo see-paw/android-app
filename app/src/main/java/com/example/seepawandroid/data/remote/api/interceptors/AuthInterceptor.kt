@@ -1,6 +1,6 @@
 package com.example.seepawandroid.data.remote.api.interceptors
 
-import com.example.seepawandroid.data.providers.SessionManager
+import com.example.seepawandroid.data.managers.SessionManager
 import okhttp3.Interceptor
 import okhttp3.Response
 import javax.inject.Inject

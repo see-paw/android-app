@@ -53,14 +53,13 @@
     <string name="catalogue">Catálogo de Animais</string>
     <string name="favorites">Favoritos</string>
     <string name="schedule_activities">Agendar Atividades</string>
-    <string name="requests">Meus Pedidos de Ownership</string>
+    <string name="requests">Os Meus Ownerships</string>
     <string name="active_activities">Atividades ativas</string>
 
 
     <!-- Top Bar -->
     <string name="open_menu">Abrir Menu</string>
     <string name="close_menu">Fechar Menu</string>
-    <string name="notifications">Notificações</string>
     <string name="logout">Sair</string>
     <string name="logo_description">Logótipo da aplicação SeePaw</string>
 
@@ -69,19 +68,141 @@
     <string name="home_title">Bem-vindo à plataforma SeePaw</string>
     <string name="home_intro_1">
     A SeePaw é uma plataforma que centraliza, num só local, informação sobre animais disponíveis para adoção e apadrinhamento, recolhida de abrigos que desejam divulgar os seus patudos.
-</string>
+    </string>
     <string name="home_intro_2">
     Acreditamos que a tecnologia pode ser uma aliada poderosa no combate ao abandono animal, bem como no apoio às associações que muitas vezes só sobrevivem graças à sua ajuda monetária. Cada ajuda é uma vida transformada — juntos, fazemos a diferença!
-</string>
+    </string>
     <string name="home_slogan">"Humanos Porreiros Adotam Rafeiros"</string>
 
     <!-- PUBLIC HOMESCREEN -->
     <string name="public_home_title">Bem-vindo à SeePaw</string>
     <string name="public_home_intro">
     Encontre animais adoráveis para adoção ou apadrinhamento. Explore o catálogo sem conta ou autentique-se para aceder a todas as funcionalidades.
-</string>
+    </string>
     <string name="public_home_login">Iniciar sessão</string>
     <string name="public_home_register">Criar conta</string>
     <string name="public_home_catalogue">Ver catálogo de animais</string>
+
+    <!-- Animal Detail Screen -->
+    <string name="animal_details">Detalhes do Animal</string>
+    <string name="animal_description_label">Descrição</string>
+    <string name="animal_info_label">Informações sobre o animal</string>
+    <string name="animal_features_label">Características</string>
+    <string name="breed">Raça</string>
+    <string name="size">Tamanho</string>
+    <string name="sex">Sexo</string>
+    <string name="colour">Cor</string>
+    <string name="sterilized">Esterilizado</string>
+    <string name="yes">Sim</string>
+    <string name="no">Não</string>
+    <string name="fostering_button">Apadrinhar</string>
+    <string name="ownership_button">Adotar Especial</string>
+    <string name="offline_actions_disabled">Ações desativadas (sem internet)</string>
+    <string name="login_required">Login Necessário</string>
+    <string name="login_required_message">É necessário fazer login para realizar esta ação.</string>
+    <string name="cancel">Cancelar</string>
+    <string name="back">Voltar</string>
+    <string name="needs_internet_for_details">É necessário ter internet para ver os detalhes deste animal.</string>
+    <string name="error_loading_animal">Erro ao carregar animal: %1$s</string>
+    <string name="retry">Tentar Novamente</string>
+
+    <!-- ========== OWNERSHIP REQUEST STRINGS ========== -->
+
+    <!-- Screen Title -->
+    <string name="ownership_request_title">Pedido de Adoção</string>
+
+    <!-- Terms Screen -->
+    <string name="ownership_terms_title">Informações Importantes</string>
+    <string name="ownership_terms_subtitle">Sobre a adoção de %1$s</string>
+    <string name="ownership_terms_content">
+Ao submeter este pedido de adoção, você concorda com os seguintes termos e condições:\n\n
+1. RESPONSABILIDADE\n
+Serás responsável pelo bem-estar completo do animal, incluindo alimentação, cuidados veterinários e um ambiente seguro e saudável. Esse valor está englobado no pagamento mensal.\n\n
+2. COMPROMISSO FINANCEIRO\n
+A adoção implica custos contínuos. Certifique-se de que tem capacidade financeira para cuidar do animal ao longo da sua vida. O contrato de uma adoção especial é vitalício. A leitura dos termos não substitui o contrato com o abrigo.\n\n
+3. ESTERILIZAÇÃO\n
+Se o animal ainda não foi esterilizado, você compromete-se a realizar o procedimento conforme orientações veterinárias.\n\n
+4. IDENTIFICAÇÃO\n
+O animal deve ser registado e mantido com identificação adequada (microchip) conforme legislação vigente, caso ainda não esteja esterilizado.\n\n
+5. AGENDAMENTO DE ATIVIDADES\n
+A adoção especial permite que o animal continue hospedado no centro de abrigo, com custos associados. Poderás agendar atividades com o animal através desta plataforma. As atividades podem ser de longa duração (em que levas o animal e passas o tempo que achares necessário com ele) ou atividades curtas de apenas algumas horas.\n\n
+6. VÍNCULO CONTRATUAL VITALÍCIO\n
+A aceitação destes termos serve apenas para informar como funcionam as adoções especiais. Não substitui o contrato com o centro de abrigo, que será de acordo com as regras do abrigo. Só após a assinatura deste contrato por ambas as partes é que o administrador pode aprovar a adoção especial na plataforma.\n\n
+Por favor, lê atentamente todos os termos antes de prosseguir com um pedido de adoção especial.
+</string>
+
+    <string name="accept_terms">Aceitar e Continuar</string>
+
+    <!-- Form Screen -->
+    <string name="ownership_form_title">Dados de Pagamento</string>
+    <string name="ownership_form_subtitle">Finalizar adoção de %1$s</string>
+    <string name="account_number">Número da Conta</string>
+    <string name="holder_name">Nome do Titular</string>
+    <string name="cvv">CVV</string>
+    <string name="citizen_card">Cartão de Cidadão</string>
+    <string name="password">Palavra-passe</string>
+    <string name="submit_ownership_request">Fazer Pedido</string>
+
+    <!-- Success Screen -->
+    <string name="ownership_success_title">Obrigada, %1$s!</string>
+    <string name="ownership_success_message">O seu pedido de adoção de %1$s foi submetido com sucesso ao centro de abrigo %2$s.</string>
+    <string name="ownership_success_notification">Será notificado quando o seu pedido for analisado.</string>
+    <string name="done">Concluir</string>
+
+    <!-- Ownership Accepted Pop-up -->
+    <string name="ownership_approved_title">Obrigado %1$s!</string>
+    <string name="ownership_approved_subtitle">Ansioso(a) por te conhecer</string>
+
+    <!-- ========== OWNERSHIP VERIFICATION & ADOPTED ANIMAL STRINGS ========== -->
+
+    <!-- Ownership Exists Dialog -->
+    <string name="ownership_exists_title">Pedido Existente</string>
+    <string name="ownership_exists_message">Já fizeste um pedido de adoção especial para %1$s!</string>
+
+    <!-- Adopted Animal Card -->
+    <string name="animal_adopted">O %1$s foi adotado! 💚</string>
+
+    <!-- ========== OWNERSHIP LIST STRINGS (PORTUGUÊS) ========== -->
+
+    <!-- Screen Title -->
+    <string name="ownership_list_title">Os Meus Pedidos</string>
+
+    <!-- Empty State -->
+    <string name="ownership_list_empty_title">Sem Pedidos</string>
+    <string name="ownership_list_empty_message">Ainda não fez nenhum pedido de adoção especial.\n\nExplore o catálogo e encontre o seu novo amigo!</string>
+    <string name="ownership_list_empty_action">Ver Animais</string>
+
+    <!-- Error State -->
+    <string name="ownership_list_error">Erro ao carregar pedidos</string>
+    <string name="ownership_list_retry">Tentar Novamente</string>
+
+    <!-- Status Labels -->
+    <string name="ownership_status_pending">Pendente</string>
+    <string name="ownership_status_analysing">Em Análise</string>
+    <string name="ownership_status_approved">Aprovado</string>
+    <string name="ownership_status_rejected">Rejeitado</string>
+
+    <!-- Card Content -->
+    <string name="ownership_requested_at">Pedido em %1$s</string>
+
+    <!-- Pull to Refresh -->
+    <string name="ownership_list_refreshing">A atualizar…</string>
+
+    <!-- ========== OWNERSHIP LIST - TABS ========== -->
+    <string name="ownership_active_requests">Pedidos Ativos</string>
+    <string name="ownership_owned_animals">Os Meus Animais</string>
+
+    <!-- ========== OWNERSHIP LIST - EMPTY TAB STATES ========== -->
+    <string name="ownership_no_active_requests">Sem pedidos ativos</string>
+    <string name="ownership_no_owned_animals">Ainda não adotou nenhum animal</string>
+
+    <!-- ========== OWNERSHIP LIST - LABELS ========== -->
+    <string name="ownership_approved_at">Aprovado em %1$s</string>
+
+    <!-- NOTIFICATIONS -->
+    <string name="notifications">Notificações</string>
+    <string name="no_notifications">Sem notificações para mostrar</string>
+    <string name="delete_notification">Apagar</string>
+    <string name="close">Fechar</string>
 
 </resources>

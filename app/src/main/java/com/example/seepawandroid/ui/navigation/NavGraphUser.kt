@@ -7,11 +7,16 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.example.seepawandroid.ui.screens.animals.AnimalCatalogueScreen
+import com.example.seepawandroid.ui.screens.animals.AnimalDetailScreen
 import com.example.seepawandroid.ui.screens.animals.viewmodel.AnimalViewModel
 import com.example.seepawandroid.ui.screens.login.AuthViewModel
+import com.example.seepawandroid.ui.screens.ownership.OwnershipListScreen
+import com.example.seepawandroid.ui.screens.ownerships.OwnershipRequestScreen
 import com.example.seepawandroid.ui.screens.user.UserHomepageScreen
 
 /**
@@ -44,9 +49,77 @@ fun NavGraphUser(
                 viewModel = animalViewModel,
                 isLoggedIn = isAuthenticated,
                 onAnimalClick = { animalId ->
-                    navController.navigate(
-                        NavigationRoutes.animalDetailPage(animalId)
-                    )
+                    navController.navigate("${NavigationRoutes.ANIMAL_DETAIL_PAGE_BASE}/$animalId")
+                }
+            )
+        }
+
+        // Animal Detail Screen (Authenticated mode)
+        composable(
+            route = NavigationRoutes.ANIMAL_DETAIL_PAGE,
+            arguments = listOf(
+                navArgument("animalId") { type = NavType.StringType }
+            )
+        ) { backStackEntry ->
+            val animalId = backStackEntry.arguments?.getString("animalId") ?: ""
+
+            AnimalDetailScreen(
+                animalId = animalId,
+                isAuthenticated = true,
+                onNavigateBack = { navController.popBackStack() },
+                onNavigateToLogin = { /* Already authenticated */ },
+                onNavigateToOwnership = { route ->
+                    navController.navigate(route)
+                }
+            )
+        }
+
+        // Ownership Request (Needs Authentication and internet to navigate)
+        composable(
+            route = NavigationRoutes.OWNERSHIP_REQUEST,
+            arguments = listOf(
+                navArgument("animalId") { type = NavType.StringType },
+                navArgument("animalName") {
+                    type = NavType.StringType
+                    nullable = true
+                    defaultValue = null
+                },
+                navArgument("shelterId") {
+                    type = NavType.StringType
+                    nullable = true
+                    defaultValue = null
+                }
+            )
+        ) { backStackEntry ->
+            val animalId = backStackEntry.arguments?.getString("animalId") ?: ""
+            val animalName = backStackEntry.arguments?.getString("animalName")
+            val shelterId = backStackEntry.arguments?.getString("shelterId")
+
+            OwnershipRequestScreen(
+                animalId = animalId,
+                animalName = animalName,
+                shelterId = shelterId,
+                onNavigateBack = { navController.popBackStack() },
+                onRequestComplete = {
+                    // Navigate back to homepage after successful request
+                    navController.navigate(NavigationRoutes.USER_HOMEPAGE) {
+                        popUpTo(NavigationRoutes.USER_HOMEPAGE) { inclusive = false }
+                    }
+                }
+            )
+        }
+
+        // OWNERSHIP LIST (User's ownerships)
+        composable(NavigationRoutes.OWNERSHIP_LIST) {
+            OwnershipListScreen(
+                onNavigateBack = { navController.popBackStack() },
+                onNavigateToCatalogue = {
+                    navController.navigate(NavigationRoutes.ANIMALS_CATALOGUE) {
+                        popUpTo(NavigationRoutes.USER_HOMEPAGE) { inclusive = false }
+                    }
+                },
+                onNavigateToAnimal = { animalId ->
+                    navController.navigate("${NavigationRoutes.ANIMAL_DETAIL_PAGE_BASE}/$animalId")
                 }
             )
         }

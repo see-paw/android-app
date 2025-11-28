@@ -1,6 +1,6 @@
 package com.example.seepawandroid.data.repositories
 
-import com.example.seepawandroid.data.providers.SessionManager
+import com.example.seepawandroid.data.managers.SessionManager
 import com.example.seepawandroid.data.remote.dtos.auth.ReqLoginDto
 import com.example.seepawandroid.data.remote.dtos.auth.ResLoginDto
 import com.example.seepawandroid.data.remote.api.services.BackendApiService

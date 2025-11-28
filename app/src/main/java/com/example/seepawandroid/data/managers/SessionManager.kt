@@ -1,4 +1,4 @@
-package com.example.seepawandroid.data.providers
+package com.example.seepawandroid.data.managers
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -7,6 +7,7 @@ import android.security.keystore.KeyProperties
 import android.util.Base64
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.security.KeyStore
+import java.time.Instant
 import javax.crypto.Cipher
 import javax.crypto.KeyGenerator
 import javax.crypto.SecretKey
@@ -47,6 +48,7 @@ class SessionManager @Inject constructor(
         private const val KEY_USER_ROLE = "user_role"
         private const val KEY_USER_ID = "user_id"
 
+        private const val KEY_USER_NAME = "user_name"
         private const val TRANSFORMATION = "AES/GCM/NoPadding"
         private const val GCM_TAG_LENGTH = 128
     }
@@ -185,8 +187,8 @@ class SessionManager @Inject constructor(
         val expiration = getDecrypted(KEY_TOKEN_EXPIRATION) ?: return false
 
         return try {
-            val expirationDate = java.time.Instant.parse(expiration)
-            java.time.Instant.now().isBefore(expirationDate)
+            val expirationDate = Instant.parse(expiration)
+            Instant.now().isBefore(expirationDate)
         } catch (e: Exception) {
             false
         }
@@ -218,5 +220,19 @@ class SessionManager @Inject constructor(
      */
     fun getUserId(): String? {
         return getDecrypted(KEY_USER_ID)
+    }
+
+    /**
+     * Saves the authenticated user's name.
+     */
+    fun saveUserName(name: String) {
+        saveEncrypted(KEY_USER_NAME, name)
+    }
+
+    /**
+     * Retrieves the stored user name.
+     */
+    fun getUserName(): String? {
+        return getDecrypted(KEY_USER_NAME)
     }
 }
