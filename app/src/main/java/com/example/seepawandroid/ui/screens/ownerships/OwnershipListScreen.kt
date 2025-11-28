@@ -29,6 +29,7 @@ import com.example.seepawandroid.R
 import com.example.seepawandroid.data.models.enums.OwnershipStatus
 import com.example.seepawandroid.data.remote.dtos.animals.ResOwnedAnimalDto
 import com.example.seepawandroid.data.remote.dtos.ownerships.ResOwnershipRequestListDto
+import com.example.seepawandroid.ui.components.OwnershipMockReceipts
 import com.example.seepawandroid.utils.DateUtils
 
 /**
@@ -99,50 +100,112 @@ fun OwnershipListScreen(
                                 onClick = { viewModel.onTabSelected(1) },
                                 text = { Text(stringResource(R.string.ownership_owned_animals)) }
                             )
+                            // MOCK RECEIPTS
+                            Tab(
+                                selected = selectedTabIndex == 2,
+                                onClick = { viewModel.onTabSelected(2) },
+                                text = { Text("Faturas") }
+                            )
                         }
 
                         // Content based on selected tab
-                        val itemsToShow = if (selectedTabIndex == 0) {
-                            state.activeRequests
-                        } else {
-                            state.ownedAnimals
-                        }
-
-                        if (itemsToShow.isEmpty()) {
-                            EmptyTabContent(
-                                isOwnedTab = selectedTabIndex == 1,
-                                onNavigateToCatalogue = onNavigateToCatalogue
-                            )
-                        } else {
-                            LazyColumn(
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .testTag("ownershipListContent"),
-                                contentPadding = PaddingValues(16.dp),
-                                verticalArrangement = Arrangement.spacedBy(12.dp)
-                            ) {
-                                if (selectedTabIndex == 0) {
-                                    // Active requests tab
-                                    items(
-                                        items = state.activeRequests,
-                                        key = { it.id }
-                                    ) { request ->
-                                        OwnershipRequestCard(
-                                            request = request,
-                                            onClick = { onNavigateToAnimal(request.animalId) }
-                                        )
-                                    }
+//                        val itemsToShow = if (selectedTabIndex == 0) {
+//                            state.activeRequests
+//                        } else {
+//                            state.ownedAnimals
+//                        }
+//
+//                        if (itemsToShow.isEmpty()) {
+//                            EmptyTabContent(
+//                                isOwnedTab = selectedTabIndex == 1,
+//                                onNavigateToCatalogue = onNavigateToCatalogue
+//                            )
+//                        } else {
+//                            LazyColumn(
+//                                modifier = Modifier
+//                                    .fillMaxSize()
+//                                    .testTag("ownershipListContent"),
+//                                contentPadding = PaddingValues(16.dp),
+//                                verticalArrangement = Arrangement.spacedBy(12.dp)
+//                            ) {
+//                                if (selectedTabIndex == 0) {
+//                                    // Active requests tab
+//                                    items(
+//                                        items = state.activeRequests,
+//                                        key = { it.id }
+//                                    ) { request ->
+//                                        OwnershipRequestCard(
+//                                            request = request,
+//                                            onClick = { onNavigateToAnimal(request.animalId) }
+//                                        )
+//                                    }
+//                                } else {
+//                                    // Owned animals tab
+//                                    items(
+//                                        items = state.ownedAnimals,
+//                                        key = { it.id }
+//                                    ) { owned ->
+//                                        OwnedAnimalCard(
+//                                            ownedAnimal = owned,
+//                                            onClick = { onNavigateToAnimal(owned.animalId) }
+//                                        )
+//                                    }
+//                                }
+//                            }
+//                        }
+                        when (selectedTabIndex) {
+                            0 -> {
+                                if (state.activeRequests.isEmpty()) {
+                                    EmptyTabContent(
+                                        isOwnedTab = false,
+                                        onNavigateToCatalogue = onNavigateToCatalogue
+                                    )
                                 } else {
-                                    // Owned animals tab
-                                    items(
-                                        items = state.ownedAnimals,
-                                        key = { it.id }
-                                    ) { owned ->
-                                        OwnedAnimalCard(
-                                            ownedAnimal = owned,
-                                            onClick = { onNavigateToAnimal(owned.animalId) }
-                                        )
+                                    LazyColumn(
+                                        modifier = Modifier
+                                            .fillMaxSize()
+                                            .testTag("ownershipListContent"),
+                                        contentPadding = PaddingValues(16.dp),
+                                        verticalArrangement = Arrangement.spacedBy(12.dp)
+                                    ) {
+                                        items(items = state.activeRequests, key = { it.id }) { request ->
+                                            OwnershipRequestCard(
+                                                request = request,
+                                                onClick = { onNavigateToAnimal(request.animalId) }
+                                            )
+                                        }
                                     }
+                                }
+                            }
+                            1 -> {
+                                if (state.ownedAnimals.isEmpty()) {
+                                    EmptyTabContent(
+                                        isOwnedTab = true,
+                                        onNavigateToCatalogue = onNavigateToCatalogue
+                                    )
+                                } else {
+                                    LazyColumn(
+                                        modifier = Modifier.fillMaxSize(),
+                                        contentPadding = PaddingValues(16.dp),
+                                        verticalArrangement = Arrangement.spacedBy(12.dp)
+                                    ) {
+                                        items(items = state.ownedAnimals, key = { it.id }) { owned ->
+                                            OwnedAnimalCard(
+                                                ownedAnimal = owned,
+                                                onClick = { onNavigateToAnimal(owned.animalId) }
+                                            )
+                                        }
+                                    }
+                                }
+                            }
+                            2 -> {
+                                if (state.ownedAnimals.isEmpty()) {
+                                    EmptyTabContent(
+                                        isOwnedTab = true,
+                                        onNavigateToCatalogue = onNavigateToCatalogue
+                                    )
+                                } else {
+                                    OwnershipMockReceipts(ownedAnimals = state.ownedAnimals)
                                 }
                             }
                         }

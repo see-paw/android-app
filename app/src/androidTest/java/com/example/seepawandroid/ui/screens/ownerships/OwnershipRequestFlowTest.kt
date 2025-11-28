@@ -49,9 +49,9 @@ class OwnershipRequestFlowTest {
         private const val VALID_EMAIL = "carlos@test.com"
         private const val VALID_PASSWORD = "Pa\$\$w0rd"
 
-        // Thor's known GUID from the seed data
-        private const val VALID_ANIMAL_ID = "f055cc31-fdeb-4c65-bb73-4f558f67dd5b"
-        private const val ANIMAL_NAME = "Thor"
+        // Known GUID from the seed data
+        private const val VALID_ANIMAL_ID = "f055cc31-fdeb-4c65-bb73-4f558f67dd2b"
+        private const val ANIMAL_NAME = "Lunica"
 
         private const val MAX_PAGES_TO_SEARCH = 10
     }
