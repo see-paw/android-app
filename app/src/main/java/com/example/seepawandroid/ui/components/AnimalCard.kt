@@ -47,7 +47,8 @@ fun AnimalCard(
             .height(160.dp)
             .fillMaxWidth()
             .clickable { onClick() }
-            .testTag("animalCard"),
+            .testTag("animalCard")
+            .then(modifier),
         elevation = CardDefaults.cardElevation(4.dp)
     ) {
         Column {

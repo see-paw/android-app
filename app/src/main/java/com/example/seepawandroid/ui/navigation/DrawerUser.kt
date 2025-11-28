@@ -84,6 +84,11 @@ fun DrawerUser(
                     Modifier
                         .padding(NavigationDrawerItemDefaults.ItemPadding)
                         .testTag("drawerItemCatalogue")
+                // Test tag
+                else if (item.route == NavigationRoutes.OWNERSHIP_LIST)
+                    Modifier
+                        .padding(NavigationDrawerItemDefaults.ItemPadding)
+                        .testTag("drawerItemOwnershipList")
                 else
                     Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
 
