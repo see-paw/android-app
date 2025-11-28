@@ -1,4 +1,4 @@
-package com.example.seepawandroid.data.models
+package com.example.seepawandroid.data.utils
 
 import androidx.room.TypeConverter
 

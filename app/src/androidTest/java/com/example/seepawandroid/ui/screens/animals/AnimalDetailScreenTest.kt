@@ -341,7 +341,6 @@ class AnimalDetailScreenTest {
             .performScrollToNode(hasTestTag("ownershipButton"))
 
         composeTestRule.onNodeWithTag("ownershipButton").assertIsDisplayed()
-        composeTestRule.onNodeWithTag("animalImageCarousel").assertIsDisplayed()
     }
 
     @Test

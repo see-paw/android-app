@@ -1,4 +1,4 @@
-package com.example.seepawandroid.ui.viewmodels
+package com.example.seepawandroid.ui.screens.notifications
 
 import com.example.seepawandroid.data.remote.dtos.notifications.ResNotificationDto
 

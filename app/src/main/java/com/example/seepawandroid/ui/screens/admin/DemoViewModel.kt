@@ -1,4 +1,4 @@
-package com.example.seepawandroid.ui.viewmodels
+package com.example.seepawandroid.ui.screens.admin
 
 import androidx.lifecycle.ViewModel
 import com.example.seepawandroid.data.managers.SessionManager

@@ -1,5 +1,6 @@
-package pt.ipp.estg.seepawandroid.ui.viewmodels
+package com.example.seepawandroid.ui.screens.notifications
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
@@ -9,7 +10,6 @@ import com.example.seepawandroid.data.managers.NotificationManager
 import com.example.seepawandroid.data.managers.SessionManager
 import com.example.seepawandroid.data.remote.dtos.notifications.ResNotificationDto
 import com.example.seepawandroid.data.repositories.AnimalRepository
-import com.example.seepawandroid.ui.viewmodels.NotificationDropdownUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import pt.ipp.estg.seepawandroid.ui.models.OwnershipApprovedDialogData
@@ -214,7 +214,7 @@ class NotificationViewModel @Inject constructor(
                     )
                 }
             } catch (e: Exception) {
-                android.util.Log.e("NotificationViewModel", "Error showing ownership dialog", e)
+                Log.e("NotificationViewModel", "Error showing ownership dialog", e)
             }
         }
     }

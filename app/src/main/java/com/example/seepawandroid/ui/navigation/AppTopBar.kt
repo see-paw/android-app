@@ -19,9 +19,9 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.seepawandroid.R
-import com.example.seepawandroid.ui.viewmodels.NotificationDropdownUiState
+import com.example.seepawandroid.ui.screens.notifications.NotificationDropdownUiState
 import pt.ipp.estg.seepawandroid.ui.components.NotificationDropdown
-import pt.ipp.estg.seepawandroid.ui.viewmodels.NotificationViewModel
+import com.example.seepawandroid.ui.screens.notifications.NotificationViewModel
 
 /**
  * Main top app bar displayed in authenticated screens.

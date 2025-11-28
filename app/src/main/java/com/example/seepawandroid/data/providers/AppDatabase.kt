@@ -5,7 +5,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.example.seepawandroid.data.local.dao.AnimalDao
 import com.example.seepawandroid.data.local.entities.Animal
-import com.example.seepawandroid.data.models.Converters
+import com.example.seepawandroid.data.utils.Converters
 
 /**
  * Main Room database for the application.

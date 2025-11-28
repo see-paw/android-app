@@ -5,8 +5,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.seepawandroid.ui.viewmodels.DemoViewModel
 import com.example.seepawandroid.ui.screens.admin.AdminHomeScreen_DEMO
+import com.example.seepawandroid.ui.screens.admin.DemoViewModel
 import com.example.seepawandroid.ui.screens.login.AuthViewModel
 
 @Composable
@@ -16,7 +16,7 @@ fun NavGraphAdmin(navController: NavHostController, authViewModel: AuthViewModel
         startDestination = NavigationRoutes.ADMIN_HOME
     ) {
         composable(NavigationRoutes.ADMIN_HOME) {
-            val demoViewModel: DemoViewModel = hiltViewModel() // Para Demo funcionar
+            val demoViewModel: DemoViewModel = hiltViewModel() // Demonstration purposes
             AdminHomeScreen_DEMO(authViewModel, demoViewModel.sessionManager)
         }
     }

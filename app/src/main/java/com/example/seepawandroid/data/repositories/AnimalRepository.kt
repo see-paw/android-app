@@ -2,7 +2,7 @@ package com.example.seepawandroid.data.repositories
 
 import com.example.seepawandroid.data.local.dao.AnimalDao
 import com.example.seepawandroid.data.local.entities.Animal
-import com.example.seepawandroid.data.models.PagedAnimals
+import com.example.seepawandroid.data.remote.dtos.animals.PagedAnimals
 import com.example.seepawandroid.data.models.mappers.toEntity
 import com.example.seepawandroid.data.remote.api.services.BackendApiService
 import com.example.seepawandroid.data.remote.dtos.Animals.AnimalFilterDto

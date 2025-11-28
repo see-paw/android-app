@@ -16,7 +16,7 @@ import com.example.seepawandroid.data.models.enums.UserRole
 import com.example.seepawandroid.ui.screens.login.AuthViewModel
 import pt.ipp.estg.seepaw.ui.navigation.AppTopBar
 import pt.ipp.estg.seepawandroid.ui.components.OwnershipApprovedDialog
-import pt.ipp.estg.seepawandroid.ui.viewmodels.NotificationViewModel
+import com.example.seepawandroid.ui.screens.notifications.NotificationViewModel
 
 /**
  * Main scaffold of the application.

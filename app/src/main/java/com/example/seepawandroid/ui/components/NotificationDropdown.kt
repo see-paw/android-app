@@ -28,11 +28,11 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.seepawandroid.R
 import com.example.seepawandroid.data.remote.dtos.notifications.ResNotificationDto
-import com.example.seepawandroid.ui.viewmodels.NotificationDropdownUiState
+import com.example.seepawandroid.ui.screens.notifications.NotificationDropdownUiState
 import com.example.seepawandroid.utils.DateUtils
 import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox
-import pt.ipp.estg.seepawandroid.ui.viewmodels.NotificationViewModel
+import com.example.seepawandroid.ui.screens.notifications.NotificationViewModel
 
 /**
  * Dropdown component for displaying notifications.
