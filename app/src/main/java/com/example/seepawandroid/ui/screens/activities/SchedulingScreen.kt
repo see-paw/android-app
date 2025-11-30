@@ -60,6 +60,7 @@ import com.example.seepawandroid.ui.theme.ReservedSlotColor
 import com.example.seepawandroid.ui.theme.UnavailableSlotColor
 import java.time.DayOfWeek
 import java.time.LocalDate
+import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -455,7 +456,7 @@ private fun TimeAxisColumn(
                     contentAlignment = Alignment.CenterEnd
                 ) {
                     Text(
-                        text = String.format("%02d:00", hour),
+                        text = String.format(Locale.getDefault(), "%02d:00", hour),
                         style = MaterialTheme.typography.labelSmall,
                         modifier = Modifier.padding(end = 4.dp)
                     )

@@ -9,7 +9,7 @@ import com.example.seepawandroid.data.models.activities.UnavailableSlot
 import java.time.LocalTime
 
 const val SCHEDULE_START_HOUR = 9
-const val SCHEDULE_END_HOUR = 20
+const val SCHEDULE_END_HOUR = 18
 val CELL_HEIGHT = 60.dp
 
 data class TimeSlotCell(
