@@ -10,7 +10,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.seepawandroid.R
 import com.example.seepawandroid.ui.navigation.AppScaffold
 import com.example.seepawandroid.ui.screens.login.AuthViewModel

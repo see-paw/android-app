@@ -1,14 +1,14 @@
 package com.example.seepawandroid.data.repositories
 
+import android.util.Log
 import com.example.seepawandroid.data.managers.SessionManager
-import com.example.seepawandroid.data.remote.dtos.auth.ReqLoginDto
-import com.example.seepawandroid.data.remote.dtos.auth.ResLoginDto
 import com.example.seepawandroid.data.remote.api.services.BackendApiService
+import com.example.seepawandroid.data.remote.dtos.auth.ReqLoginDto
 import com.example.seepawandroid.data.remote.dtos.auth.ReqRegisterUserDto
+import com.example.seepawandroid.data.remote.dtos.auth.ResLoginDto
 import com.google.gson.Gson
 import retrofit2.Response
 import javax.inject.Inject
-import android.util.Log
 
 /**
  * Repository responsible for authentication operations.

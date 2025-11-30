@@ -42,4 +42,6 @@ object NavigationRoutes {
 
     //Ownership list (authenticated mode - view user's ownership requests)
     const val OWNERSHIP_LIST = "ownership_list"
+
+    const val SCHEDULE_VISIT = "schedule_visit"
 }

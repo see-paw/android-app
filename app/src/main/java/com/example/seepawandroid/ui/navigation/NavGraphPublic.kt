@@ -15,8 +15,8 @@ import com.example.seepawandroid.ui.screens.animals.AnimalDetailScreen
 import com.example.seepawandroid.ui.screens.animals.viewmodel.AnimalViewModel
 import com.example.seepawandroid.ui.screens.login.AuthViewModel
 import com.example.seepawandroid.ui.screens.login.LoginScreen
-import com.example.seepawandroid.ui.screens.register.RegisterScreen
 import com.example.seepawandroid.ui.screens.public.PublicHomepageScreen
+import com.example.seepawandroid.ui.screens.register.RegisterScreen
 
 /**
  * Navigation graph for public (unauthenticated) screens.

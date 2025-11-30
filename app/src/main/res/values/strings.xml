@@ -1,14 +1,10 @@
 <resources>
     <!-- App Name -->
     <string name="app_name">SeePaw</string>
-    <string name="app_logo_description">SeePaw Logo</string>
 
     <!-- Animals Catalogue -->
     <string name="catalog_search_placeholder">Pesquisar</string>
-    <string name="catalog_filter">Filtros</string>
-    <string name="catalog_sort">Ordenar</string>
     <string name="catalog_empty">Nenhum animal encontrado.</string>
-    <string name="catalog_loading">A carregar…</string>
     <string name="catalog_error">Ocorreu um erro: %1$s</string>
     <string name="catalog_no_results">Nenhum animal corresponde à sua pesquisa ou filtros.</string>
 
@@ -43,7 +39,6 @@
     <!-- Animal Card -->
     <string name="animal_years_suffix">anos</string>
     <string name="favorite">Favorito</string>
-    <string name="favorite_locked">Favorito bloqueado</string>
 
     <!-- Images -->
     <string name="animal_image_desc">Imagem do animal %1$s</string>
@@ -173,7 +168,6 @@ Por favor, lê atentamente todos os termos antes de prosseguir com um pedido de 
     <string name="ownership_list_empty_action">Ver Animais</string>
 
     <!-- Error State -->
-    <string name="ownership_list_error">Erro ao carregar pedidos</string>
     <string name="ownership_list_retry">Tentar Novamente</string>
 
     <!-- Status Labels -->
@@ -186,7 +180,6 @@ Por favor, lê atentamente todos os termos antes de prosseguir com um pedido de 
     <string name="ownership_requested_at">Pedido em %1$s</string>
 
     <!-- Pull to Refresh -->
-    <string name="ownership_list_refreshing">A atualizar…</string>
 
     <!-- ========== OWNERSHIP LIST - TABS ========== -->
     <string name="ownership_active_requests">Pedidos Ativos</string>
@@ -204,5 +197,21 @@ Por favor, lê atentamente todos os termos antes de prosseguir com um pedido de 
     <string name="no_notifications">Sem notificações para mostrar</string>
     <string name="delete_notification">Apagar</string>
     <string name="close">Fechar</string>
+
+    <string name="create_activity">Agendar atividade</string>
+
+    <!-- ========== SCHEDULING SCREEN ========== -->
+    <string name="scheduling_title">Agenda de %1$s</string>
+    <string name="previous_week">Semana anterior</string>
+    <string name="next_week">Próxima semana</string>
+    
+    <!-- Days of Week (Short) -->
+    <string name="day_monday_short">Seg</string>
+    <string name="day_tuesday_short">Ter</string>
+    <string name="day_wednesday_short">Qua</string>
+    <string name="day_thursday_short">Qui</string>
+    <string name="day_friday_short">Sex</string>
+    <string name="day_saturday_short">Sáb</string>
+    <string name="day_sunday_short">Dom</string>
 
 </resources>

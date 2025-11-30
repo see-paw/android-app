@@ -2,13 +2,13 @@ package com.example.seepawandroid.data.repositories
 
 import com.example.seepawandroid.data.local.dao.AnimalDao
 import com.example.seepawandroid.data.local.entities.Animal
-import com.example.seepawandroid.data.remote.dtos.animals.PagedAnimals
+import com.example.seepawandroid.data.models.mappers.toDto
 import com.example.seepawandroid.data.models.mappers.toEntity
 import com.example.seepawandroid.data.remote.api.services.BackendApiService
 import com.example.seepawandroid.data.remote.dtos.Animals.AnimalFilterDto
+import com.example.seepawandroid.data.remote.dtos.animals.PagedAnimals
 import com.example.seepawandroid.data.remote.dtos.animals.ResAnimalDto
 import com.example.seepawandroid.utils.NetworkUtils
-import com.example.seepawandroid.data.models.mappers.toDto
 import javax.inject.Inject
 
 /**

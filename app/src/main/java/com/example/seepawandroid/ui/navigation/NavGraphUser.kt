@@ -11,11 +11,12 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.example.seepawandroid.ui.screens.activities.SchedulingScreen
 import com.example.seepawandroid.ui.screens.animals.AnimalCatalogueScreen
 import com.example.seepawandroid.ui.screens.animals.AnimalDetailScreen
 import com.example.seepawandroid.ui.screens.animals.viewmodel.AnimalViewModel
 import com.example.seepawandroid.ui.screens.login.AuthViewModel
-import com.example.seepawandroid.ui.screens.ownership.OwnershipListScreen
+import com.example.seepawandroid.ui.screens.ownerships.OwnershipListScreen
 import com.example.seepawandroid.ui.screens.ownerships.OwnershipRequestScreen
 import com.example.seepawandroid.ui.screens.user.UserHomepageScreen
 
@@ -120,8 +121,23 @@ fun NavGraphUser(
                 },
                 onNavigateToAnimal = { animalId ->
                     navController.navigate("${NavigationRoutes.ANIMAL_DETAIL_PAGE_BASE}/$animalId")
+                },
+                onNavigateToScheduleVisit = { animalId ->
+                    navController.navigate("${NavigationRoutes.SCHEDULE_VISIT}/$animalId")
                 }
+            )
+        }
+
+        composable(
+            route = "${NavigationRoutes.SCHEDULE_VISIT}/{animalId}",
+            arguments = listOf(navArgument("animalId") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val animalId = backStackEntry.arguments?.getString("animalId") ?: ""
+            SchedulingScreen(
+                animalId = animalId,
+                onNavigateBack = { navController.popBackStack() },
             )
         }
     }
 }
+

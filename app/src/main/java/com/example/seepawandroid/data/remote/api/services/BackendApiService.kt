@@ -1,11 +1,12 @@
 package com.example.seepawandroid.data.remote.api.services
 
 import com.example.seepawandroid.data.remote.dtos.PagedListDto
+import com.example.seepawandroid.data.remote.dtos.activities.ResScheduleResponseDto
 import com.example.seepawandroid.data.remote.dtos.animals.ResAnimalDto
 import com.example.seepawandroid.data.remote.dtos.animals.ResOwnedAnimalDto
 import com.example.seepawandroid.data.remote.dtos.auth.ReqLoginDto
-import com.example.seepawandroid.data.remote.dtos.auth.ResLoginDto
 import com.example.seepawandroid.data.remote.dtos.auth.ReqRegisterUserDto
+import com.example.seepawandroid.data.remote.dtos.auth.ResLoginDto
 import com.example.seepawandroid.data.remote.dtos.notifications.ResNotificationDto
 import com.example.seepawandroid.data.remote.dtos.ownerships.ReqOwnershipRequestDto
 import com.example.seepawandroid.data.remote.dtos.ownerships.ResOwnershipRequestDto
@@ -210,4 +211,9 @@ interface BackendApiService {
         @Path("id") id: String
     ): Response<Unit>
 
+    @GET("api/schedule/animals/{animalId}/schedule/weekly")
+    suspend fun getWeekAnimalSchedule(
+        @Path("animalId") animalId: String,
+        @Query("startDate") startDate: String
+    ): Response<ResScheduleResponseDto>
 }

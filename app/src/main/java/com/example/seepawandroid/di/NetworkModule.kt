@@ -1,6 +1,5 @@
 package com.example.seepawandroid.di
 
-import com.example.seepawandroid.data.managers.SessionManager
 import com.example.seepawandroid.data.remote.api.interceptors.AuthInterceptor
 import com.example.seepawandroid.data.remote.api.services.BackendApiService
 import dagger.Module
@@ -23,11 +22,18 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
-    private const val USE_AZURE = false
     private const val LOCAL_URL = "http://10.0.2.2:5000/"
+    private const val NGROK_URL = "https://nonmischievous-petulant-rosa.ngrok-free.dev/"
     private const val AZURE_URL = "https://seepaw-api-gdhvbkcvckeub9et.francecentral-01.azurewebsites.net/"
 
-    private val BASE_URL = if (USE_AZURE) AZURE_URL else LOCAL_URL
+    private const val USE_NGROK = true
+    private const val USE_AZURE = false
+
+    private val BASE_URL = when {
+        USE_NGROK -> NGROK_URL
+        USE_AZURE -> AZURE_URL
+        else -> LOCAL_URL
+    }
 
     /**
      * Provides the logging interceptor for debugging HTTP requests/responses.

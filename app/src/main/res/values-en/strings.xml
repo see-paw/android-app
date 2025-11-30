@@ -1,14 +1,10 @@
 <resources>
     <!-- App Name -->
     <string name="app_name">SeePaw</string>
-    <string name="app_logo_description">SeePaw Logo</string>
 
     <!-- Animals Catalogue -->
     <string name="catalog_search_placeholder">Search</string>
-    <string name="catalog_filter">Filters</string>
-    <string name="catalog_sort">Sort</string>
     <string name="catalog_empty">No animals found.</string>
-    <string name="catalog_loading">Loading…</string>
     <string name="catalog_error">An error occurred: %1$s</string>
     <string name="catalog_no_results">No animals match your search or filters.</string>
 
@@ -42,7 +38,6 @@
     <!-- Animal Card -->
     <string name="animal_years_suffix">years</string>
     <string name="favorite">Favorite</string>
-    <string name="favorite_locked">Favorite locked</string>
 
     <!-- Images -->
     <string name="animal_image_desc">Animal image %1$s</string>
@@ -168,7 +163,6 @@ Please read all terms carefully before proceeding with a special adoption reques
     <string name="ownership_list_empty_action">View Animals</string>
 
     <!-- Error State -->
-    <string name="ownership_list_error">Error loading requests</string>
     <string name="ownership_list_retry">Try Again</string>
 
     <!-- Status Labels -->
@@ -181,7 +175,6 @@ Please read all terms carefully before proceeding with a special adoption reques
     <string name="ownership_requested_at">Requested on %1$s</string>
 
     <!-- Pull to Refresh -->
-    <string name="ownership_list_refreshing">Refreshing…</string>
 
     <!-- ========== OWNERSHIP LIST - TABS ========== -->
     <string name="ownership_active_requests">Active Requests</string>
@@ -199,4 +192,20 @@ Please read all terms carefully before proceeding with a special adoption reques
     <string name="no_notifications">No notifications to show</string>
     <string name="delete_notification">Delete</string>
     <string name="close">Close</string>
+    <string name="create_activity">Schedule activity</string>
+
+    <!-- ========== SCHEDULING SCREEN ========== -->
+    <string name="scheduling_title">%1$s\'s Schedule</string>
+    <string name="previous_week">Previous week</string>
+    <string name="next_week">Next week</string>
+    
+    <!-- Days of Week (Short) -->
+    <string name="day_monday_short">Mon</string>
+    <string name="day_tuesday_short">Tue</string>
+    <string name="day_wednesday_short">Wed</string>
+    <string name="day_thursday_short">Thu</string>
+    <string name="day_friday_short">Fri</string>
+    <string name="day_saturday_short">Sat</string>
+    <string name="day_sunday_short">Sun</string>
+
 </resources>

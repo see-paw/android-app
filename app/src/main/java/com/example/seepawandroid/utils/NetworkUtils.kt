@@ -3,6 +3,8 @@ package com.example.seepawandroid.utils
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import com.example.seepawandroid.utils.NetworkUtils.init
+import com.example.seepawandroid.utils.NetworkUtils.isConnected
 
 /**
  * Utility object responsible for determining the network connectivity status

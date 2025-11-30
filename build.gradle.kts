@@ -5,3 +5,8 @@ plugins {
     alias(libs.plugins.kotlin.compose) apply false
     id("com.google.dagger.hilt.android") version "2.57.2" apply false
 }
+
+tasks.register<Exec>("runBackend") {
+    workingDir = file("../backend")
+    commandLine("dotnet", "run", "--project", "WebApi")
+}

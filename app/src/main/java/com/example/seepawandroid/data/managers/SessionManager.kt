@@ -183,7 +183,7 @@ class SessionManager @Inject constructor(
      * @return true if a valid token exists and has not expired, false otherwise
      */
     fun isAuthenticated(): Boolean {
-        val token = getAuthToken() ?: return false
+        getAuthToken() ?: return false
         val expiration = getDecrypted(KEY_TOKEN_EXPIRATION) ?: return false
 
         return try {
