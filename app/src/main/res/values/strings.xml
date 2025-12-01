@@ -204,7 +204,7 @@ Por favor, lê atentamente todos os termos antes de prosseguir com um pedido de 
     <string name="scheduling_title">Agenda de %1$s</string>
     <string name="previous_week">Semana anterior</string>
     <string name="next_week">Próxima semana</string>
-    
+
     <!-- Days of Week (Short) -->
     <string name="day_monday_short">Seg</string>
     <string name="day_tuesday_short">Ter</string>
@@ -213,5 +213,22 @@ Por favor, lê atentamente todos os termos antes de prosseguir com um pedido de 
     <string name="day_friday_short">Sex</string>
     <string name="day_saturday_short">Sáb</string>
     <string name="day_sunday_short">Dom</string>
+
+    <!-- ========== SCHEDULE LEGEND ========== -->
+    <string name="schedule_legend_title">Legenda:</string>
+    <string name="schedule_slot_available">Disponível</string>
+    <string name="schedule_slot_own_reservation">Tua reserva</string>
+    <string name="schedule_slot_reserved">Reservado</string>
+    <string name="schedule_slot_unavailable">Indisponível</string>
+
+    <!-- ========== ACTIVITY BOOKING MODALS ========== -->
+    <string name="modal_confirm_title">Confirmar atividade</string>
+    <string name="modal_confirm_message">Deseja agendar uma atividade com %1$s?</string>
+    <string name="modal_confirm_button">Confirmar</string>
+    <string name="modal_date_label">Data</string>
+    <string name="modal_time_label">Horário</string>
+
+    <string name="modal_error_title">Erro ao agendar</string>
+    <string name="modal_error_retry">Tentar novamente</string>
 
 </resources>

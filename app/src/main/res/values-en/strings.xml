@@ -198,7 +198,7 @@ Please read all terms carefully before proceeding with a special adoption reques
     <string name="scheduling_title">%1$s\'s Schedule</string>
     <string name="previous_week">Previous week</string>
     <string name="next_week">Next week</string>
-    
+
     <!-- Days of Week (Short) -->
     <string name="day_monday_short">Mon</string>
     <string name="day_tuesday_short">Tue</string>
@@ -207,5 +207,22 @@ Please read all terms carefully before proceeding with a special adoption reques
     <string name="day_friday_short">Fri</string>
     <string name="day_saturday_short">Sat</string>
     <string name="day_sunday_short">Sun</string>
+
+    <!-- ========== SCHEDULE LEGEND ========== -->
+    <string name="schedule_legend_title">Legend:</string>
+    <string name="schedule_slot_available">Available</string>
+    <string name="schedule_slot_own_reservation">Your booking</string>
+    <string name="schedule_slot_reserved">Reserved</string>
+    <string name="schedule_slot_unavailable">Unavailable</string>
+
+    <!-- ========== ACTIVITY BOOKING MODALS ========== -->
+    <string name="modal_confirm_title">Confirm activity</string>
+    <string name="modal_confirm_message">Would you like to schedule an activity with %1$s?</string>
+    <string name="modal_confirm_button">Confirm</string>
+    <string name="modal_date_label">Date</string>
+    <string name="modal_time_label">Time</string>
+
+    <string name="modal_error_title">Booking error</string>
+    <string name="modal_error_retry">Try again</string>
 
 </resources>

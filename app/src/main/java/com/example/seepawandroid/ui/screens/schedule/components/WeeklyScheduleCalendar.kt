@@ -35,6 +35,7 @@ fun WeeklyScheduleCalendar(
     onPrevWeek: () -> Unit,
     onNextWeek: () -> Unit,
     onSelectSlotCell: (AvailableSlot) -> Unit,
+    canNavigatePrevious: Boolean = true,
     modifier: Modifier = Modifier
 ) {
     val verticalScrollState = rememberScrollState()
@@ -44,6 +45,7 @@ fun WeeklyScheduleCalendar(
             weekStartDate = weekStartDate,
             onPrevWeek = onPrevWeek,
             onNextWeek = onNextWeek,
+            canNavigatePrevious = canNavigatePrevious,
             modifier = Modifier.padding(bottom = 8.dp)
         )
 

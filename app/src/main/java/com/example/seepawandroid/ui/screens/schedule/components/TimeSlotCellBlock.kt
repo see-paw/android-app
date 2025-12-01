@@ -19,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import com.example.seepawandroid.data.models.schedule.UnavailableSlot
 import com.example.seepawandroid.ui.screens.schedule.CELL_HEIGHT
@@ -56,6 +57,7 @@ fun TimeSlotCellBlock(
             .fillMaxWidth()
             .height(CELL_HEIGHT)
             .padding(vertical = 1.dp)
+            .testTag("timeSlot_${cell.time.hour}_${cell.slotType.name}")
             .then(
                 if (isClickable) Modifier.clickable { onClick() }
                 else Modifier

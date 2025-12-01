@@ -1,6 +1,5 @@
 package com.example.seepawandroid.data.models.mappers
 
-import android.R
 import com.example.seepawandroid.data.models.schedule.AvailableSlot
 import com.example.seepawandroid.data.models.schedule.ReservedSlot
 import com.example.seepawandroid.data.models.schedule.UnavailableSlot
@@ -11,6 +10,8 @@ import com.example.seepawandroid.data.remote.dtos.schedule.ResUnavailableSlotDto
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 
 fun ResAvailableSlotDto.toAvailableSlot(date: LocalDate) : AvailableSlot = AvailableSlot(
     id = this.id,
@@ -33,12 +34,20 @@ fun ResUnavailableSlotDto.toUnavailableSlot(date: LocalDate) : UnavailableSlot =
     reason = this.reason,
 )
 
-fun AvailableSlot.toReqCreateOwnershipDto(animalId: String) : ReqCreateOwnershipActivityDto =
-    ReqCreateOwnershipActivityDto(
+fun AvailableSlot.toReqCreateOwnershipDto(animalId: String) : ReqCreateOwnershipActivityDto {
+    val formatter = DateTimeFormatter.ISO_INSTANT
+    val utcZone = ZoneId.of("UTC")
+
+    return ReqCreateOwnershipActivityDto(
         animalId = animalId,
-        startDate = this.start.toString(),
-        endDate = this.end.toString(),
+        startDate = this.start.atZone(ZoneId.systemDefault())
+            .withZoneSameInstant(utcZone)
+            .format(formatter),
+        endDate = this.end.atZone(ZoneId.systemDefault())
+            .withZoneSameInstant(utcZone)
+            .format(formatter)
     )
+}
 
 
 private fun parseDateTime(date: LocalDate, time: String) : LocalDateTime {

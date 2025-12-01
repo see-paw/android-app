@@ -15,6 +15,7 @@ fun SchedulingContent(
     onPrevWeek: () -> Unit,
     onNextWeek: () -> Unit,
     onSelectSlotCell: (AvailableSlot) -> Unit,
+    canNavigatePrevious: Boolean = true,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -26,6 +27,7 @@ fun SchedulingContent(
             onPrevWeek = onPrevWeek,
             onNextWeek = onNextWeek,
             onSelectSlotCell = onSelectSlotCell,
+            canNavigatePrevious = canNavigatePrevious,
             modifier = Modifier.fillMaxSize()
         )
     }

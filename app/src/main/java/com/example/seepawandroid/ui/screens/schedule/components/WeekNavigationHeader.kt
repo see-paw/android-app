@@ -13,6 +13,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import com.example.seepawandroid.R
 import java.time.LocalDate
@@ -22,6 +23,7 @@ fun WeekNavigationHeader(
     weekStartDate: LocalDate,
     onPrevWeek: () -> Unit,
     onNextWeek: () -> Unit,
+    canNavigatePrevious: Boolean = true,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -29,7 +31,11 @@ fun WeekNavigationHeader(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        IconButton(onClick = onPrevWeek) {
+        IconButton(
+            onClick = onPrevWeek,
+            enabled = canNavigatePrevious,
+            modifier = Modifier.testTag("prevWeekButton")
+        ) {
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.ArrowLeft,
                 contentDescription = stringResource(R.string.previous_week)
@@ -38,10 +44,14 @@ fun WeekNavigationHeader(
 
         Text(
             text = formatWeekRange(weekStartDate),
-            style = MaterialTheme.typography.titleMedium
+            style = MaterialTheme.typography.titleMedium,
+            modifier = Modifier.testTag("weekRangeText")
         )
 
-        IconButton(onClick = onNextWeek) {
+        IconButton(
+            onClick = onNextWeek,
+            modifier = Modifier.testTag("nextWeekButton")
+        ) {
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.ArrowRight,
                 contentDescription = stringResource(R.string.next_week)

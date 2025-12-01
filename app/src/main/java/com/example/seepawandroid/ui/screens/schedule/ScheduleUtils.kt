@@ -39,7 +39,15 @@ fun DaySchedule.toTimeSlotCells(
     }
 
     when (matchingSlot) {
-        is AvailableSlot -> TimeSlotCell(cellTime, SlotType.AVAILABLE, matchingSlot)
+        is AvailableSlot -> {
+            // Create a new slot for this specific hour only
+            val hourSlot = AvailableSlot(
+                id = matchingSlot.id,
+                start = matchingSlot.start.toLocalDate().atTime(hour, 0),
+                end = matchingSlot.start.toLocalDate().atTime(hour + 1, 0)
+            )
+            TimeSlotCell(cellTime, SlotType.AVAILABLE, hourSlot)
+        }
         is ReservedSlot -> {
             if (matchingSlot.isOwnReservation) {
                 TimeSlotCell(cellTime, SlotType.OWN_RESERVATION, matchingSlot)

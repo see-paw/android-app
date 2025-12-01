@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -24,12 +23,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ModifierLocalBeyondBoundsLayout
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.example.seepawandroid.R
-import com.example.seepawandroid.data.models.schedule.AvailableSlot
 import com.example.seepawandroid.ui.screens.schedule.components.ConfirmActivityModal
 import com.example.seepawandroid.ui.screens.schedule.components.ErrorModal
 import com.example.seepawandroid.ui.screens.schedule.components.SchedulingContent
@@ -50,9 +48,10 @@ fun SchedulingScreen(
     val modalState by viewModel.modalUiState.observeAsState(ModalUiState.Hidden)
 
     Scaffold(
+        modifier = Modifier.testTag("schedulingScreen"),
         topBar = {
             TopAppBar(
-                title = { 
+                title = {
                     if (uiState is ScheduleUiState.Success) {
                         Text(stringResource(R.string.scheduling_title, (uiState as ScheduleUiState.Success).schedule.animalName))
                     } else {
@@ -61,7 +60,8 @@ fun SchedulingScreen(
                 },
                 navigationIcon = {
                     IconButton(
-                        onClick = onNavigateBack
+                        onClick = onNavigateBack,
+                        modifier = Modifier.testTag("backButton")
                     ) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
@@ -82,6 +82,7 @@ fun SchedulingScreen(
                     CircularProgressIndicator(
                         modifier = Modifier
                             .align(Alignment.Center)
+                            .testTag("schedulingLoadingIndicator")
                     )
                 }
 
@@ -107,7 +108,10 @@ fun SchedulingScreen(
                                 state.schedule.animalName
                             )
                         },
-                        modifier = Modifier.fillMaxSize()
+                        canNavigatePrevious = viewModel.canNavigateToPreviousWeek(state.schedule.weekStartDate),
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .testTag("schedulingContent")
                     )
                 }
 
@@ -115,7 +119,9 @@ fun SchedulingScreen(
                     ErrorContent(
                         message = state.message,
                         onRetry = { viewModel.loadSchedule(state.animalId, state.startDate) },
-                        modifier = Modifier.padding(16.dp)
+                        modifier = Modifier
+                            .padding(16.dp)
+                            .testTag("schedulingErrorContent")
                     )
                 }
             }
@@ -126,16 +132,14 @@ fun SchedulingScreen(
                         slot = state.slot,
                         animalName = state.animalName,
                         onConfirm = { viewModel.confirmSlot(state.slot, state.animalId, state.animalName)},
-                        onCancel = { viewModel.cancelSlot() },
-                        modifier = Modifier //TODO
+                        onCancel = { viewModel.cancelSlot() }
                     )
                 }
                 is ModalUiState.Error -> {
                     ErrorModal(
                         message = state.message,
                         onConfirm = { viewModel.confirmSlot(state.slot, state.animalId, state.animalName) },
-                        onDismiss = { viewModel.cancelSlot() },
-                        modifier = Modifier //TODO
+                        onDismiss = { viewModel.cancelSlot() }
                     )
                 }
 
@@ -144,6 +148,7 @@ fun SchedulingScreen(
                     CircularProgressIndicator(
                         modifier = Modifier
                             .align(Alignment.Center)
+                            .testTag("modalLoadingIndicator")
                     )
                 }
             }
@@ -164,10 +169,16 @@ private fun ErrorContent(
         Text(
             text = message,
             style = MaterialTheme.typography.bodyLarge,
-            color = MaterialTheme.colorScheme.error
+            color = MaterialTheme.colorScheme.error,
+            modifier = Modifier.testTag("schedulingErrorMessage")
         )
         Spacer(modifier = Modifier.height(16.dp))
-        Button(onClick = onRetry) { Text(stringResource(R.string.retry)) }
+        Button(
+            onClick = onRetry,
+            modifier = Modifier.testTag("schedulingRetryButton")
+        ) {
+            Text(stringResource(R.string.retry))
+        }
     }
 }
 

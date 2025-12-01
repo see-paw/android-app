@@ -58,6 +58,10 @@ class SchedulingViewModel @Inject constructor(
     fun confirmSlot(slot: AvailableSlot, animalId: String, animalName: String) {
         val dto = slot.toReqCreateOwnershipDto(animalId)
 
+        val currentState = uiState.value
+        val scheduleAnimalId = (currentState as? ScheduleUiState.Success)?.schedule?.animalId
+        val scheduleWeekStart = (currentState as? ScheduleUiState.Success)?.schedule?.weekStartDate
+
         viewModelScope.launch {
             _modalUiState.value = ModalUiState.Loading
 
@@ -65,13 +69,8 @@ class SchedulingViewModel @Inject constructor(
 
             _modalUiState.value = result.fold(
                 onSuccess = {
-                    val currentState = uiState.value
-
-                    if (currentState is ScheduleUiState.Success) {
-                        val id = currentState.schedule.animalId
-                        val date = currentState.schedule.weekStartDate
-
-                        loadSchedule(id, date)
+                    if (scheduleAnimalId != null && scheduleWeekStart != null) {
+                        loadSchedule(scheduleAnimalId, scheduleWeekStart)
                     }
 
                     ModalUiState.Hidden
@@ -94,11 +93,24 @@ class SchedulingViewModel @Inject constructor(
 
     fun loadPrevWeek(animalId: String, currWeekStartDate: LocalDate) {
         val prevWeekStartDate = currWeekStartDate.minusWeeks(1)
+        val currentMonday = LocalDate.now().with(DayOfWeek.MONDAY)
+
+        // Prevent navigating to weeks before the current week
+        if (prevWeekStartDate.isBefore(currentMonday)) {
+            return
+        }
+
         loadSchedule(animalId, prevWeekStartDate)
     }
 
     fun loadNextWeek(animalId: String, currWeekStartDate: LocalDate) {
         val nextWeekStartDate = currWeekStartDate.plusWeeks(1)
         loadSchedule(animalId, nextWeekStartDate)
+    }
+
+    fun canNavigateToPreviousWeek(currWeekStartDate: LocalDate): Boolean {
+        val currentMonday = LocalDate.now().with(DayOfWeek.MONDAY)
+        val prevWeekStartDate = currWeekStartDate.minusWeeks(1)
+        return !prevWeekStartDate.isBefore(currentMonday)
     }
 }

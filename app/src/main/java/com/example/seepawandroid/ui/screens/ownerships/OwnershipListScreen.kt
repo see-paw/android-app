@@ -423,7 +423,9 @@ private fun OwnedAnimalCard(
 
             Button(
                 onClick = onScheduleVisit,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .testTag("scheduleActivityButton")
             ) {
                 Icon(Icons.Outlined.CalendarMonth, contentDescription = null)
                 Spacer(modifier = Modifier.width(8.dp))
