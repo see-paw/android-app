@@ -1,11 +1,11 @@
-package com.example.seepawandroid.ui.screens.activities
+package com.example.seepawandroid.ui.screens.schedule
 
 import androidx.compose.ui.unit.dp
-import com.example.seepawandroid.data.models.activities.AvailableSlot
-import com.example.seepawandroid.data.models.activities.DaySchedule
-import com.example.seepawandroid.data.models.activities.ReservedSlot
-import com.example.seepawandroid.data.models.activities.Slot
-import com.example.seepawandroid.data.models.activities.UnavailableSlot
+import com.example.seepawandroid.data.models.schedule.AvailableSlot
+import com.example.seepawandroid.data.models.schedule.DaySchedule
+import com.example.seepawandroid.data.models.schedule.ReservedSlot
+import com.example.seepawandroid.data.models.schedule.Slot
+import com.example.seepawandroid.data.models.schedule.UnavailableSlot
 import java.time.LocalTime
 
 const val SCHEDULE_START_HOUR = 9

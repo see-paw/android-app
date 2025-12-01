@@ -1,38 +1,24 @@
 package com.example.seepawandroid.data.repositories
 
-import android.util.Log
 import com.example.seepawandroid.data.remote.api.services.BackendApiService
-import com.example.seepawandroid.data.remote.dtos.activities.ResScheduleResponseDto
-import java.time.DayOfWeek
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
+import com.example.seepawandroid.data.remote.dtos.activities.ReqCreateOwnershipActivityDto
 import javax.inject.Inject
 
 class ActivityRepository @Inject constructor(
     private val apiService: BackendApiService
 ) {
-    suspend fun getWeeklySchedule(
-        animalId: String,
-        startDate: LocalDate = LocalDate.now().with(DayOfWeek.MONDAY)
-    ) : Result<ResScheduleResponseDto>{
+    suspend fun createOwnershipActivity(
+        dto: ReqCreateOwnershipActivityDto) : Result<Unit> {
         return try {
-            val startDateString = startDate.format(DateTimeFormatter.ISO_LOCAL_DATE)
+            val response = apiService.createOwnershipActivity(dto)
 
-            Log.i("REPOSITORY", "$animalId:::::$startDateString")
-
-            val response = apiService.getWeekAnimalSchedule(animalId, startDateString)
-
-            Log.i("REPOSITORY", "$response")
-
-            if (response.isSuccessful && response.body() != null) {
-                return Result.success(response.body()!!)
+            if (response.isSuccessful) {
+                Result.success(Unit)
             } else {
-                return Result.failure(Exception("Failed to fetch schedule: HTTP ${response.code()}"))
+                Result.failure(Exception("Failed to create ownership activity: HTTP ${response.code()}"))
             }
-        } catch (e: Exception) {
-            Result.failure(e)
+        } catch (ex: Exception) {
+            Result.failure(ex)
         }
     }
-
-
 }

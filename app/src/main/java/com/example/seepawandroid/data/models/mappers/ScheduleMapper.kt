@@ -1,10 +1,10 @@
 package com.example.seepawandroid.data.models.mappers
 
-import com.example.seepawandroid.data.models.activities.DaySchedule
-import com.example.seepawandroid.data.models.activities.Schedule
-import com.example.seepawandroid.data.models.activities.Slot
-import com.example.seepawandroid.data.remote.dtos.activities.ResDayScheduleDto
-import com.example.seepawandroid.data.remote.dtos.activities.ResScheduleResponseDto
+import com.example.seepawandroid.data.models.schedule.DaySchedule
+import com.example.seepawandroid.data.models.schedule.Schedule
+import com.example.seepawandroid.data.models.schedule.Slot
+import com.example.seepawandroid.data.remote.dtos.schedule.ResDayScheduleDto
+import com.example.seepawandroid.data.remote.dtos.schedule.ResScheduleResponseDto
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -22,6 +22,7 @@ fun ResScheduleResponseDto.toSchedule() : Schedule {
     val weekStartDate = LocalDate.parse(this.startDate, inputFormatter)
 
     return Schedule(
+        animalId = this.animal.id,
         animalName = this.animal.name,
         shelterId = this.shelter.id,
         shelterName = this.shelter.name,

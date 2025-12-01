@@ -11,7 +11,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.example.seepawandroid.ui.screens.activities.SchedulingScreen
+import com.example.seepawandroid.ui.screens.schedule.SchedulingScreen
 import com.example.seepawandroid.ui.screens.animals.AnimalCatalogueScreen
 import com.example.seepawandroid.ui.screens.animals.AnimalDetailScreen
 import com.example.seepawandroid.ui.screens.animals.viewmodel.AnimalViewModel

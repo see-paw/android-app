@@ -1,7 +1,8 @@
-package com.example.seepawandroid.ui.screens.activities
+package com.example.seepawandroid.ui.screens.schedule
 
-import com.example.seepawandroid.data.models.activities.Schedule
-import com.example.seepawandroid.data.models.activities.Slot
+import com.example.seepawandroid.data.models.schedule.Schedule
+import com.example.seepawandroid.data.models.schedule.Slot
+import java.time.LocalDate
 
 sealed class ScheduleUiState {
 
@@ -14,5 +15,7 @@ sealed class ScheduleUiState {
 
     data class Error(
         val message: String,
+        val animalId: String,
+        val startDate: LocalDate
     ) : ScheduleUiState()
 }

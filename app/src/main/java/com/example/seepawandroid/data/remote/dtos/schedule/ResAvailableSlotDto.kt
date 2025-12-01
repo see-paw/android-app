@@ -1,4 +1,4 @@
-package com.example.seepawandroid.data.remote.dtos.activities
+package com.example.seepawandroid.data.remote.dtos.schedule
 
 data class ResAvailableSlotDto(
     val id: String,

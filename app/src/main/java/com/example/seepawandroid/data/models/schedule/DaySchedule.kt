@@ -1,4 +1,4 @@
-package com.example.seepawandroid.data.models.activities
+package com.example.seepawandroid.data.models.schedule
 
 import java.time.LocalDate
 

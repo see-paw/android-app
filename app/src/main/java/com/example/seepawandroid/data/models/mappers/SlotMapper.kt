@@ -1,11 +1,13 @@
 package com.example.seepawandroid.data.models.mappers
 
-import com.example.seepawandroid.data.models.activities.AvailableSlot
-import com.example.seepawandroid.data.models.activities.ReservedSlot
-import com.example.seepawandroid.data.models.activities.UnavailableSlot
-import com.example.seepawandroid.data.remote.dtos.activities.ResAvailableSlotDto
-import com.example.seepawandroid.data.remote.dtos.activities.ResReservedSlotDto
-import com.example.seepawandroid.data.remote.dtos.activities.ResUnavailableSlotDto
+import android.R
+import com.example.seepawandroid.data.models.schedule.AvailableSlot
+import com.example.seepawandroid.data.models.schedule.ReservedSlot
+import com.example.seepawandroid.data.models.schedule.UnavailableSlot
+import com.example.seepawandroid.data.remote.dtos.activities.ReqCreateOwnershipActivityDto
+import com.example.seepawandroid.data.remote.dtos.schedule.ResAvailableSlotDto
+import com.example.seepawandroid.data.remote.dtos.schedule.ResReservedSlotDto
+import com.example.seepawandroid.data.remote.dtos.schedule.ResUnavailableSlotDto
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
@@ -30,6 +32,14 @@ fun ResUnavailableSlotDto.toUnavailableSlot(date: LocalDate) : UnavailableSlot =
     end = parseDateTime(date, this.end),
     reason = this.reason,
 )
+
+fun AvailableSlot.toReqCreateOwnershipDto(animalId: String) : ReqCreateOwnershipActivityDto =
+    ReqCreateOwnershipActivityDto(
+        animalId = animalId,
+        startDate = this.start.toString(),
+        endDate = this.end.toString(),
+    )
+
 
 private fun parseDateTime(date: LocalDate, time: String) : LocalDateTime {
     val localTime = LocalTime.parse(time)

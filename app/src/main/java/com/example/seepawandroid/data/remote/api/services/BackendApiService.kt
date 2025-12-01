@@ -1,7 +1,8 @@
 package com.example.seepawandroid.data.remote.api.services
 
 import com.example.seepawandroid.data.remote.dtos.PagedListDto
-import com.example.seepawandroid.data.remote.dtos.activities.ResScheduleResponseDto
+import com.example.seepawandroid.data.remote.dtos.activities.ReqCreateOwnershipActivityDto
+import com.example.seepawandroid.data.remote.dtos.schedule.ResScheduleResponseDto
 import com.example.seepawandroid.data.remote.dtos.animals.ResAnimalDto
 import com.example.seepawandroid.data.remote.dtos.animals.ResOwnedAnimalDto
 import com.example.seepawandroid.data.remote.dtos.auth.ReqLoginDto
@@ -216,4 +217,9 @@ interface BackendApiService {
         @Path("animalId") animalId: String,
         @Query("startDate") startDate: String
     ): Response<ResScheduleResponseDto>
+
+    @POST("api/activities/ownership")
+    suspend fun createOwnershipActivity(
+        @Body request: ReqCreateOwnershipActivityDto
+    ): Response<Unit>
 }
