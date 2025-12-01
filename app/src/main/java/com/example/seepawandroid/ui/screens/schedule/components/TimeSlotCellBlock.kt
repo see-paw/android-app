@@ -30,11 +30,13 @@ import com.example.seepawandroid.ui.theme.EmptySlotColor
 import com.example.seepawandroid.ui.theme.OwnReservationColor
 import com.example.seepawandroid.ui.theme.ReservedSlotColor
 import com.example.seepawandroid.ui.theme.UnavailableSlotColor
+import java.time.LocalDate
 
 
 @Composable
 fun TimeSlotCellBlock(
     cell: TimeSlotCell,
+    date: LocalDate,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -57,7 +59,7 @@ fun TimeSlotCellBlock(
             .fillMaxWidth()
             .height(CELL_HEIGHT)
             .padding(vertical = 1.dp)
-            .testTag("timeSlot_${cell.time.hour}_${cell.slotType.name}")
+            .testTag("timeSlot_${date.dayOfMonth}_${cell.time.hour}_${cell.slotType.name}")
             .then(
                 if (isClickable) Modifier.clickable { onClick() }
                 else Modifier

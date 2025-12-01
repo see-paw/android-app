@@ -69,6 +69,7 @@ fun DayColumn(
             cells.forEach { cell ->
                 TimeSlotCellBlock(
                     cell = cell,
+                    date = dailySchedule.date,
                     onClick = {
                         cell.slot?.let { slot ->
                             if (slot is AvailableSlot) {

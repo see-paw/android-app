@@ -8,6 +8,15 @@
       <SelectionState runConfigName="SchedulingFlowTest">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
+      <SelectionState runConfigName="t6_slotSelection_availableSlot_opensConfirmationModal()">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+      <SelectionState runConfigName="t2_scheduleScreen_displaysAllComponents()">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+      <SelectionState runConfigName="t9_confirmationModal_confirmButton_showsLoadingState()">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
     </selectionStates>
   </component>
 </project>

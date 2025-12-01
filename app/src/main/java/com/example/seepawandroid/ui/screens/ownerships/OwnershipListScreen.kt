@@ -121,18 +121,21 @@ fun OwnershipListScreen(
                             Tab(
                                 selected = selectedTabIndex == 0,
                                 onClick = { viewModel.onTabSelected(0) },
-                                text = { Text(stringResource(R.string.ownership_active_requests)) }
+                                text = { Text(stringResource(R.string.ownership_active_requests)) },
+                                modifier = Modifier.testTag("activeRequestsTab")
                             )
                             Tab(
                                 selected = selectedTabIndex == 1,
                                 onClick = { viewModel.onTabSelected(1) },
-                                text = { Text(stringResource(R.string.ownership_owned_animals)) }
+                                text = { Text(stringResource(R.string.ownership_owned_animals)) },
+                                modifier = Modifier.testTag("ownedAnimalsTab")
                             )
                             // MOCK RECEIPTS
                             Tab(
                                 selected = selectedTabIndex == 2,
                                 onClick = { viewModel.onTabSelected(2) },
-                                text = { Text("Faturas") }
+                                text = { Text("Faturas") },
+                                modifier = Modifier.testTag("receiptsTab")
                             )
                         }
 
