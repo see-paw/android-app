@@ -8,6 +8,11 @@ import com.example.seepawandroid.data.remote.dtos.schedule.ResScheduleResponseDt
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
+/**
+ * Converts a ResDayScheduleDto from the API to a DaySchedule domain model.
+ *
+ * @return DaySchedule with parsed date and converted slots.
+ */
 fun ResDayScheduleDto.toDaySchedule(): DaySchedule {
     val date = LocalDate.parse(this.date)
 
@@ -17,6 +22,11 @@ fun ResDayScheduleDto.toDaySchedule(): DaySchedule {
     )
 }
 
+/**
+ * Converts a ResScheduleResponseDto from the API to a Schedule domain model.
+ *
+ * @return Schedule with parsed week start date and converted days.
+ */
 fun ResScheduleResponseDto.toSchedule() : Schedule {
     val inputFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
     val weekStartDate = LocalDate.parse(this.startDate, inputFormatter)

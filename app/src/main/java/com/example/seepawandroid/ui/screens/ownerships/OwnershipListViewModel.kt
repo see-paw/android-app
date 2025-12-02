@@ -24,14 +24,28 @@ class OwnershipListViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _uiState = MediatorLiveData<OwnershipListUiState>()
+    /**
+     * The current state of the UI.
+     */
     val uiState: LiveData<OwnershipListUiState> = _uiState
 
     private val _isRefreshing = MutableLiveData(false)
+    /**
+     * Whether a pull-to-refresh is in progress.
+     */
     val isRefreshing: LiveData<Boolean> = _isRefreshing
 
     private val _selectedTabIndex = MutableLiveData(0)
+    /**
+     * The currently selected tab index.
+     */
     val selectedTabIndex: LiveData<Int> = _selectedTabIndex
 
+    /**
+     * Called when a tab is selected.
+     *
+     * @param index The index of the selected tab.
+     */
     fun onTabSelected(index: Int) {
         _selectedTabIndex.value = index
     }
@@ -65,9 +79,10 @@ class OwnershipListViewModel @Inject constructor(
     }
 
     /**
-     * Updates UI state based on ownership requests.
+     * Updates the UI state based on the provided data.
      *
-     * @param requests The list of ownership requests (with images).
+     * @param requests The list of ownership requests.
+     * @param ownedAnimals The list of owned animals.
      * @param isRefreshing Whether a refresh is in progress.
      */
     private fun updateUiState(

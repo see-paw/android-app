@@ -25,12 +25,21 @@ class LoginViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _email = MutableLiveData("")
+    /**
+     * The email address entered by the user.
+     */
     val email: LiveData<String> = _email
 
     private val _password = MutableLiveData("")
+    /**
+     * The password entered by the user.
+     */
     val password: LiveData<String> = _password
 
     private val _uiState = MutableLiveData<LoginUiState>(LoginUiState.Idle)
+    /**
+     * The current state of the login process.
+     */
     val uiState: LiveData<LoginUiState> = _uiState
 
     /**

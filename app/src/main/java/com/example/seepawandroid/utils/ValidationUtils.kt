@@ -2,6 +2,9 @@ package com.example.seepawandroid.utils
 
 import java.time.LocalDate
 
+/**
+ * Utility object for input validation operations.
+ */
 object ValidationUtils {
     /**
      * Validates user's full name.

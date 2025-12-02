@@ -28,59 +28,138 @@ class RegisterViewModel @Inject constructor(
 
     // Form fields
     private val _name = MutableLiveData("")
+    /**
+     * The user's name.
+     */
     val name: LiveData<String> = _name
 
     private val _email = MutableLiveData("")
+    /**
+     * The user's email address.
+     */
     val email: LiveData<String> = _email
 
     private val _password = MutableLiveData("")
+    /**
+     * The user's password.
+     */
     val password: LiveData<String> = _password
 
     private val _confirmPassword = MutableLiveData("")
+    /**
+     * The user's password confirmation.
+     */
     val confirmPassword: LiveData<String> = _confirmPassword
 
     private val _confirmPasswordError = MutableLiveData<String?>()
+    /**
+     * The error message for the password confirmation.
+     */
     val confirmPasswordError: LiveData<String?> = _confirmPasswordError
 
     private val _street = MutableLiveData("")
+    /**
+     * The user's street address.
+     */
     val street: LiveData<String> = _street
 
     private val _city = MutableLiveData("")
+    /**
+     * The user's city.
+     */
     val city: LiveData<String> = _city
 
     private val _postalCode = MutableLiveData("")
+    /**
+     * The user's postal code.
+     */
     val postalCode: LiveData<String> = _postalCode
 
     private val _birthDate = MutableLiveData<LocalDate?>(null)
+    /**
+     * The user's birth date.
+     */
     val birthDate: LiveData<LocalDate?> = _birthDate
 
     // Error fields for individual validation
     private val _nameError = MutableLiveData<String?>()
+    /**
+     * The error message for the name field.
+     */
     val nameError: LiveData<String?> = _nameError
 
     private val _emailError = MutableLiveData<String?>()
+    /**
+     * The error message for the email field.
+     */
     val emailError: LiveData<String?> = _emailError
 
     private val _passwordError = MutableLiveData<String?>()
+    /**
+     * The error message for the password field.
+     */
     val passwordError: LiveData<String?> = _passwordError
 
     private val _postalCodeError = MutableLiveData<String?>()
+    /**
+     * The error message for the postal code field.
+     */
     val postalCodeError: LiveData<String?> = _postalCodeError
 
     private val _birthDateError = MutableLiveData<String?>()
+    /**
+     * The error message for the birth date field.
+     */
     val birthDateError: LiveData<String?> = _birthDateError
 
     // UI State
     private val _uiState = MutableLiveData<RegisterUiState>(RegisterUiState.Idle)
+    /**
+     * The current state of the registration UI.
+     */
     val uiState: LiveData<RegisterUiState> = _uiState
 
-    // Update functions
+    /**
+     * Updates the name.
+     *
+     * @param value The new name.
+     */
     fun updateName(value: String) { _name.value = value }
+    /**
+     * Updates the email.
+     *
+     * @param value The new email.
+     */
     fun updateEmail(value: String) { _email.value = value }
+    /**
+     * Updates the password.
+     *
+     * @param value The new password.
+     */
     fun updatePassword(value: String) { _password.value = value }
+    /**
+     * Updates the street.
+     *
+     * @param value The new street.
+     */
     fun updateStreet(value: String) { _street.value = value }
+    /**
+     * Updates the city.
+     *
+     * @param value The new city.
+     */
     fun updateCity(value: String) { _city.value = value }
+    /**
+     * Updates the postal code.
+     *
+     * @param value The new postal code.
+     */
     fun updatePostalCode(value: String) { _postalCode.value = value }
+    /**
+     * Updates the birth date.
+     *
+     * @param date The new birth date.
+     */
     fun updateBirthDate(date: LocalDate) { _birthDate.value = date }
 
     /**
@@ -253,7 +332,6 @@ class RegisterViewModel @Inject constructor(
     /**
      * Resets the UI state to Idle.
      */
-    fun resetUiState() {
-        _uiState.value = RegisterUiState.Idle
+_uiState.value = RegisterUiState.Idle
     }
 }

@@ -28,6 +28,17 @@ import java.time.LocalDate
 import java.util.Locale
 import kotlin.collections.forEach
 
+/**
+ * A composable that displays a weekly schedule calendar.
+ *
+ * @param weekStartDate The start date of the week.
+ * @param weeklySchedule The schedule for the week.
+ * @param onPrevWeek A callback that is invoked when the user clicks the previous week button.
+ * @param onNextWeek A callback that is invoked when the user clicks the next week button.
+ * @param onSelectSlotCell A callback that is invoked when a slot is selected.
+ * @param canNavigatePrevious Whether the user can navigate to the previous week.
+ * @param modifier The modifier to be applied to the component.
+ */
 @Composable
 fun WeeklyScheduleCalendar(
     weekStartDate: LocalDate,

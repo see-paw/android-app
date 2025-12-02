@@ -32,6 +32,12 @@ import com.example.seepawandroid.ui.screens.schedule.components.ConfirmActivityM
 import com.example.seepawandroid.ui.screens.schedule.components.ErrorModal
 import com.example.seepawandroid.ui.screens.schedule.components.SchedulingContent
 
+/**
+ * A composable that displays the scheduling screen.
+ *
+ * @param animalId The ID of the animal for which the schedule is being displayed.
+ * @param onNavigateBack A callback that is invoked when the user clicks the back button.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SchedulingScreen(
@@ -181,4 +187,3 @@ private fun ErrorContent(
         }
     }
 }
-

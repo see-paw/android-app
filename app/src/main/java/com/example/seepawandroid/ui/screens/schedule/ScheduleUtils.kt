@@ -8,24 +8,65 @@ import com.example.seepawandroid.data.models.schedule.Slot
 import com.example.seepawandroid.data.models.schedule.UnavailableSlot
 import java.time.LocalTime
 
+/**
+ * The start hour of the schedule.
+ */
 const val SCHEDULE_START_HOUR = 9
+/**
+ * The end hour of the schedule.
+ */
 const val SCHEDULE_END_HOUR = 18
+/**
+ * The height of each cell in the schedule.
+ */
 val CELL_HEIGHT = 60.dp
 
+/**
+ * Represents a time slot cell in the schedule.
+ *
+ * @property time The time of the cell.
+ * @property slotType The type of the slot.
+ * @property slot The slot itself.
+ */
 data class TimeSlotCell(
     val time: LocalTime,
     val slotType: SlotType,
     val slot: Slot?
 )
 
+/**
+ * Represents the type of a time slot.
+ */
 enum class SlotType {
+    /**
+     * The slot is available.
+     */
     AVAILABLE,
+    /**
+     * The slot is reserved.
+     */
     RESERVED,
+    /**
+     * The slot is reserved by the current user.
+     */
     OWN_RESERVATION,
+    /**
+     * The slot is unavailable.
+     */
     UNAVAILABLE,
+    /**
+     * The slot is empty.
+     */
     EMPTY
 }
 
+/**
+ * Converts a [DaySchedule] to a list of [TimeSlotCell]s.
+ *
+ * @param startHour The start hour of the schedule.
+ * @param endHour The end hour of the schedule.
+ * @return A list of [TimeSlotCell]s.
+ */
 fun DaySchedule.toTimeSlotCells(
     startHour: Int = SCHEDULE_START_HOUR,
     endHour: Int = SCHEDULE_END_HOUR

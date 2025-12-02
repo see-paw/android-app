@@ -32,6 +32,11 @@ import com.example.seepawandroid.ui.theme.OwnReservationColor
 import com.example.seepawandroid.ui.theme.ReservedSlotColor
 import com.example.seepawandroid.ui.theme.UnavailableSlotColor
 
+/**
+ * A composable that displays a legend for the schedule.
+ *
+ * @param modifier The modifier to be applied to the component.
+ */
 @Composable
 fun ScheduleLegend(modifier: Modifier = Modifier) {
     Column(modifier = modifier) {

@@ -8,11 +8,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
 /**
- * Reusable selectable chip component used in filters.
+ * A composable that displays a filter chip item.
  *
- * @param label The text displayed inside the chip.
- * @param selected Indicates whether the chip is currently active/selected.
- * @param onClick Callback invoked when the chip is tapped.
+ * @param label The text to be displayed on the chip.
+ * @param selected Whether the chip is currently selected.
+ * @param onClick The callback to be invoked when the chip is clicked.
+ * @param modifier The modifier to be applied to the chip.
  */
 @Composable
 fun FilterChipItem(

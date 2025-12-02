@@ -28,11 +28,11 @@ import androidx.compose.ui.unit.dp
 import com.example.seepawandroid.R
 
 /**
- * Represents a navigation drawer item for authenticated users.
+ * Represents an option in the navigation drawer.
  *
- * @param label String resource ID for the displayed text.
- * @param icon Icon to show in the drawer.
- * @param route Navigation route associated with this option.
+ * @property label The string resource for the option's label.
+ * @property icon The icon for the option.
+ * @property route The navigation route associated with the option.
  */
 data class DrawerOption(
     @StringRes val label: Int,
@@ -42,6 +42,8 @@ data class DrawerOption(
 
 /**
  * Returns all drawer options available for authenticated users.
+ *
+ * @return A list of [DrawerOption] for authenticated users.
  */
 fun getUserDrawerOptions() = listOf(
     DrawerOption(R.string.catalogue, Icons.Outlined.Pets, "AnimalsCatalogue"),
@@ -52,12 +54,12 @@ fun getUserDrawerOptions() = listOf(
 )
 
 /**
- * Drawer component used in authenticated user screens.
+ * Composable that displays the navigation drawer for authenticated users.
  *
- * @param items All available drawer options.
- * @param selected Currently selected item.
- * @param onSelect Triggered when the user selects a drawer option.
- * @param onCloseDrawer Called to close the navigation drawer.
+ * @param items The list of drawer options to display.
+ * @param selected The currently selected drawer option.
+ * @param onSelect The callback invoked when a drawer option is selected.
+ * @param onCloseDrawer The callback invoked to close the drawer.
  */
 @Composable
 fun DrawerUser(

@@ -15,17 +15,35 @@ import java.time.DayOfWeek
 import java.time.LocalDate
 import javax.inject.Inject
 
+/**
+ * ViewModel for the scheduling screen.
+ *
+ * @param scheduleRepository The repository for schedule-related operations.
+ * @param activityRepository The repository for activity-related operations.
+ */
 @HiltViewModel
 class SchedulingViewModel @Inject constructor(
     private val scheduleRepository: ScheduleRepository,
     private val activityRepository: ActivityRepository
 ) : ViewModel() {
     private val _uiState = MutableLiveData<ScheduleUiState>()
+    /**
+     * The current state of the UI.
+     */
     val uiState: LiveData<ScheduleUiState> = _uiState
 
     private val _modalUiState = MutableLiveData<ModalUiState>(ModalUiState.Hidden)
+    /**
+     * The current state of the modal dialog.
+     */
     val modalUiState: LiveData<ModalUiState> = _modalUiState
 
+    /**
+     * Loads the schedule for the given animal and start date.
+     *
+     * @param animalId The ID of the animal.
+     * @param startDate The start date of the week.
+     */
     fun loadSchedule(
         animalId: String,
         startDate: LocalDate = LocalDate.now().with(DayOfWeek.MONDAY) ) {
@@ -51,10 +69,24 @@ class SchedulingViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Called when a slot is clicked.
+     *
+     * @param slot The clicked slot.
+     * @param animalId The ID of the animal.
+     * @param animalName The name of the animal.
+     */
     fun onSlotClick(slot: AvailableSlot, animalId: String, animalName: String) {
         _modalUiState.value = ModalUiState.Confirm(slot, animalId, animalName)
     }
 
+    /**
+     * Confirms the selected slot.
+     *
+     * @param slot The slot to confirm.
+     * @param animalId The ID of the animal.
+     * @param animalName The name of the animal.
+     */
     fun confirmSlot(slot: AvailableSlot, animalId: String, animalName: String) {
         val dto = slot.toReqCreateOwnershipDto(animalId)
 
@@ -87,10 +119,19 @@ class SchedulingViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Cancels the slot selection.
+     */
     fun cancelSlot() {
         _modalUiState.value = ModalUiState.Hidden
     }
 
+    /**
+     * Loads the previous week's schedule.
+     *
+     * @param animalId The ID of the animal.
+     * @param currWeekStartDate The start date of the current week.
+     */
     fun loadPrevWeek(animalId: String, currWeekStartDate: LocalDate) {
         val prevWeekStartDate = currWeekStartDate.minusWeeks(1)
         val currentMonday = LocalDate.now().with(DayOfWeek.MONDAY)
@@ -103,11 +144,23 @@ class SchedulingViewModel @Inject constructor(
         loadSchedule(animalId, prevWeekStartDate)
     }
 
+    /**
+     * Loads the next week's schedule.
+     *
+     * @param animalId The ID of the animal.
+     * @param currWeekStartDate The start date of the current week.
+     */
     fun loadNextWeek(animalId: String, currWeekStartDate: LocalDate) {
         val nextWeekStartDate = currWeekStartDate.plusWeeks(1)
         loadSchedule(animalId, nextWeekStartDate)
     }
 
+    /**
+     * Checks if it is possible to navigate to the previous week.
+     *
+     * @param currWeekStartDate The start date of the current week.
+     * @return True if it is possible to navigate to the previous week, false otherwise.
+     */
     fun canNavigateToPreviousWeek(currWeekStartDate: LocalDate): Boolean {
         val currentMonday = LocalDate.now().with(DayOfWeek.MONDAY)
         val prevWeekStartDate = currWeekStartDate.minusWeeks(1)

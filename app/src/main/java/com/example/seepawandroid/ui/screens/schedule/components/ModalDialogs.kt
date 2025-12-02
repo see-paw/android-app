@@ -31,6 +31,15 @@ import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 import java.util.Locale
 
+/**
+ * A modal dialog for confirming an activity.
+ *
+ * @param slot The slot for the activity.
+ * @param animalName The name of the animal.
+ * @param onConfirm A callback that is invoked when the confirmation button is clicked.
+ * @param onCancel A callback that is invoked when the dialog is dismissed.
+ * @param modifier The modifier to be applied to the component.
+ */
 @Composable
 fun ConfirmActivityModal(
     slot: AvailableSlot,
@@ -115,6 +124,14 @@ fun ConfirmActivityModal(
     )
 }
 
+/**
+ * A modal dialog for displaying an error.
+ *
+ * @param message The error message to be displayed.
+ * @param onConfirm A callback that is invoked when the confirmation button is clicked.
+ * @param onDismiss A callback that is invoked when the dialog is dismissed.
+ * @param modifier The modifier to be applied to the component.
+ */
 @Composable
 fun ErrorModal(
     message: String,

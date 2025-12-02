@@ -78,6 +78,9 @@ fun UserHomepageScreen() {
     }
 }
 
+/**
+ * A preview for the user homepage screen.
+ */
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
 fun PreviewUserHomeScreen() {

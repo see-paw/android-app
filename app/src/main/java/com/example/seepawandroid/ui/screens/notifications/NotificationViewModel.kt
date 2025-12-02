@@ -28,6 +28,9 @@ class NotificationViewModel @Inject constructor(
     private val animalRepository: AnimalRepository
 ) : ViewModel() {
 
+    /**
+     * Companion object for constants.
+     */
     companion object {
         private const val NOTIFICATIONS_PER_PAGE = 5
     }
@@ -35,12 +38,21 @@ class NotificationViewModel @Inject constructor(
     // ========== STATE ==========
 
     private val _currentPage = MutableLiveData(0)
+    /**
+     * The current page of notifications.
+     */
     val currentPage: LiveData<Int> = _currentPage
 
     private val _uiState = MediatorLiveData<NotificationDropdownUiState>()
+    /**
+     * The current state of the UI.
+     */
     val uiState: LiveData<NotificationDropdownUiState> = _uiState
 
     private val _showOwnershipApprovedDialog = MutableLiveData<OwnershipApprovedDialogData?>(null)
+    /**
+     * The data for the ownership approved dialog, or null if it should not be shown.
+     */
     val showOwnershipApprovedDialog: LiveData<OwnershipApprovedDialogData?> = _showOwnershipApprovedDialog
 
     init {

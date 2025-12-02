@@ -25,6 +25,9 @@ import javax.inject.Singleton
 class NotificationService @Inject constructor(
     private val baseUrl: String
 ) {
+    /**
+     * Companion object containing constants for the notification service.
+     */
     companion object {
         private const val TAG = "NotificationService"
         private const val HUB_ENDPOINT = "notificationHub"
