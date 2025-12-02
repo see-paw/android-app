@@ -28,23 +28,37 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.example.seepawandroid.R
+import com.example.seepawandroid.ui.screens.login.AuthViewModel
 import com.example.seepawandroid.ui.screens.schedule.components.ConfirmActivityModal
 import com.example.seepawandroid.ui.screens.schedule.components.ErrorModal
 import com.example.seepawandroid.ui.screens.schedule.components.SchedulingContent
+import com.example.seepawandroid.ui.screens.schedule.components.SuccessModal
 
 /**
  * A composable that displays the scheduling screen.
  *
+ * This screen is protected and requires authentication. If the user is not authenticated,
+ * they will be redirected to the login screen via the navigation graph.
+ *
  * @param animalId The ID of the animal for which the schedule is being displayed.
  * @param onNavigateBack A callback that is invoked when the user clicks the back button.
+ * @param authViewModel The authentication ViewModel to check authentication state.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SchedulingScreen(
     animalId: String,
     onNavigateBack: () -> Unit,
+    authViewModel: AuthViewModel = hiltViewModel()
 ) {
     val viewModel: SchedulingViewModel = hiltViewModel()
+    val isAuthenticated by authViewModel.isAuthenticated.observeAsState(false)
+
+    LaunchedEffect(isAuthenticated) {
+        if (!isAuthenticated) {
+            onNavigateBack()
+        }
+    }
 
     LaunchedEffect(animalId) {
         viewModel.loadSchedule(animalId)
@@ -145,6 +159,14 @@ fun SchedulingScreen(
                     ErrorModal(
                         message = state.message,
                         onConfirm = { viewModel.confirmSlot(state.slot, state.animalId, state.animalName) },
+                        onDismiss = { viewModel.cancelSlot() }
+                    )
+                }
+                is ModalUiState.Success -> {
+                    SuccessModal(
+                        animalName = state.animalName,
+                        date = state.date,
+                        time = state.time,
                         onDismiss = { viewModel.cancelSlot() }
                     )
                 }

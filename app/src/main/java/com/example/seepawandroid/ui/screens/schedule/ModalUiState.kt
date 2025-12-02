@@ -42,4 +42,17 @@ sealed class ModalUiState {
         val animalId: String,
         val animalName: String
     ) : ModalUiState()
+
+    /**
+     * The modal is in the success state.
+     *
+     * @property animalName The name of the animal.
+     * @property date The date of the confirmed slot.
+     * @property time The time of the confirmed slot.
+     */
+    data class Success(
+        val animalName: String,
+        val date: String,
+        val time: String
+    ) : ModalUiState()
 }

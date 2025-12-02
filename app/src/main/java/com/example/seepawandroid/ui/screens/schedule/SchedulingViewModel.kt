@@ -13,6 +13,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.time.DayOfWeek
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.util.Locale
 import javax.inject.Inject
 
 /**
@@ -105,7 +107,17 @@ class SchedulingViewModel @Inject constructor(
                         loadSchedule(scheduleAnimalId, scheduleWeekStart)
                     }
 
-                    ModalUiState.Hidden
+                    // Format date and time for success message
+                    val dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale.getDefault())
+                    val timeFormatter = DateTimeFormatter.ofPattern("HH:mm", Locale.getDefault())
+                    val formattedDate = slot.start.format(dateFormatter)
+                    val formattedTime = "${slot.start.format(timeFormatter)} - ${slot.end.format(timeFormatter)}"
+
+                    ModalUiState.Success(
+                        animalName = animalName,
+                        date = formattedDate,
+                        time = formattedTime
+                    )
                 },
                 onFailure = { exception ->
                     ModalUiState.Error(

@@ -225,4 +225,8 @@ Please read all terms carefully before proceeding with a special adoption reques
     <string name="modal_error_title">Booking error</string>
     <string name="modal_error_retry">Try again</string>
 
+    <string name="modal_success_title">Booking confirmed!</string>
+    <string name="modal_success_message">Your visit with %1$s has been successfully scheduled.</string>
+    <string name="ok">OK</string>
+
 </resources>
