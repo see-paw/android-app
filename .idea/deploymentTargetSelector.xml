@@ -8,13 +8,16 @@
       <SelectionState runConfigName="SchedulingFlowTest">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="t6_slotSelection_availableSlot_opensConfirmationModal()">
+      <SelectionState runConfigName="Tests in 'com.example.seepawandroid'">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="t2_scheduleScreen_displaysAllComponents()">
+      <SelectionState runConfigName="t10_backButton_navigatesToOwnershipList()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="t9_confirmationModal_confirmButton_showsLoadingState()">
+      <SelectionState runConfigName="t1_navigation_fromOwnershipListToScheduleScreen()">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+      <SelectionState runConfigName="t4_weekNavigation_nextWeek_updatesWeekRange()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>

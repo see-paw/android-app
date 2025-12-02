@@ -3,6 +3,7 @@ package com.example.seepawandroid.ui.screens.ownerships
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.semantics.getOrNull
 import androidx.compose.ui.test.SemanticsMatcher
+import androidx.compose.ui.test.SemanticsNodeInteraction
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.assertIsNotEnabled
@@ -84,7 +85,7 @@ class OwnershipRequestFlowTest {
     fun t1_terms_acceptButton_startsDisabled() {
         prepareTestState_NavigateToWizard()
 
-        composeTestRule.onNodeWithTag("termsContent").assertIsDisplayed()
+        composeTestRule.onNodeWithTag("termsContent").awaitDisplayedAndEnabled().assertExists()
 
         // Ensure user cannot proceed without scrolling
         composeTestRule.onNodeWithTag("acceptTermsButton").assertIsNotEnabled()
@@ -97,9 +98,6 @@ class OwnershipRequestFlowTest {
     @Test
     fun t2_terms_scroll_enablesButton() {
         prepareTestState_NavigateToWizard()
-
-        // Initial state
-        composeTestRule.onNodeWithTag("acceptTermsButton").assertIsNotEnabled()
 
         // Action: Swipe up until the button becomes enabled
         swipeUpUntilEnabled("termsScrollArea", "acceptTermsButton")
@@ -229,7 +227,7 @@ class OwnershipRequestFlowTest {
         composeTestRule.onNodeWithTag("animalDetailContent")
             .performScrollToNode(hasTestTag("ownershipButton"))
 
-        composeTestRule.onNodeWithTag("ownershipButton").performClick()
+        composeTestRule.onNodeWithTag("ownershipButton").safeClick()
 
         // Wait for Wizard screen entry
         composeTestRule.waitUntil(timeoutMillis = 5000) {
@@ -249,6 +247,58 @@ class OwnershipRequestFlowTest {
      * ----------------------------------------- */
 
     /**
+     * Waits until the node is displayed on the screen.
+     * Throws an exception if the timeout is reached.
+     * @return The [SemanticsNodeInteraction] for chaining.
+     */
+    private fun SemanticsNodeInteraction.awaitDisplayed(timeout: Long = 5_000): SemanticsNodeInteraction {
+        composeTestRule.waitUntil(timeoutMillis = timeout) {
+            try {
+                this.assertIsDisplayed()
+                true // The node is displayed, condition met.
+            } catch (_: AssertionError) {
+                false // Not displayed yet, continue waiting.
+            }
+        }
+        return this // Return self for chaining.
+    }
+
+    /**
+     * Waits until the node is enabled.
+     * Throws an exception if the timeout is reached.
+     * @return The [SemanticsNodeInteraction] for chaining.
+     */
+    private fun SemanticsNodeInteraction.awaitEnabled(timeout: Long = 5_000): SemanticsNodeInteraction {
+        composeTestRule.waitUntil(timeoutMillis = timeout) {
+            try {
+                this.assertIsEnabled()
+                true // The node is enabled, condition met.
+            } catch (_: AssertionError) {
+                false // Not enabled yet, continue waiting.
+            }
+        }
+        return this // Return self for chaining.
+    }
+
+
+    private fun SemanticsNodeInteraction.awaitDisplayedAndEnabled(
+        timeout: Long = 8_000
+    ): SemanticsNodeInteraction {
+        composeTestRule.waitUntil(timeoutMillis = timeout) {
+            try {
+                this.assertIsDisplayed()
+                this.assertIsEnabled()
+                true
+            } catch (_: Throwable) { false }
+        }
+        return this
+    }
+
+    fun SemanticsNodeInteraction.safeClick() {
+        this.awaitDisplayedAndEnabled()
+        this.performClick()
+    }
+    /**
      * Repeatedly swipes up on a scrollable container until the target button becomes enabled.
      * Essential for validating "Read to Agree" behaviors.
      */
@@ -262,7 +312,7 @@ class OwnershipRequestFlowTest {
                 // Button not enabled yet
             }
 
-            composeTestRule.onNodeWithTag(scrollableTag).performTouchInput {
+            composeTestRule.onNodeWithTag(scrollableTag).awaitDisplayed().performTouchInput {
                 swipeUp(durationMillis = 200)
             }
             composeTestRule.waitForIdle()

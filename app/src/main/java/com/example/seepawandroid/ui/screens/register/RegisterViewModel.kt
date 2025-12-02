@@ -332,6 +332,7 @@ class RegisterViewModel @Inject constructor(
     /**
      * Resets the UI state to Idle.
      */
-_uiState.value = RegisterUiState.Idle
+    fun resetUiState() {
+        _uiState.value = RegisterUiState.Idle
     }
 }

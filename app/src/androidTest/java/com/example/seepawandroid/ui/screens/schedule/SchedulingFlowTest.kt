@@ -65,20 +65,10 @@ class SchedulingFlowTest {
     lateinit var sessionManager: SessionManager
 
     companion object {
-        private const val VALID_EMAIL = "diana@test.com"
+        private const val VALID_EMAIL = "helena@test.com"
         private const val VALID_PASSWORD = "Pa\$\$w0rd"
         private const val MAX_PAGES_TO_SEARCH = 10
 
-        /**
-         * IMPORTANT: These tests require that the user has at least one APPROVED ownership.
-         *
-         * To ensure tests pass:
-         * 1. Login as carlos@test.com
-         * 2. Request ownership for an animal
-         * 3. Approve the ownership (via admin panel or database)
-         *
-         * Alternatively, seed the database with approved ownerships for this user.
-         */
     }
 
     @Before
@@ -456,7 +446,7 @@ class SchedulingFlowTest {
         return this
     }
 
-    private fun SemanticsNodeInteraction.safeClick() {
+    fun SemanticsNodeInteraction.safeClick() {
         this.awaitDisplayedAndEnabled()
         this.performClick()
     }
@@ -545,7 +535,7 @@ class SchedulingFlowTest {
     }
 
     private fun navigateToOwnershipList() {
-        composeTestRule.onNodeWithTag("openDrawerButton").performClick()
+        composeTestRule.onNodeWithTag("openDrawerButton").safeClick()
         composeTestRule.waitUntil(timeoutMillis = 5000) {
             try {
                 composeTestRule.onNodeWithTag("drawerItemOwnershipList").assertExists()
