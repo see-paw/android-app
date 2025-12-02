@@ -5,19 +5,19 @@
       <SelectionState runConfigName="app">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="SchedulingFlowTest">
-        <option name="selectionMode" value="DROPDOWN" />
-      </SelectionState>
       <SelectionState runConfigName="Tests in 'com.example.seepawandroid'">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="t10_backButton_navigatesToOwnershipList()">
+      <SelectionState runConfigName="OwnershipRequestFlowTest">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="t1_navigation_fromOwnershipListToScheduleScreen()">
+      <SelectionState runConfigName="t2_terms_scroll_enablesButton()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="t4_weekNavigation_nextWeek_updatesWeekRange()">
+      <SelectionState runConfigName="t3_form_displaysCorrectly_afterTermsAccepted()">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+      <SelectionState runConfigName="t8_confirmationModal_cancelButton_closesModal()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>
