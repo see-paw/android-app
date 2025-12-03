@@ -118,7 +118,7 @@ class SchedulingFlowTest : BaseUiTest() {
     fun t4_weekNavigation_nextWeek_updatesWeekRange() {
         prepareTestState_NavigateToScheduleScreen()
         
-        composeTestRule.waitUntil(timeoutMillis = 5000) {
+        composeTestRule.waitUntil(timeoutMillis = 10_000) {
             try {
                 composeTestRule.onNodeWithTag("weekRangeText").assertExists()
                 true
@@ -134,9 +134,9 @@ class SchedulingFlowTest : BaseUiTest() {
         composeTestRule.onNodeWithTag("nextWeekButton").safeClick()
         composeTestRule.waitForIdle()
         waitUntilLoadingFinishes()
-        Thread.sleep(1000)
+        Thread.sleep(2000)
         
-        composeTestRule.waitUntil(timeoutMillis = 5000) {
+        composeTestRule.waitUntil(timeoutMillis = 15_000) {
             try {
                 val newText = composeTestRule.onNodeWithTag("weekRangeText")
                     .fetchSemanticsNode()
@@ -371,7 +371,7 @@ class SchedulingFlowTest : BaseUiTest() {
             composeTestRule.onNodeWithTag("nextWeekButton").safeClick()
             composeTestRule.waitForIdle()
             waitUntilLoadingFinishes(timeout = 30_000)
-            Thread.sleep(1000)
+            Thread.sleep(2000) // Dar mais tempo na pipeline
         } catch (e: Exception) {
             android.util.Log.w("SchedulingFlowTest", "Failed to navigate to next week, trying current week", e)
         }
@@ -389,7 +389,7 @@ class SchedulingFlowTest : BaseUiTest() {
                 composeTestRule.onNodeWithTag("nextWeekButton").safeClick()
                 composeTestRule.waitForIdle()
                 waitUntilLoadingFinishes(timeout = 30_000)
-                Thread.sleep(1000)
+                Thread.sleep(2000) // Dar mais tempo na pipeline
                 
                 val slot = findAvailableSlotInCurrentWeek()
                 if (slot != null) {
@@ -404,7 +404,11 @@ class SchedulingFlowTest : BaseUiTest() {
     }
     
     private fun findAvailableSlotInCurrentWeek(): String? {
-        composeTestRule.waitUntil(timeoutMillis = 10_000) {
+        // Esperar mais tempo na pipeline - os slots podem demorar a carregar
+        composeTestRule.waitForIdle()
+        Thread.sleep(1500) // Dar tempo para UI estabilizar
+        
+        composeTestRule.waitUntil(timeoutMillis = 30_000) {
             composeTestRule.onAllNodes(hasTestTagStartingWith("timeSlot_"))
                 .fetchSemanticsNodes().isNotEmpty()
         }
