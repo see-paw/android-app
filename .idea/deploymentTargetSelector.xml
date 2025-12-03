@@ -8,9 +8,6 @@
       <SelectionState runConfigName="Tests in 'com.example.seepawandroid'">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="t8_confirmationModal_cancelButton_closesModal()">
-        <option name="selectionMode" value="DROPDOWN" />
-      </SelectionState>
       <SelectionState runConfigName="SchedulingFlowTest">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>

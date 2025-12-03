@@ -25,27 +25,35 @@ jobs:
       pull-requests: write
       issues: write
 
-    services:
-      postgres:
-        image: postgres:13
-        env:
-          POSTGRES_USER: seepaw
-          POSTGRES_PASSWORD: seepawpwd
-          POSTGRES_DB: seepaw
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      # ==================== POSTGRESQL ====================
+
+      - name: Start PostgreSQL Container
+        run: |
+          echo "🗄️ Starting fresh PostgreSQL container..."
+          docker run -d \
+            --name postgres-test \
+            --network host \
+            -e POSTGRES_USER=seepaw \
+            -e POSTGRES_PASSWORD=seepawpwd \
+            -e POSTGRES_DB=seepaw \
+            postgres:13
+          
+          echo "⏳ Waiting for PostgreSQL to be ready..."
+          sleep 5
+          
+          until docker exec postgres-test pg_isready -U seepaw; do
+            echo "Waiting for database to be ready..."
+            sleep 2
+          done
+          
+          echo "✅ PostgreSQL is ready!"
+
       # ==================== DOCKER E BACKEND ====================
-      
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
@@ -89,6 +97,21 @@ jobs:
           
           echo "⏳ Waiting for backend to initialize..."
           sleep 10
+
+      - name: Verify Backend Startup Logs
+        run: |
+          echo "📋 Checking backend startup logs..."
+          echo ""
+          echo "=========================================="
+          echo "       BACKEND STARTUP LOGS (last 150 lines)"
+          echo "=========================================="
+          docker logs seepaw-backend 2>&1 | tail -150
+          echo ""
+          echo "=========================================="
+          echo "       DATABASE INITIALIZATION CHECK"
+          echo "=========================================="
+          docker logs seepaw-backend 2>&1 | grep -E "(TESTING MODE|Database|Migration|Seed|Environment:)" || echo "⚠️ No database logs found"
+          echo ""
 
       - name: Verify Backend Health with Real Data
         run: |
@@ -408,12 +431,14 @@ jobs:
             });
       # ==================== CLEANUP ====================
 
-      - name: Stop Backend Container
+      - name: Stop All Containers
         if: always()
         run: |
-          echo "🛑 Stopping backend container..."
+          echo "🛑 Stopping all containers..."
           docker stop seepaw-backend || true
           docker rm seepaw-backend || true
+          docker stop postgres-test || true
+          docker rm postgres-test || true
           echo "✅ Cleanup completo"
 
       - name: Display Test Summary
