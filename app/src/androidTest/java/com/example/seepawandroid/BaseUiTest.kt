@@ -27,6 +27,9 @@ open class BaseUiTest {
     @get:Rule(order = 1)
     val composeTestRule = createAndroidComposeRule<MainActivity>()
 
+    @get:Rule(order = 2)
+    val screenshotRule = ScreenshotTestRule()
+
     lateinit var context: Context
 
     @Before
