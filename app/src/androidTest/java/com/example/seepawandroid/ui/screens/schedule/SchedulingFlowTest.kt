@@ -16,10 +16,12 @@ import androidx.compose.ui.test.performTextClearance
 import androidx.compose.ui.test.performTextInput
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.seepawandroid.BaseUiTest
+import com.example.seepawandroid.ScreenshotTestRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.After
 import org.junit.Before
 import org.junit.FixMethodOrder
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.MethodSorters
@@ -38,6 +40,9 @@ class SchedulingFlowTest : BaseUiTest() {
         private const val VALID_EMAIL = "helena@test.com"
         private const val VALID_PASSWORD = "Pa\$\$w0rd"
     }
+
+    @get:Rule(order = 3)
+    val screenshotRule = ScreenshotTestRule()
 
     @Before
     override fun setUp() {
