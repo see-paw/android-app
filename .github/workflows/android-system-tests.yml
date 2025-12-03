@@ -95,8 +95,23 @@ jobs:
             -e JWT__SigningKey="${JWT__SigningKey}" \
             ${{ env.BACKEND_IMAGE }}
           
-          echo "⏳ Waiting for backend to initialize..."
-          sleep 10
+          echo "⏳ Waiting for backend to initialize and reset database..."
+          sleep 15
+
+      - name: Verify Database Reset
+        run: |
+          echo "🔍 Checking backend logs for database reset confirmation..."
+          echo ""
+          echo "=========================================="
+          echo "       DATABASE RESET LOGS"
+          echo "=========================================="
+          docker logs seepaw-backend 2>&1 | grep -A 50 "TESTING MODE" || echo "⚠️ Testing mode logs not found yet"
+          echo ""
+          echo "=========================================="
+          echo "       FULL STARTUP LOGS"
+          echo "=========================================="
+          docker logs seepaw-backend 2>&1 | tail -50
+          echo ""
 
       - name: Verify Backend Startup Logs
         run: |
