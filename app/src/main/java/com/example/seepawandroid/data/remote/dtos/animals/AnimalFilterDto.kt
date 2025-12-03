@@ -1,4 +1,4 @@
-package com.example.seepawandroid.data.remote.dtos.Animals
+package com.example.seepawandroid.data.remote.dtos.animals
 
 /**
  * Data Transfer Object used to represent filter options when querying animals.

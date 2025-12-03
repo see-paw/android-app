@@ -47,5 +47,6 @@ data class Animal(
     val cost: Double,
     val shelterId: String,
     val imageUrl: String?,
-    val imageUrls: List<String>
+    val imageUrls: List<String>,
+    val isFavorite: Boolean = false
 )

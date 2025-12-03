@@ -43,7 +43,7 @@ import com.example.seepawandroid.R
 import com.example.seepawandroid.ui.components.AnimalCard
 import com.example.seepawandroid.ui.components.FilterBottomSheet
 import com.example.seepawandroid.ui.components.PaginationBar
-import com.example.seepawandroid.ui.screens.Animals.AnimalCatalogueUiState
+import com.example.seepawandroid.ui.screens.animals.AnimalCatalogueUiState
 import com.example.seepawandroid.ui.screens.animals.viewmodel.AnimalViewModel
 
 /**
@@ -80,6 +80,13 @@ fun AnimalCatalogueScreen(
     // Load animals on first composition
     LaunchedEffect(Unit) {
         viewModel.loadAnimals()
+    }
+
+    // Load favorites when user is logged in
+    LaunchedEffect(isLoggedIn) {
+        if (isLoggedIn) {
+            viewModel.loadFavorites()
+        }
     }
 
     // Observing ViewModel state
@@ -290,8 +297,9 @@ fun AnimalCatalogueScreen(
                                     age = animal.age,
                                     imageUrl = animal.imageUrl,
                                     isLoggedIn = isLoggedIn,
-                                    isFavorite = false,
+                                    isFavorite = state.favoriteIds.contains(animal.id),
                                     onClick = { onAnimalClick(animal.id) },
+                                    onFavoriteClick = { viewModel.toggleFavorite(animal.id) },
                                     modifier = Modifier.testTag("animalCard_${animal.id}")
                                 )
                             }

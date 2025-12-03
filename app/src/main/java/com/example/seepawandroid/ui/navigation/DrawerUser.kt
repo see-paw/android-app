@@ -44,8 +44,8 @@ data class DrawerOption(
  * Returns all drawer options available for authenticated users.
  */
 fun getUserDrawerOptions() = listOf(
-    DrawerOption(R.string.catalogue, Icons.Outlined.Pets, "AnimalsCatalogue"),
-    DrawerOption(R.string.favorites, Icons.Outlined.FavoriteBorder, "Favorites"),
+    DrawerOption(R.string.catalogue, Icons.Outlined.Pets, NavigationRoutes.ANIMALS_CATALOGUE),
+    DrawerOption(R.string.favorites, Icons.Outlined.FavoriteBorder, NavigationRoutes.FAVORITES),
     DrawerOption(R.string.schedule_activities, Icons.Outlined.CalendarMonth, "ScheduleActivities"),
     DrawerOption(R.string.active_activities, Icons.Outlined.CalendarMonth, "ActiveActivities"),
     DrawerOption(R.string.requests, Icons.Outlined.ListAlt, NavigationRoutes.OWNERSHIP_LIST),
@@ -86,11 +86,14 @@ fun DrawerUser(
 
         items.forEach { item ->
             val itemModifier =
-                if (item.route == "AnimalsCatalogue")
+                if (item.route == NavigationRoutes.ANIMALS_CATALOGUE)
                     Modifier
                         .padding(NavigationDrawerItemDefaults.ItemPadding)
                         .testTag("drawerItemCatalogue")
-                // Test tag
+                else if (item.route == NavigationRoutes.FAVORITES)
+                    Modifier
+                        .padding(NavigationDrawerItemDefaults.ItemPadding)
+                        .testTag("drawerItemFavorites")
                 else if (item.route == NavigationRoutes.OWNERSHIP_LIST)
                     Modifier
                         .padding(NavigationDrawerItemDefaults.ItemPadding)

@@ -44,4 +44,7 @@ object NavigationRoutes {
     const val OWNERSHIP_LIST = "ownership_list"
 
     const val SCHEDULE_VISIT = "schedule_visit"
+
+    //Favorites (authenticated mode - view user's favorite animals)
+    const val FAVORITES = "favorites"
 }

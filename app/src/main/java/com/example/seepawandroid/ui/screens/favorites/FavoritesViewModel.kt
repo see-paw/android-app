@@ -5,9 +5,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.seepawandroid.data.repositories.FavoriteRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@HiltViewModel
 class FavoritesViewModel @Inject constructor(
     private val favoriteRepository: FavoriteRepository
 ) : ViewModel() {
@@ -27,19 +29,46 @@ class FavoritesViewModel @Inject constructor(
                 onSuccess = { favoritesDto ->
                     if (favoritesDto.items.isEmpty()) {
                         FavoritesUiState.Empty
+                    } else {
+                        FavoritesUiState.Success(
+                            favorites = favoritesDto.items,
+                            pageSize = favoritesDto.pageSize,
+                            totalCount = favoritesDto.totalCount,
+                            currentPage = favoritesDto.currentPage
+                        )
                     }
-
-                    FavoritesUiState.Success(
-                        favorites = favoritesDto.items,
-                        pageSize = favoritesDto.pageSize,
-                        totalCount = favoritesDto.totalCount,
-                        currentPage = favoritesDto.currentPage
-                    )
                 },
-                onFailure = {
-
+                onFailure = { error ->
+                    FavoritesUiState.Error(
+                        message = error.message ?: "Error loading favorites"
+                    )
                 }
             )
+        }
+    }
+
+    /**
+     * Removes an animal from the user's favorites.
+     * After successful removal, reloads the favorites list.
+     *
+     * @param animalId The ID of the animal to remove from favorites
+     */
+    fun removeFavorite(animalId: String) {
+        viewModelScope.launch {
+            try {
+                val result = favoriteRepository.removeFavorite(animalId)
+
+                result.onSuccess {
+                    // Reload favorites after successful removal
+                    loadFavorites()
+                    android.util.Log.d("FavoritesViewModel", "Favorite removed successfully: $animalId")
+                }.onFailure { error ->
+                    android.util.Log.e("FavoritesViewModel", "Error removing favorite", error)
+                    // Optionally show error to user
+                }
+            } catch (e: Exception) {
+                android.util.Log.e("FavoritesViewModel", "Error removing favorite", e)
+            }
         }
     }
 }

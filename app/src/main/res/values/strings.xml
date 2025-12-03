@@ -39,6 +39,12 @@
     <!-- Animal Card -->
     <string name="animal_years_suffix">anos</string>
     <string name="favorite">Favorito</string>
+    <string name="remove_favorite">Remover dos favoritos</string>
+
+    <!-- Favorites Screen -->
+    <string name="favorites_title">Os Meus Favoritos</string>
+    <string name="favorites_empty">Ainda não tens animais favoritos.\nExplora o catálogo e adiciona os teus preferidos!</string>
+    <string name="favorites_error">Erro ao carregar favoritos: %1$s</string>
 
     <!-- Images -->
     <string name="animal_image_desc">Imagem do animal %1$s</string>

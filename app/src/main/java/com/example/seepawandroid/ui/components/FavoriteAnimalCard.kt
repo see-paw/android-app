@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -27,30 +26,27 @@ import coil.compose.AsyncImage
 import com.example.seepawandroid.R
 
 /**
- * AnimalCard Component
+ * FavoriteAnimalCard Component
  *
- * Displays a small card used inside the Animal Catalogue grid.
+ * Displays a card for a favorite animal in the Favorites screen.
  * Includes:
  *  - Animal image
  *  - Name + age
- *  - Optional "favorite" icon (only when logged in)
+ *  - Remove from favorites button (filled heart)
  *
  * Test Tags (for automated UI tests):
- *  - animalCard
- *  - animalImage
- *  - animalName
- *  - animalAge
- *  - animalFavoriteIcon
+ *  - favoriteAnimalCard
+ *  - favoriteAnimalImage
+ *  - favoriteAnimalName
+ *  - removeFavoriteIcon
  */
 @Composable
-fun AnimalCard(
+fun FavoriteAnimalCard(
     name: String,
     age: Int,
     imageUrl: String?,
-    isLoggedIn: Boolean,
-    isFavorite: Boolean,
     onClick: () -> Unit,
-    onFavoriteClick: () -> Unit = {},
+    onRemoveFavorite: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -58,13 +54,11 @@ fun AnimalCard(
             .height(160.dp)
             .fillMaxWidth()
             .clickable { onClick() }
-            .testTag("animalCard")
-            .then(modifier),
+            .testTag("favoriteAnimalCard"),
         elevation = CardDefaults.cardElevation(4.dp)
     ) {
         Column {
-
-            //Animal image
+            // Animal image
             AsyncImage(
                 model = imageUrl,
                 placeholder = painterResource(R.drawable.no_image_found),
@@ -77,7 +71,7 @@ fun AnimalCard(
                 modifier = Modifier
                     .height(120.dp)
                     .fillMaxWidth()
-                    .testTag("animalImage")
+                    .testTag("favoriteAnimalImage")
             )
 
             Row(
@@ -86,29 +80,22 @@ fun AnimalCard(
                     .padding(horizontal = 8.dp, vertical = 6.dp),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-
-                //Name + age text
+                // Name + age text
                 Text(
                     text = "$name, $age ${stringResource(R.string.animal_years_suffix)}",
-                    modifier = Modifier.testTag("animalName")
+                    modifier = Modifier.testTag("favoriteAnimalName")
                 )
 
-
-                //Favorite icon (only when logged in)
-                if (isLoggedIn) {
-                    IconButton(
-                        onClick = onFavoriteClick,
-                        modifier = Modifier.testTag("animalFavoriteIcon")
-                    ) {
-                        Icon(
-                            imageVector = if (isFavorite)
-                                Icons.Filled.Favorite
-                            else
-                                Icons.Outlined.FavoriteBorder,
-                            contentDescription = stringResource(R.string.favorite),
-                            tint = MaterialTheme.colorScheme.primary
-                        )
-                    }
+                // Remove from favorites button (filled heart)
+                IconButton(
+                    onClick = onRemoveFavorite,
+                    modifier = Modifier.testTag("removeFavoriteIcon")
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.Favorite,
+                        contentDescription = stringResource(R.string.remove_favorite),
+                        tint = MaterialTheme.colorScheme.primary
+                    )
                 }
             }
         }

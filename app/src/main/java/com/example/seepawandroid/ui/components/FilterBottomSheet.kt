@@ -27,7 +27,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.seepawandroid.R
-import com.example.seepawandroid.data.remote.dtos.Animals.AnimalFilterDto
+import com.example.seepawandroid.data.remote.dtos.animals.AnimalFilterDto
 
 /**
  * Bottom sheet component used to present animal filtering options.
