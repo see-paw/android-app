@@ -3,13 +3,10 @@ package com.example.seepawandroid.ui.screens.ownerships
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.semantics.getOrNull
 import androidx.compose.ui.test.SemanticsMatcher
-import androidx.compose.ui.test.SemanticsNodeInteraction
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.assertIsNotEnabled
-import androidx.compose.ui.test.hasProgressBarRangeInfo
 import androidx.compose.ui.test.hasTestTag
-import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithTag
@@ -20,17 +17,13 @@ import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeUp
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.example.seepawandroid.MainActivity
-import com.example.seepawandroid.data.managers.SessionManager
-import dagger.hilt.android.testing.HiltAndroidRule
+import com.example.seepawandroid.BaseUiTest
 import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Before
 import org.junit.FixMethodOrder
-import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.MethodSorters
-import javax.inject.Inject
 
 /**
  * Test Suite for the Ownership Request Flow.
@@ -48,16 +41,7 @@ import javax.inject.Inject
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-class OwnershipRequestFlowTest {
-
-    @get:Rule(order = 0)
-    val hiltRule = HiltAndroidRule(this)
-
-    @get:Rule(order = 1)
-    val composeTestRule = createAndroidComposeRule<MainActivity>()
-
-    @Inject
-    lateinit var sessionManager: SessionManager
+class OwnershipRequestFlowTest : BaseUiTest() {
 
     companion object {
         private const val VALID_EMAIL = "carlos@test.com"
@@ -71,8 +55,8 @@ class OwnershipRequestFlowTest {
     }
 
     @Before
-    fun setup() {
-        hiltRule.inject()
+    override fun setUp() {
+        super.setUp()
         composeTestRule.waitForIdle()
         logoutIfNeeded()
     }
@@ -247,58 +231,6 @@ class OwnershipRequestFlowTest {
      * ----------------------------------------- */
 
     /**
-     * Waits until the node is displayed on the screen.
-     * Throws an exception if the timeout is reached.
-     * @return The [SemanticsNodeInteraction] for chaining.
-     */
-    private fun SemanticsNodeInteraction.awaitDisplayed(timeout: Long = 5_000): SemanticsNodeInteraction {
-        composeTestRule.waitUntil(timeoutMillis = timeout) {
-            try {
-                this.assertIsDisplayed()
-                true // The node is displayed, condition met.
-            } catch (_: AssertionError) {
-                false // Not displayed yet, continue waiting.
-            }
-        }
-        return this // Return self for chaining.
-    }
-
-    /**
-     * Waits until the node is enabled.
-     * Throws an exception if the timeout is reached.
-     * @return The [SemanticsNodeInteraction] for chaining.
-     */
-    private fun SemanticsNodeInteraction.awaitEnabled(timeout: Long = 5_000): SemanticsNodeInteraction {
-        composeTestRule.waitUntil(timeoutMillis = timeout) {
-            try {
-                this.assertIsEnabled()
-                true // The node is enabled, condition met.
-            } catch (_: AssertionError) {
-                false // Not enabled yet, continue waiting.
-            }
-        }
-        return this // Return self for chaining.
-    }
-
-
-    private fun SemanticsNodeInteraction.awaitDisplayedAndEnabled(
-        timeout: Long = 8_000
-    ): SemanticsNodeInteraction {
-        composeTestRule.waitUntil(timeoutMillis = timeout) {
-            try {
-                this.assertIsDisplayed()
-                this.assertIsEnabled()
-                true
-            } catch (_: Throwable) { false }
-        }
-        return this
-    }
-
-    fun SemanticsNodeInteraction.safeClick() {
-        this.awaitDisplayedAndEnabled()
-        this.performClick()
-    }
-    /**
      * Repeatedly swipes up on a scrollable container until the target button becomes enabled.
      * Essential for validating "Read to Agree" behaviors.
      */
@@ -441,14 +373,6 @@ class OwnershipRequestFlowTest {
                 composeTestRule.onNodeWithTag("animalDetailScreen").assertExists()
                 true
             } catch (e: Throwable) { false }
-        }
-    }
-
-    private fun waitUntilLoadingFinishes() {
-        composeTestRule.waitUntil(timeoutMillis = 20_000) {
-            composeTestRule.onAllNodes(
-                hasProgressBarRangeInfo(androidx.compose.ui.semantics.ProgressBarRangeInfo.Indeterminate)
-            ).fetchSemanticsNodes().isEmpty()
         }
     }
 

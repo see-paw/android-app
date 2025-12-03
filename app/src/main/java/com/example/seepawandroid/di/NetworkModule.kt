@@ -1,12 +1,15 @@
 package com.example.seepawandroid.di
 
 import com.example.seepawandroid.data.remote.api.interceptors.AuthInterceptor
+import com.example.seepawandroid.data.remote.api.interceptors.RetryInterceptor
 import com.example.seepawandroid.data.remote.api.services.BackendApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import okhttp3.ConnectionPool
 import okhttp3.OkHttpClient
+import okhttp3.Protocol
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -56,14 +59,23 @@ object NetworkModule {
     @Singleton
     fun provideOkHttpClient(
         authInterceptor: AuthInterceptor,
+        retryInterceptor: RetryInterceptor,
         loggingInterceptor: HttpLoggingInterceptor
     ): OkHttpClient {
         return OkHttpClient.Builder()
+            // Retry interceptor should be first to wrap all other interceptors
+            .addInterceptor(retryInterceptor)
             .addInterceptor(loggingInterceptor)
             .addInterceptor(authInterceptor)
             .connectTimeout(30, TimeUnit.SECONDS)
             .readTimeout(30, TimeUnit.SECONDS)
             .writeTimeout(30, TimeUnit.SECONDS)
+            // Retry on connection failure (handles "connection closed" errors)
+            .retryOnConnectionFailure(true)
+            // Use HTTP/1.1 to avoid HTTP/2 connection reuse issues with ngrok
+            .protocols(listOf(Protocol.HTTP_1_1))
+            // Conservative connection pool - don't keep idle connections too long
+            .connectionPool(ConnectionPool(5, 30, TimeUnit.SECONDS))
             .build()
     }
 

@@ -1,11 +1,8 @@
 package com.example.seepawandroid.ui.screens.login
 
-import androidx.compose.ui.semantics.ProgressBarRangeInfo
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.assertIsNotEnabled
-import androidx.compose.ui.test.hasProgressBarRangeInfo
-import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithTag
@@ -14,17 +11,12 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextClearance
 import androidx.compose.ui.test.performTextInput
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.example.seepawandroid.MainActivity
+import com.example.seepawandroid.BaseUiTest
 import com.example.seepawandroid.R
-import com.example.seepawandroid.data.managers.SessionManager
-import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import javax.inject.Inject
-
 
 /**
  * Instrumented tests for the Login screen.
@@ -36,21 +28,12 @@ import javax.inject.Inject
  * exists before execution.
  *
  * Test credentials:
- * - Valid User: carlos@test.com / Pa$$w0rd
- * - Valid Admin: alice@test.com / Pa$$w0rd
+ * - Valid User: carlos@test.com / Pa\$\$w0rd
+ * - Valid Admin: alice@test.com / Pa\$\$w0rd
  */
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
-class LoginScreenTest {
-
-    @get:Rule(order = 0)
-    val hiltRule = HiltAndroidRule(this)
-
-    @get:Rule(order = 1)
-    val composeTestRule = createAndroidComposeRule<MainActivity>()
-
-    @Inject
-    lateinit var sessionManager: SessionManager
+class LoginScreenTest : BaseUiTest() {
 
     companion object {
         // Test credentials (global variables for easy testing)
@@ -61,8 +44,8 @@ class LoginScreenTest {
     }
 
     @Before
-    fun setup() {
-        hiltRule.inject()
+    override fun setUp() {
+        super.setUp()
 
         // Wait for initial composition
         composeTestRule.waitForIdle()
@@ -173,18 +156,6 @@ class LoginScreenTest {
             } catch (e: Throwable) {
                 false
             }
-        }
-    }
-
-    /**
-     * Waits until the loading indicator disappears.
-     * Indicates that an async operation has completed.
-     */
-    private fun waitUntilLoadingFinishes() {
-        composeTestRule.waitUntil(timeoutMillis = 20000) {
-            composeTestRule.onAllNodes(
-                hasProgressBarRangeInfo(ProgressBarRangeInfo.Indeterminate)
-            ).fetchSemanticsNodes().isEmpty()
         }
     }
 

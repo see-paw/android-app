@@ -13,6 +13,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.example.seepawandroid.BaseUiTest
 import com.example.seepawandroid.MainActivity
 import com.example.seepawandroid.utils.NetworkUtils
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -30,17 +31,11 @@ import org.junit.runner.RunWith
  */
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
-class AnimalCatalogueScreenTest {
-
-    @get:Rule(order = 0)
-    val hiltRule = HiltAndroidRule(this)
-
-    @get:Rule(order = 1)
-    val composeTestRule = createAndroidComposeRule<MainActivity>()
+class AnimalCatalogueScreenTest : BaseUiTest() {
 
     @Before
-    fun setup() {
-        hiltRule.inject()
+    override fun setUp() {
+        super.setUp()
         forceNetworkAvailable()
 
         composeTestRule.waitForIdle()

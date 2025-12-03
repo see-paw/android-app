@@ -68,6 +68,9 @@ class AuthRepository @Inject constructor(
                 e.message?.contains("timeout") == true ->
                     "Tempo de conexão esgotado. Tente novamente"
 
+                e.message != null ->
+                    e.message
+
                 else ->
                     "Erro de conexão. Verifique a sua ligação"
             }
