@@ -61,11 +61,6 @@ jobs:
           echo "🐳 Pulling backend image..."
           docker pull ${{ env.BACKEND_IMAGE }}
 
-      - name: Reset Database
-        run: |
-          echo "🔄 Resetting database..."
-          docker exec -i postgres psql -U seepaw -d seepaw -c "DROP SCHEMA public CASCADE; CREATE SCHEMA public;"
-
       - name: Start Backend Container
         env:
           ASPNETCORE_ENVIRONMENT: Testing
