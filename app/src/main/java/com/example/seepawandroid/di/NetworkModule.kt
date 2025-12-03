@@ -1,90 +1,94 @@
 package com.example.seepawandroid.di
 
+import android.os.Build
+import android.util.Log
+import com.example.seepawandroid.data.managers.SessionManager
 import com.example.seepawandroid.data.remote.api.interceptors.AuthInterceptor
-import com.example.seepawandroid.data.remote.api.interceptors.RetryInterceptor
 import com.example.seepawandroid.data.remote.api.services.BackendApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import okhttp3.ConnectionPool
 import okhttp3.OkHttpClient
-import okhttp3.Protocol
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
-/**
- * Hilt module providing network-related dependencies.
- *
- * Provides Retrofit, OkHttpClient, API services, and interceptors
- * with proper dependency injection lifecycle management.
- */
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
-    private const val LOCAL_URL = "http://10.0.2.2:5000/"
-    private const val NGROK_URL = "https://nonmischievous-petulant-rosa.ngrok-free.dev/"
+    private const val TAG = "NetworkModule"
+    
+    private const val USE_AZURE = false
+    
+    private const val LOCAL_PORT = 5000
+    private const val EMULATOR_LOCALHOST = "10.0.2.2"
+    private const val DEVICE_LOCALHOST = "localhost"
+    
+    private val LOCAL_URL = if (isEmulator()) {
+        "http://$EMULATOR_LOCALHOST:$LOCAL_PORT/"
+    } else {
+        "http://$DEVICE_LOCALHOST:$LOCAL_PORT/"
+    }
+    
     private const val AZURE_URL = "https://seepaw-api-gdhvbkcvckeub9et.francecentral-01.azurewebsites.net/"
 
-    private val IS_CI = System.getenv("CI") == "true"
+    private val BASE_URL = if (USE_AZURE) AZURE_URL else LOCAL_URL
 
-    private const val USE_NGROK = true
-    private const val USE_AZURE = false
-
-    private val BASE_URL = when {
-        IS_CI -> LOCAL_URL
-        USE_NGROK -> NGROK_URL
-        USE_AZURE -> AZURE_URL
-        else -> LOCAL_URL
+    init {
+        Log.i(TAG, "═══════════════════════════════════════════")
+        Log.i(TAG, "   NETWORK MODULE CONFIGURATION")
+        Log.i(TAG, "═══════════════════════════════════════════")
+        Log.i(TAG, "Environment: ${if (USE_AZURE) "AZURE" else "LOCAL"}")
+        Log.i(TAG, "Base URL: $BASE_URL")
+        Log.i(TAG, "Is Emulator: ${isEmulator()}")
+        Log.i(TAG, "Device: ${Build.MODEL}")
+        Log.i(TAG, "Manufacturer: ${Build.MANUFACTURER}")
+        Log.i(TAG, "═══════════════════════════════════════════")
+        
+        if (!USE_AZURE) {
+            if (isEmulator()) {
+                Log.i(TAG, "📱 Emulador detectado → Usando $EMULATOR_LOCALHOST:$LOCAL_PORT")
+                Log.i(TAG, "✅ Certifica-te que o backend está a correr em localhost:$LOCAL_PORT")
+            } else {
+                Log.i(TAG, "📱 Dispositivo real detectado → Usando $DEVICE_LOCALHOST:$LOCAL_PORT")
+                Log.i(TAG, "⚠️  Executa antes: adb reverse tcp:$LOCAL_PORT tcp:$LOCAL_PORT")
+            }
+        }
     }
 
-    /**
-     * Provides the logging interceptor for debugging HTTP requests/responses.
-     */
     @Provides
     @Singleton
     fun provideLoggingInterceptor(): HttpLoggingInterceptor {
-        return HttpLoggingInterceptor().apply {
+        return HttpLoggingInterceptor { message ->
+            Log.d("OkHttp", message)
+        }.apply {
             level = HttpLoggingInterceptor.Level.BODY
         }
     }
 
-    /**
-     * Provides the configured OkHttpClient with interceptors.
-     */
     @Provides
     @Singleton
     fun provideOkHttpClient(
         authInterceptor: AuthInterceptor,
-        retryInterceptor: RetryInterceptor,
         loggingInterceptor: HttpLoggingInterceptor
     ): OkHttpClient {
         return OkHttpClient.Builder()
-            // Retry interceptor should be first to wrap all other interceptors
-            .addInterceptor(retryInterceptor)
             .addInterceptor(loggingInterceptor)
             .addInterceptor(authInterceptor)
             .connectTimeout(30, TimeUnit.SECONDS)
             .readTimeout(30, TimeUnit.SECONDS)
             .writeTimeout(30, TimeUnit.SECONDS)
-            // Retry on connection failure (handles "connection closed" errors)
             .retryOnConnectionFailure(true)
-            // Use HTTP/1.1 to avoid HTTP/2 connection reuse issues with ngrok
-            .protocols(listOf(Protocol.HTTP_1_1))
-            // Conservative connection pool - don't keep idle connections too long
-            .connectionPool(ConnectionPool(5, 30, TimeUnit.SECONDS))
             .build()
     }
 
-    /**
-     * Provides the Retrofit instance configured for the backend API.
-     */
     @Provides
     @Singleton
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
+        Log.i(TAG, "🔧 Configurando Retrofit com Base URL: $BASE_URL")
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
             .client(okHttpClient)
@@ -92,21 +96,34 @@ object NetworkModule {
             .build()
     }
 
-    /**
-     * Provides the BackendApiService for making API calls.
-     */
     @Provides
     @Singleton
     fun provideBackendApiService(retrofit: Retrofit): BackendApiService {
         return retrofit.create(BackendApiService::class.java)
     }
 
-    /**
-     * Provides the base URL for API and SignalR connections.
-     */
     @Provides
     @Singleton
     fun provideBaseUrl(): String {
         return BASE_URL
+    }
+
+    private fun isEmulator(): Boolean {
+        val isEmulator = (Build.FINGERPRINT.startsWith("generic")
+                || Build.FINGERPRINT.startsWith("unknown")
+                || Build.FINGERPRINT.contains("sdk_gphone")
+                || Build.MODEL.contains("google_sdk")
+                || Build.MODEL.contains("Emulator")
+                || Build.MODEL.contains("Android SDK")
+                || Build.MODEL.contains("sdk_gphone")
+                || Build.MANUFACTURER.contains("Genymotion")
+                || Build.PRODUCT.contains("sdk")
+                || Build.PRODUCT.contains("emulator"))
+        
+        if (isEmulator) {
+            Log.d(TAG, "✓ Emulador detectado por: ${Build.FINGERPRINT}")
+        }
+        
+        return isEmulator
     }
 }

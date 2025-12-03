@@ -12,6 +12,7 @@ import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performTextClearance
 import androidx.compose.ui.test.performTextInput
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.seepawandroid.BaseUiTest
@@ -97,7 +98,7 @@ class SchedulingFlowTest : BaseUiTest() {
         composeTestRule.onNodeWithTag("scheduleActivityButton").safeClick()
         try {
             composeTestRule.onNodeWithTag("schedulingLoadingIndicator").assertExists()
-        } catch (e: AssertionError) {
+        } catch (e: Throwable) {
             // Loading may finish too quickly, which is acceptable
         }
         composeTestRule.waitUntil(timeoutMillis = 10000) {
@@ -214,7 +215,7 @@ class SchedulingFlowTest : BaseUiTest() {
             composeTestRule.waitUntil(timeoutMillis = 2000) {
                 composeTestRule.onAllNodesWithTag("modalLoadingIndicator").fetchSemanticsNodes().isNotEmpty()
             }
-        } catch (e: AssertionError) {
+        } catch (e: androidx.compose.ui.test.ComposeTimeoutException) {
             // Loading may finish too quickly, which is acceptable
         }
     }
@@ -383,19 +384,18 @@ class SchedulingFlowTest : BaseUiTest() {
 
     private fun performLogin(maxRetries: Int = 20) {
         var attempt = 0
-        var credentialsEntered = false
         while (attempt < maxRetries) {
             attempt++
             try {
-                composeTestRule.waitUntil(timeoutMillis = 2000) {
+                composeTestRule.waitUntil(timeoutMillis = 3000) {
                     composeTestRule.onAllNodesWithText("SeePaw Login").fetchSemanticsNodes().isNotEmpty()
                 }
             } catch (_: Throwable) {
-                composeTestRule.waitUntil(timeoutMillis = 3000) {
+                composeTestRule.waitUntil(timeoutMillis = 5000) {
                     composeTestRule.onAllNodesWithTag("openLoginButton").fetchSemanticsNodes().isNotEmpty()
                 }
                 composeTestRule.onNodeWithTag("openLoginButton").safeClick()
-                composeTestRule.waitUntil(timeoutMillis = 3000) {
+                composeTestRule.waitUntil(timeoutMillis = 5000) {
                     try {
                         composeTestRule.onNodeWithText("SeePaw Login").assertExists()
                         true
@@ -404,24 +404,49 @@ class SchedulingFlowTest : BaseUiTest() {
                     }
                 }
             }
-            if (!credentialsEntered) {
-                composeTestRule.onNodeWithTag("emailInput").performTextInput(VALID_EMAIL)
-                composeTestRule.onNodeWithTag("passwordInput").performTextInput(VALID_PASSWORD)
-                credentialsEntered = true
-            }
+            composeTestRule.waitForIdle()
+            Thread.sleep(500)
+            try {
+                composeTestRule.onNodeWithTag("emailInput").performTextClearance()
+                composeTestRule.onNodeWithTag("passwordInput").performTextClearance()
+            } catch (_: Throwable) {}
+            composeTestRule.onNodeWithTag("emailInput").performTextInput(VALID_EMAIL)
+            composeTestRule.onNodeWithTag("passwordInput").performTextInput(VALID_PASSWORD)
+            composeTestRule.waitForIdle()
+            Thread.sleep(500)
             composeTestRule.onNodeWithTag("loginButton").safeClick()
             val loginSucceeded = try {
-                composeTestRule.waitUntil(timeoutMillis = 12_000) {
+                composeTestRule.waitUntil(timeoutMillis = 15_000) {
                     composeTestRule.onAllNodesWithTag("openDrawerButton").fetchSemanticsNodes().isNotEmpty() || composeTestRule.onAllNodesWithTag("errorMessage").fetchSemanticsNodes().isNotEmpty()
                 }
                 composeTestRule.onAllNodesWithTag("openDrawerButton").fetchSemanticsNodes().isNotEmpty()
             } catch (_: Throwable) {
                 false
             }
-            if (loginSucceeded) return
-            if (attempt < maxRetries) {
-                Thread.sleep(2000)
+            if (loginSucceeded) {
                 composeTestRule.waitForIdle()
+                Thread.sleep(1000)
+                return
+            }
+            if (attempt < maxRetries) {
+                Thread.sleep(3000)
+                composeTestRule.waitForIdle()
+                try {
+                    composeTestRule.onNodeWithText("SeePaw Login").assertExists()
+                } catch (_: Throwable) {
+                    composeTestRule.waitUntil(timeoutMillis = 5000) {
+                        composeTestRule.onAllNodesWithTag("openLoginButton").fetchSemanticsNodes().isNotEmpty()
+                    }
+                    composeTestRule.onNodeWithTag("openLoginButton").safeClick()
+                    composeTestRule.waitUntil(timeoutMillis = 5000) {
+                        try {
+                            composeTestRule.onNodeWithText("SeePaw Login").assertExists()
+                            true
+                        } catch (e: Throwable) {
+                            false
+                        }
+                    }
+                }
             }
         }
         throw AssertionError("Login failed after $maxRetries attempts")

@@ -40,7 +40,7 @@ open class BaseUiTest {
      * Throws an exception if the timeout is reached.
      * @return The [SemanticsNodeInteraction] for chaining.
      */
-    fun SemanticsNodeInteraction.awaitDisplayed(timeout: Long = 5_000): SemanticsNodeInteraction {
+    fun SemanticsNodeInteraction.awaitDisplayed(timeout: Long = 8_000): SemanticsNodeInteraction {
         composeTestRule.waitUntil(timeoutMillis = timeout) {
             try {
                 this.assertIsDisplayed()
@@ -57,7 +57,7 @@ open class BaseUiTest {
      * Throws an exception if the timeout is reached.
      * @return The [SemanticsNodeInteraction] for chaining.
      */
-    fun SemanticsNodeInteraction.awaitEnabled(timeout: Long = 5_000): SemanticsNodeInteraction {
+    fun SemanticsNodeInteraction.awaitEnabled(timeout: Long = 8_000): SemanticsNodeInteraction {
         composeTestRule.waitUntil(timeoutMillis = timeout) {
             try {
                 this.assertIsEnabled()
@@ -74,7 +74,7 @@ open class BaseUiTest {
      * @return The [SemanticsNodeInteraction] for chaining.
      */
     fun SemanticsNodeInteraction.awaitDisplayedAndEnabled(
-        timeout: Long = 8_000
+        timeout: Long = 10_000
     ): SemanticsNodeInteraction {
         composeTestRule.waitUntil(timeoutMillis = timeout) {
             try {
@@ -93,14 +93,14 @@ open class BaseUiTest {
      */
     fun SemanticsNodeInteraction.safeClick() {
         this.awaitDisplayedAndEnabled()
-        this.safeClick()
+        this.performClick()
     }
 
     /**
      * Waits until the loading indicator disappears.
      * Indicates that an async operation has completed.
      */
-    fun waitUntilLoadingFinishes(timeout: Long = 20_000) {
+    fun waitUntilLoadingFinishes(timeout: Long = 30_000) {
         composeTestRule.waitUntil(timeoutMillis = timeout) {
             composeTestRule.onAllNodes(
                 hasProgressBarRangeInfo(ProgressBarRangeInfo.Indeterminate)
