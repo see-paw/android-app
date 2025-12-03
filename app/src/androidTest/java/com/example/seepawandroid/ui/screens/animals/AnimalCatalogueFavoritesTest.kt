@@ -7,6 +7,7 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -34,6 +35,12 @@ class AnimalCatalogueFavoritesTest {
     @get:Rule(order = 1)
     val composeTestRule = createAndroidComposeRule<MainActivity>()
 
+    companion object {
+        // Valid test credentials from backend
+        private const val VALID_EMAIL = "carlos@test.com"
+        private const val VALID_PASSWORD = "Pa\$\$w0rd"
+    }
+
     @Before
     fun setup() {
         hiltRule.inject()
@@ -46,17 +53,30 @@ class AnimalCatalogueFavoritesTest {
     }
 
     private fun loginAsTestUser() {
+        // First, ensure we're on homepage
         composeTestRule.waitUntil(timeoutMillis = 5000) {
             try {
-                composeTestRule.onNodeWithTag("loginButton").assertExists()
+                composeTestRule.onNodeWithTag("openLoginButton").assertExists()
                 true
             } catch (_: Throwable) {
                 false
             }
         }
 
-        composeTestRule.onNodeWithTag("loginButton").performClick()
+        // Click to navigate to login screen
+        composeTestRule.onNodeWithTag("openLoginButton").performClick()
 
+        // Wait for login screen to load
+        composeTestRule.waitUntil(timeoutMillis = 5000) {
+            try {
+                composeTestRule.onNodeWithText("SeePaw Login").assertExists()
+                true
+            } catch (_: Throwable) {
+                false
+            }
+        }
+
+        // Wait for email input to be available
         composeTestRule.waitUntil(timeoutMillis = 5000) {
             try {
                 composeTestRule.onNodeWithTag("emailInput").assertExists()
@@ -66,10 +86,12 @@ class AnimalCatalogueFavoritesTest {
             }
         }
 
-        composeTestRule.onNodeWithTag("emailInput").performTextInput("test@example.com")
-        composeTestRule.onNodeWithTag("passwordInput").performTextInput("Test123!")
+        // Enter valid test credentials
+        composeTestRule.onNodeWithTag("emailInput").performTextInput(VALID_EMAIL)
+        composeTestRule.onNodeWithTag("passwordInput").performTextInput(VALID_PASSWORD)
         composeTestRule.onNodeWithTag("submitLoginButton").performClick()
 
+        // Wait for login to complete and navigate to user homepage
         composeTestRule.waitUntil(timeoutMillis = 15000) {
             try {
                 composeTestRule.onNodeWithTag("openCatalogueButton").assertExists()
