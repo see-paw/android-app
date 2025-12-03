@@ -1,6 +1,5 @@
 package com.example.seepawandroid.ui.screens.favorites
 
-import android.content.Context
 import androidx.compose.ui.semantics.getOrNull
 import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.assertIsDisplayed
@@ -14,7 +13,6 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.seepawandroid.MainActivity
-import com.example.seepawandroid.utils.NetworkUtils
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Before
@@ -50,7 +48,6 @@ class FavoritesScreenTest {
     @Before
     fun setup() {
         hiltRule.inject()
-        forceNetworkAvailable()
         composeTestRule.waitForIdle()
 
         // Login first to access authenticated features
@@ -370,14 +367,4 @@ class FavoritesScreenTest {
         }
     }
 
-    private fun forceNetworkAvailable() {
-        try {
-            val context = androidx.test.core.app.ApplicationProvider.getApplicationContext<Context>()
-            NetworkUtils.init(context)
-            android.util.Log.d("FavoritesTest", "📶 NetworkUtils initialized for tests")
-            android.util.Log.d("FavoritesTest", "📶 Network available: ${NetworkUtils.isConnected()}")
-        } catch (e: Exception) {
-            android.util.Log.e("FavoritesTest", "Failed to init NetworkUtils", e)
-        }
-    }
 }

@@ -26,7 +26,7 @@ object NetworkModule {
     private const val NGROK_URL = "https://nonmischievous-petulant-rosa.ngrok-free.dev/"
     private const val AZURE_URL = "https://seepaw-api-gdhvbkcvckeub9et.francecentral-01.azurewebsites.net/"
 
-    private const val USE_NGROK = true
+    private const val USE_NGROK = false
     private const val USE_AZURE = false
 
     private val BASE_URL = when {
