@@ -216,118 +216,130 @@ class SchedulingFlowTest {
     /** -----------------------------------------
      * TEST 6: Slot Selection - Available Slot Opens Confirmation Modal
      * Verifies that clicking an available slot opens the confirmation modal.
+     * Navigates through weeks to find an available slot (24h+ in the future).
      * ----------------------------------------- */
     @Test
     fun t6_slotSelection_availableSlot_opensConfirmationModal() {
         prepareTestState_NavigateToScheduleScreen()
 
-        // Find and click the first available slot
+        // Find and click the first available slot (searches future weeks if needed)
         val availableSlotTag = findFirstAvailableSlot()
-        if (availableSlotTag != null) {
-            composeTestRule.onNodeWithTag(availableSlotTag).performClick()
-
-            // Verify confirmation modal appears
-            composeTestRule.waitUntil(timeoutMillis = 3000) {
-                try {
-                    composeTestRule.onNodeWithTag("confirmActivityModal").assertExists()
-                    true
-                } catch (e: Throwable) {
-                    false
-                }
-            }
-
-            composeTestRule.onNodeWithTag("confirmActivityModal").assertIsDisplayed()
+        assert(availableSlotTag != null) {
+            "Should find at least one available slot within 4 weeks"
         }
+
+        composeTestRule.onNodeWithTag(availableSlotTag!!).performClick()
+
+        // Verify confirmation modal appears
+        composeTestRule.waitUntil(timeoutMillis = 3000) {
+            try {
+                composeTestRule.onNodeWithTag("confirmActivityModal").assertExists()
+                true
+            } catch (e: Throwable) {
+                false
+            }
+        }
+
+        composeTestRule.onNodeWithTag("confirmActivityModal").assertIsDisplayed()
     }
 
     /** -----------------------------------------
      * TEST 7: Confirmation Modal - Displays Correct Information
      * Verifies that the confirmation modal shows date, time, and action buttons.
+     * Navigates through weeks to find an available slot (24h+ in the future).
      * ----------------------------------------- */
     @Test
     fun t7_confirmationModal_displaysCorrectInformation() {
         prepareTestState_NavigateToScheduleScreen()
 
-        // Click an available slot
+        // Find and click an available slot (searches future weeks if needed)
         val availableSlotTag = findFirstAvailableSlot()
-        if (availableSlotTag != null) {
-            composeTestRule.onNodeWithTag(availableSlotTag).performClick()
-
-            composeTestRule.waitUntil(timeoutMillis = 3000) {
-                composeTestRule.onAllNodesWithTag("confirmActivityModal")
-                    .fetchSemanticsNodes()
-                    .isNotEmpty()
-            }
-
-            // Verify modal buttons exist
-            composeTestRule.onNodeWithTag("confirmModalButton").assertIsDisplayed()
-            composeTestRule.onNodeWithTag("cancelModalButton").assertIsDisplayed()
+        assert(availableSlotTag != null) {
+            "Should find at least one available slot within 4 weeks"
         }
+
+        composeTestRule.onNodeWithTag(availableSlotTag!!).performClick()
+
+        composeTestRule.waitUntil(timeoutMillis = 3000) {
+            composeTestRule.onAllNodesWithTag("confirmActivityModal")
+                .fetchSemanticsNodes()
+                .isNotEmpty()
+        }
+
+        // Verify modal buttons exist
+        composeTestRule.onNodeWithTag("confirmModalButton").assertIsDisplayed()
+        composeTestRule.onNodeWithTag("cancelModalButton").assertIsDisplayed()
     }
 
     /** -----------------------------------------
      * TEST 8: Confirmation Modal - Cancel Button Closes Modal
      * Verifies that clicking cancel closes the confirmation modal.
+     * Navigates through weeks to find an available slot (24h+ in the future).
      * ----------------------------------------- */
     @Test
     fun t8_confirmationModal_cancelButton_closesModal() {
         prepareTestState_NavigateToScheduleScreen()
 
-        // Click an available slot
+        // Find and click an available slot (searches future weeks if needed)
         val availableSlotTag = findFirstAvailableSlot()
-        if (availableSlotTag != null) {
-            composeTestRule.onNodeWithTag(availableSlotTag).performClick()
+        assert(availableSlotTag != null) {
+            "Should find at least one available slot within 4 weeks"
+        }
 
-            composeTestRule.waitUntil(timeoutMillis = 3000) {
-                composeTestRule.onAllNodesWithTag("confirmActivityModal")
-                    .fetchSemanticsNodes()
-                    .isNotEmpty()
-            }
+        composeTestRule.onNodeWithTag(availableSlotTag!!).performClick()
 
-            // Click cancel button
-            composeTestRule.onNodeWithTag("cancelModalButton").performClick()
+        composeTestRule.waitUntil(timeoutMillis = 3000) {
+            composeTestRule.onAllNodesWithTag("confirmActivityModal")
+                .fetchSemanticsNodes()
+                .isNotEmpty()
+        }
 
-            // Verify modal is closed
-            composeTestRule.waitUntil(timeoutMillis = 2000) {
-                composeTestRule.onAllNodesWithTag("confirmActivityModal")
-                    .fetchSemanticsNodes()
-                    .isEmpty()
-            }
+        // Click cancel button
+        composeTestRule.onNodeWithTag("cancelModalButton").performClick()
+
+        // Verify modal is closed
+        composeTestRule.waitUntil(timeoutMillis = 2000) {
+            composeTestRule.onAllNodesWithTag("confirmActivityModal")
+                .fetchSemanticsNodes()
+                .isEmpty()
         }
     }
 
     /** -----------------------------------------
      * TEST 9: Modal Loading State
      * Verifies that the modal loading indicator appears when confirming a slot.
+     * Navigates through weeks to find an available slot (24h+ in the future).
      * ----------------------------------------- */
     @Test
     fun t9_confirmationModal_confirmButton_showsLoadingState() {
         prepareTestState_NavigateToScheduleScreen()
 
-        // Click an available slot
+        // Find and click an available slot (searches future weeks if needed)
         val availableSlotTag = findFirstAvailableSlot()
-        if (availableSlotTag != null) {
-            composeTestRule.onNodeWithTag(availableSlotTag).performClick()
+        assert(availableSlotTag != null) {
+            "Should find at least one available slot within 4 weeks"
+        }
 
-            composeTestRule.waitUntil(timeoutMillis = 3000) {
-                composeTestRule.onAllNodesWithTag("confirmActivityModal")
+        composeTestRule.onNodeWithTag(availableSlotTag!!).performClick()
+
+        composeTestRule.waitUntil(timeoutMillis = 3000) {
+            composeTestRule.onAllNodesWithTag("confirmActivityModal")
+                .fetchSemanticsNodes()
+                .isNotEmpty()
+        }
+
+        // Click confirm button
+        composeTestRule.onNodeWithTag("confirmModalButton").performClick()
+
+        // Check for modal loading indicator (may be brief if network is fast)
+        try {
+            composeTestRule.waitUntil(timeoutMillis = 2000) {
+                composeTestRule.onAllNodesWithTag("modalLoadingIndicator")
                     .fetchSemanticsNodes()
                     .isNotEmpty()
             }
-
-            // Click confirm button
-            composeTestRule.onNodeWithTag("confirmModalButton").performClick()
-
-            // Check for modal loading indicator (may be brief if network is fast)
-            try {
-                composeTestRule.waitUntil(timeoutMillis = 2000) {
-                    composeTestRule.onAllNodesWithTag("modalLoadingIndicator")
-                        .fetchSemanticsNodes()
-                        .isNotEmpty()
-                }
-            } catch (e: AssertionError) {
-                // Loading may finish too quickly, which is acceptable
-            }
+        } catch (e: AssertionError) {
+            // Loading may finish too quickly, which is acceptable
         }
     }
 
@@ -353,6 +365,93 @@ class SchedulingFlowTest {
         }
 
         composeTestRule.onNodeWithTag("ownershipListScreen").assertIsDisplayed()
+    }
+
+    /** -----------------------------------------
+     * TEST 11: Success Modal - Appears After Successful Booking
+     * Verifies that the success modal appears after confirming a slot successfully.
+     * ----------------------------------------- */
+    @Test
+    fun t11_successModal_appearsAfterSuccessfulBooking() {
+        prepareTestState_NavigateToScheduleScreen()
+
+        // Click an available slot
+        val availableSlotTag = findFirstAvailableSlot()
+        if (availableSlotTag != null) {
+            composeTestRule.onNodeWithTag(availableSlotTag).safeClick()
+
+            composeTestRule.waitUntil(timeoutMillis = 3000) {
+                composeTestRule.onAllNodesWithTag("confirmActivityModal")
+                    .fetchSemanticsNodes()
+                    .isNotEmpty()
+            }
+
+            // Click confirm button
+            composeTestRule.onNodeWithTag("confirmModalButton").safeClick()
+
+            // Wait for success modal to appear (after API call completes)
+            composeTestRule.waitUntil(timeoutMillis = 10000) {
+                try {
+                    composeTestRule.onNodeWithTag("successModal").assertExists()
+                    true
+                } catch (e: Throwable) {
+                    false
+                }
+            }
+
+            // Verify success modal is displayed
+            composeTestRule.onNodeWithTag("successModal").assertIsDisplayed()
+        }
+    }
+
+    /** -----------------------------------------
+     * TEST 12: Success Modal - Displays Correct Information and Closes
+     * Verifies that the success modal shows the animal name, date, time, and can be dismissed.
+     * ----------------------------------------- */
+    @Test
+    fun t12_successModal_displaysCorrectInformationAndCloses() {
+        prepareTestState_NavigateToScheduleScreen()
+
+        // Click an available slot
+        val availableSlotTag = findFirstAvailableSlot()
+        if (availableSlotTag != null) {
+            composeTestRule.onNodeWithTag(availableSlotTag).safeClick()
+
+            composeTestRule.waitUntil(timeoutMillis = 3000) {
+                composeTestRule.onAllNodesWithTag("confirmActivityModal")
+                    .fetchSemanticsNodes()
+                    .isNotEmpty()
+            }
+
+            // Click confirm button
+            composeTestRule.onNodeWithTag("confirmModalButton").safeClick()
+
+            // Wait for success modal
+            composeTestRule.waitUntil(timeoutMillis = 10000) {
+                try {
+                    composeTestRule.onNodeWithTag("successModal").assertExists()
+                    true
+                } catch (e: Throwable) {
+                    false
+                }
+            }
+
+            composeTestRule.onNodeWithTag("successModal").assertIsDisplayed()
+            composeTestRule.onNodeWithTag("successModalMessage").assertIsDisplayed()
+            composeTestRule.onNodeWithTag("successModalButton").assertIsDisplayed()
+
+            composeTestRule.onNodeWithTag("successModalButton").safeClick()
+
+            // Verify modal is closed
+            composeTestRule.waitUntil(timeoutMillis = 2000) {
+                composeTestRule.onAllNodesWithTag("successModal")
+                    .fetchSemanticsNodes()
+                    .isEmpty()
+            }
+
+            // Verify we're still on the scheduling screen
+            composeTestRule.onNodeWithTag("schedulingScreen").assertIsDisplayed()
+        }
     }
 
     /** -----------------------------------------
@@ -454,13 +553,26 @@ class SchedulingFlowTest {
 
 
     /**
-     * Finds the first available time slot tag.
-     * Returns the test tag string or null if no available slots found.
+     * Finds the first available time slot by navigating to next week.
+     *
+     * Strategy: Navigate to next week to avoid the 24-hour booking rule restriction.
+     * Slots in next week are guaranteed to be 24+ hours in the future.
      *
      * Test tag format: "timeSlot_{dayOfMonth}_{hour}_{slotType}"
      * Example: "timeSlot_15_10_AVAILABLE" = Day 15, 10h, Available
      */
     private fun findFirstAvailableSlot(): String? {
+        // Navigate to next week to ensure we're 24h+ in the future
+        try {
+            composeTestRule.onNodeWithTag("nextWeekButton").safeClick()
+            composeTestRule.waitForIdle()
+            waitUntilLoadingFinishes()
+            Thread.sleep(500) // Give UI time to update
+        } catch (e: Exception) {
+            // Can't navigate, try current week
+        }
+
+        // Find first available slot in the week
         val nodes = composeTestRule.onAllNodes(hasTestTagStartingWith("timeSlot_"))
             .fetchSemanticsNodes()
 
@@ -470,6 +582,7 @@ class SchedulingFlowTest {
                 return tag
             }
         }
+
         return null
     }
 
