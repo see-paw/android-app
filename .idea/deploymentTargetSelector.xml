@@ -14,7 +14,7 @@
       <SelectionState runConfigName="t12_successModal_displaysCorrectInformationAndCloses()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="t11_successModal_appearsAfterSuccessfulBooking()">
+      <SelectionState runConfigName="Tests in 'com.example.seepawandroid.ui.screens.register'">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>

@@ -114,14 +114,11 @@ class NotificationService @Inject constructor(
      */
     fun disconnect() {
         try {
-            hubConnection?.stop()?.subscribe(
-                {
-                    Log.d(TAG, "Disconnected from SignalR hub")
-                },
-                { error ->
-                    Log.e(TAG, "Error disconnecting from SignalR", error)
-                }
-            )
+            val connection = hubConnection
+            if (connection != null && connection.connectionState == HubConnectionState.CONNECTED) {
+                connection.stop()?.blockingAwait(5, java.util.concurrent.TimeUnit.SECONDS)
+                Log.d(TAG, "Disconnected from SignalR hub")
+            }
         } catch (e: Exception) {
             Log.e(TAG, "Error during disconnect", e)
         } finally {

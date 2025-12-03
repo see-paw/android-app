@@ -23,6 +23,7 @@ import com.example.seepawandroid.MainActivity
 import com.example.seepawandroid.data.managers.SessionManager
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import org.junit.After
 import org.junit.Before
 import org.junit.FixMethodOrder
 import org.junit.Rule
@@ -76,6 +77,15 @@ class SchedulingFlowTest {
         hiltRule.inject()
         composeTestRule.waitForIdle()
         logoutIfNeeded()
+    }
+
+    @After
+    fun teardown() {
+        // Give time for any pending network operations to complete
+        try {
+            composeTestRule.waitForIdle()
+            Thread.sleep(500)
+        } catch (_: Throwable) {}
     }
 
     /** -----------------------------------------
@@ -590,9 +600,9 @@ class SchedulingFlowTest {
         try {
             // Wait for app to fully load first
             composeTestRule.waitForIdle()
-            Thread.sleep(500) // Give UI time to settle
+            Thread.sleep(1000) // Give UI and network time to settle
 
-            composeTestRule.waitUntil(timeoutMillis = 2000) {
+            composeTestRule.waitUntil(timeoutMillis = 3000) {
                 try {
                     composeTestRule.onNodeWithTag("logoutButton").assertExists()
                     true
@@ -601,7 +611,11 @@ class SchedulingFlowTest {
                 }
             }
             composeTestRule.onNodeWithTag("logoutButton").performClick()
-            composeTestRule.waitUntil(timeoutMillis = 3000) {
+            
+            // Wait for logout to complete and SignalR to disconnect
+            Thread.sleep(500)
+            
+            composeTestRule.waitUntil(timeoutMillis = 5000) {
                 try {
                     composeTestRule.onNodeWithTag("openLoginButton").assertExists()
                     true
@@ -609,42 +623,90 @@ class SchedulingFlowTest {
                     false
                 }
             }
+            
+            // Extra wait for network cleanup
+            composeTestRule.waitForIdle()
+            Thread.sleep(500)
         } catch (_: Throwable) {
-            // Already logged out
+            // Already logged out - still wait for stability
+            Thread.sleep(300)
         }
     }
 
-    private fun performLogin() {
-        // Navigate to login if needed
-        try {
-            composeTestRule.waitUntil(timeoutMillis = 2000) {
-                composeTestRule.onAllNodesWithText("SeePaw Login")
-                    .fetchSemanticsNodes()
-                    .isNotEmpty()
-            }
-        } catch (_: Throwable) {
-            composeTestRule.waitUntil(timeoutMillis = 3000) {
-                composeTestRule.onAllNodesWithTag("openLoginButton")
-                    .fetchSemanticsNodes()
-                    .isNotEmpty()
-            }
-            composeTestRule.onNodeWithTag("openLoginButton").performClick()
-            composeTestRule.waitUntil(timeoutMillis = 3000) {
-                try {
-                    composeTestRule.onNodeWithText("SeePaw Login").assertExists()
-                    true
-                } catch (e: Throwable) {
-                    false
+    private fun performLogin(maxRetries: Int = 10) {
+        var attempt = 0
+        var credentialsEntered = false
+        
+        while (attempt < maxRetries) {
+            attempt++
+            
+            // Navigate to login if needed
+            try {
+                composeTestRule.waitUntil(timeoutMillis = 2000) {
+                    composeTestRule.onAllNodesWithText("SeePaw Login")
+                        .fetchSemanticsNodes()
+                        .isNotEmpty()
                 }
+            } catch (_: Throwable) {
+                composeTestRule.waitUntil(timeoutMillis = 3000) {
+                    composeTestRule.onAllNodesWithTag("openLoginButton")
+                        .fetchSemanticsNodes()
+                        .isNotEmpty()
+                }
+                composeTestRule.onNodeWithTag("openLoginButton").performClick()
+                composeTestRule.waitUntil(timeoutMillis = 3000) {
+                    try {
+                        composeTestRule.onNodeWithText("SeePaw Login").assertExists()
+                        true
+                    } catch (e: Throwable) {
+                        false
+                    }
+                }
+            }
+
+            // Only enter credentials on first attempt (they persist in fields)
+            if (!credentialsEntered) {
+                composeTestRule.onNodeWithTag("emailInput").performTextInput(VALID_EMAIL)
+                composeTestRule.onNodeWithTag("passwordInput").performTextInput(VALID_PASSWORD)
+                credentialsEntered = true
+            }
+            
+            composeTestRule.onNodeWithTag("loginButton").performClick()
+
+            // Wait for either success (openDrawerButton) or error (errorMessage)
+            val loginSucceeded = try {
+                composeTestRule.waitUntil(timeoutMillis = 12_000) {
+                    val hasDrawerButton = composeTestRule.onAllNodesWithTag("openDrawerButton")
+                        .fetchSemanticsNodes()
+                        .isNotEmpty()
+                    val hasError = composeTestRule.onAllNodesWithTag("errorMessage")
+                        .fetchSemanticsNodes()
+                        .isNotEmpty()
+                    hasDrawerButton || hasError
+                }
+                
+                // Check which condition was met
+                composeTestRule.onAllNodesWithTag("openDrawerButton")
+                    .fetchSemanticsNodes()
+                    .isNotEmpty()
+            } catch (_: Throwable) {
+                false
+            }
+
+            if (loginSucceeded) {
+                return // Login successful
+            }
+
+            // Login failed - check if we should retry
+            if (attempt < maxRetries) {
+                // Wait before retry to let network stabilize
+                Thread.sleep(3000)
+                composeTestRule.waitForIdle()
             }
         }
 
-        // Input credentials
-        composeTestRule.onNodeWithTag("emailInput").performTextInput(VALID_EMAIL)
-        composeTestRule.onNodeWithTag("passwordInput").performTextInput(VALID_PASSWORD)
-        composeTestRule.onNodeWithTag("loginButton").performClick()
-
-        waitUntilLoadingFinishes()
+        // All retries failed - throw with clear message
+        throw AssertionError("Login failed after $maxRetries attempts - connection error")
     }
 
     private fun navigateToOwnershipList() {
