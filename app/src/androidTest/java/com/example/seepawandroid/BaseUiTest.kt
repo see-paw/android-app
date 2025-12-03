@@ -93,7 +93,7 @@ open class BaseUiTest {
      */
     fun SemanticsNodeInteraction.safeClick() {
         this.awaitDisplayedAndEnabled()
-        this.performClick()
+        this.safeClick()
     }
 
     /**

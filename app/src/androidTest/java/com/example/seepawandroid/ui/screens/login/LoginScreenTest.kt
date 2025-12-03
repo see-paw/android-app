@@ -78,7 +78,7 @@ class LoginScreenTest : BaseUiTest() {
             }
 
             // If we found the logout button, click it
-            composeTestRule.onNodeWithTag("logoutButton").performClick()
+            composeTestRule.onNodeWithTag("logoutButton").safeClick()
 
             // Wait for logout to complete and return to login screen
             composeTestRule.waitUntil(timeoutMillis = 3000) {
@@ -124,7 +124,7 @@ class LoginScreenTest : BaseUiTest() {
         // Click the Login button to navigate HOMEPAGE → LOGIN
         composeTestRule
             .onNodeWithTag("openLoginButton")
-            .performClick()
+            .safeClick()
 
         // Wait for LOGIN screen to load
         composeTestRule.waitUntil(timeoutMillis = 5000) {
@@ -196,7 +196,7 @@ class LoginScreenTest : BaseUiTest() {
     fun login_withInvalidPassword_showsError() {
         composeTestRule.onNodeWithTag("emailInput").performTextInput(VALID_EMAIL)
         composeTestRule.onNodeWithTag("passwordInput").performTextInput(INVALID_PASSWORD)
-        composeTestRule.onNodeWithTag("loginButton").performClick()
+        composeTestRule.onNodeWithTag("loginButton").safeClick()
 
         // Wait for error message to appear using testTag
         // Increased timeout to handle variable network conditions
@@ -217,7 +217,7 @@ class LoginScreenTest : BaseUiTest() {
     fun login_withInvalidEmail_showsError() {
         composeTestRule.onNodeWithTag("emailInput").performTextInput(INVALID_EMAIL)
         composeTestRule.onNodeWithTag("passwordInput").performTextInput(VALID_PASSWORD)
-        composeTestRule.onNodeWithTag("loginButton").performClick()
+        composeTestRule.onNodeWithTag("loginButton").safeClick()
 
         composeTestRule.waitUntil(timeoutMillis = 3000) {
             try {
@@ -235,7 +235,7 @@ class LoginScreenTest : BaseUiTest() {
     fun login_withBothInvalid_showsError() {
         composeTestRule.onNodeWithTag("emailInput").performTextInput(INVALID_EMAIL)
         composeTestRule.onNodeWithTag("passwordInput").performTextInput(INVALID_PASSWORD)
-        composeTestRule.onNodeWithTag("loginButton").performClick()
+        composeTestRule.onNodeWithTag("loginButton").safeClick()
 
         composeTestRule.waitUntil(timeoutMillis = 3000) {
             try {
@@ -257,7 +257,7 @@ class LoginScreenTest : BaseUiTest() {
     fun login_withValidCredentials_navigatesToUserHome() {
         composeTestRule.onNodeWithTag("emailInput").performTextInput(VALID_EMAIL)
         composeTestRule.onNodeWithTag("passwordInput").performTextInput(VALID_PASSWORD)
-        composeTestRule.onNodeWithTag("loginButton").performClick()
+        composeTestRule.onNodeWithTag("loginButton").safeClick()
 
         // Wait until loading finishes
         waitUntilLoadingFinishes()
@@ -286,7 +286,7 @@ class LoginScreenTest : BaseUiTest() {
         // First attempt with wrong credentials
         composeTestRule.onNodeWithTag("emailInput").performTextInput(VALID_EMAIL)
         composeTestRule.onNodeWithTag("passwordInput").performTextInput(INVALID_PASSWORD)
-        composeTestRule.onNodeWithTag("loginButton").performClick()
+        composeTestRule.onNodeWithTag("loginButton").safeClick()
 
         // Wait for error to appear
         composeTestRule.waitUntil(timeoutMillis = 3000) {
@@ -308,7 +308,7 @@ class LoginScreenTest : BaseUiTest() {
         // Retry with correct credentials
         composeTestRule.onNodeWithTag("emailInput").performTextInput(VALID_EMAIL)
         composeTestRule.onNodeWithTag("passwordInput").performTextInput(VALID_PASSWORD)
-        composeTestRule.onNodeWithTag("loginButton").performClick()
+        composeTestRule.onNodeWithTag("loginButton").safeClick()
 
         // Wait for login process to complete
         waitUntilLoadingFinishes()

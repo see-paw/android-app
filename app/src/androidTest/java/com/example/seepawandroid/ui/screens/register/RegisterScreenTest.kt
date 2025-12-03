@@ -74,7 +74,7 @@ class RegisterScreenTest : BaseUiTest() {
                     false
                 }
             }
-            composeTestRule.onNodeWithTag("logoutButton").performClick()
+            composeTestRule.onNodeWithTag("logoutButton").safeClick()
             composeTestRule.waitUntil(timeoutMillis = 3000) {
                 try {
                     composeTestRule.onNodeWithText("SeePaw Login").assertExists()
@@ -100,7 +100,7 @@ class RegisterScreenTest : BaseUiTest() {
         // Click the Login button to navigate from HOMEPAGE to LOGIN
         composeTestRule
             .onNodeWithTag("openLoginButton")
-            .performClick()
+            .safeClick()
 
         // Wait for Login screen to load
         composeTestRule.waitUntil(timeoutMillis = 5000) {
@@ -112,7 +112,7 @@ class RegisterScreenTest : BaseUiTest() {
         // Click "Criar conta" button to navigate from LOGIN to REGISTER (existing logic)
         composeTestRule
             .onNodeWithText("Criar conta")
-            .performClick()
+            .safeClick()
 
         // Wait for Register screen to load
         composeTestRule.waitUntil(timeoutMillis = 5000) {
@@ -158,7 +158,7 @@ class RegisterScreenTest : BaseUiTest() {
     @Test
     fun nameField_showsErrorForShortName() {
         composeTestRule.onNodeWithTag("nameInput").performTextInput(SHORT_NAME)
-        composeTestRule.onNodeWithTag("emailInput").performClick()
+        composeTestRule.onNodeWithTag("emailInput").safeClick()
         composeTestRule.waitForIdle()
         composeTestRule.onNodeWithText("Nome deve ter pelo menos 2 caracteres").assertExists()
     }
@@ -166,7 +166,7 @@ class RegisterScreenTest : BaseUiTest() {
     @Test
     fun emailField_showsErrorForInvalidFormat() {
         composeTestRule.onNodeWithTag("emailInput").performTextInput(INVALID_EMAIL)
-        composeTestRule.onNodeWithTag("passwordInput").performClick()
+        composeTestRule.onNodeWithTag("passwordInput").safeClick()
         composeTestRule.waitForIdle()
         composeTestRule.onNodeWithText("Formato de email inválido").assertExists()
     }
@@ -174,7 +174,7 @@ class RegisterScreenTest : BaseUiTest() {
     @Test
     fun passwordField_showsErrorForWeakPassword() {
         composeTestRule.onNodeWithTag("passwordInput").performTextInput(WEAK_PASSWORD)
-        composeTestRule.onNodeWithTag("confirmPasswordInput").performClick()
+        composeTestRule.onNodeWithTag("confirmPasswordInput").safeClick()
         composeTestRule.waitForIdle()
         composeTestRule.onNode(
             hasText("Mínimo 8 caracteres", substring = true) or
@@ -187,7 +187,7 @@ class RegisterScreenTest : BaseUiTest() {
         composeTestRule.onNodeWithTag("passwordInput").performTextInput(VALID_PASSWORD)
         composeTestRule.onNodeWithTag("confirmPasswordInput").performTextInput(MISMATCHED_PASSWORD)
         scrollToNode("streetInput")
-        composeTestRule.onNodeWithTag("streetInput").performClick()
+        composeTestRule.onNodeWithTag("streetInput").safeClick()
         composeTestRule.waitForIdle()
         composeTestRule.onNodeWithText("As passwords não coincidem").assertExists()
     }
@@ -199,7 +199,7 @@ class RegisterScreenTest : BaseUiTest() {
 
         // Lose focus by clicking on another field
         scrollToNode("streetInput")
-        composeTestRule.onNodeWithTag("streetInput").performClick()
+        composeTestRule.onNodeWithTag("streetInput").safeClick()
 
         composeTestRule.waitForIdle()
 
@@ -208,7 +208,7 @@ class RegisterScreenTest : BaseUiTest() {
 
     @Test
     fun backButton_navigatesToLogin() {
-        composeTestRule.onNodeWithTag("backButton").performClick()
+        composeTestRule.onNodeWithTag("backButton").safeClick()
         composeTestRule.waitUntil(timeoutMillis = 3000) {
             try {
                 composeTestRule.onNodeWithText("SeePaw Login").assertExists()
@@ -246,7 +246,7 @@ class RegisterScreenTest : BaseUiTest() {
 
         // Set birth date via test mode (clicks icon, which triggers testDateProvider)
         composeTestRule.onNodeWithTag("birthDateIcon").performScrollTo()
-        composeTestRule.onNodeWithTag("birthDateIcon").performClick()
+        composeTestRule.onNodeWithTag("birthDateIcon").safeClick()
         composeTestRule.waitForIdle()
     }
 
@@ -280,12 +280,12 @@ class RegisterScreenTest : BaseUiTest() {
 
         // Set birth date
         composeTestRule.onNodeWithTag("birthDateIcon").performScrollTo()
-        composeTestRule.onNodeWithTag("birthDateIcon").performClick()
+        composeTestRule.onNodeWithTag("birthDateIcon").safeClick()
         composeTestRule.waitForIdle()
 
         // Click register
         scrollToNode("registerButton")
-        composeTestRule.onNodeWithTag("registerButton").performClick()
+        composeTestRule.onNodeWithTag("registerButton").safeClick()
 
         // Wait for error
         composeTestRule.waitUntil(timeoutMillis = 3000) {
@@ -309,7 +309,7 @@ class RegisterScreenTest : BaseUiTest() {
         fillAllFieldsWithValidData()
 
         scrollToNode("registerButton")
-        composeTestRule.onNodeWithTag("registerButton").performClick()
+        composeTestRule.onNodeWithTag("registerButton").safeClick()
 
         // Wait for loading to finish
         waitUntilLoadingFinishes()
@@ -337,7 +337,7 @@ class RegisterScreenTest : BaseUiTest() {
         fillAllFieldsWithValidData()
 
         scrollToNode("registerButton")
-        composeTestRule.onNodeWithTag("registerButton").performClick()
+        composeTestRule.onNodeWithTag("registerButton").safeClick()
 
         waitUntilLoadingFinishes()
 
@@ -352,7 +352,7 @@ class RegisterScreenTest : BaseUiTest() {
         }
 
         // Click OK
-        composeTestRule.onNodeWithTag("successDialogOkButton").performClick()
+        composeTestRule.onNodeWithTag("successDialogOkButton").safeClick()
 
         // Verify navigation to login screen
         composeTestRule.waitUntil(timeoutMillis = 3000) {
@@ -385,11 +385,11 @@ class RegisterScreenTest : BaseUiTest() {
 
         // Set birth date
         composeTestRule.onNodeWithTag("birthDateIcon").performScrollTo()
-        composeTestRule.onNodeWithTag("birthDateIcon").performClick()
+        composeTestRule.onNodeWithTag("birthDateIcon").safeClick()
         composeTestRule.waitForIdle()
 
         scrollToNode("registerButton")
-        composeTestRule.onNodeWithTag("registerButton").performClick()
+        composeTestRule.onNodeWithTag("registerButton").safeClick()
 
         // Wait for error
         composeTestRule.waitUntil(timeoutMillis = 3000) {
@@ -408,7 +408,7 @@ class RegisterScreenTest : BaseUiTest() {
 
         // Retry registration
         scrollToNode("registerButton")
-        composeTestRule.onNodeWithTag("registerButton").performClick()
+        composeTestRule.onNodeWithTag("registerButton").safeClick()
 
         waitUntilLoadingFinishes()
 

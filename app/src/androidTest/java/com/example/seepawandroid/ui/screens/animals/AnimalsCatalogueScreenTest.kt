@@ -51,7 +51,7 @@ class AnimalCatalogueScreenTest : BaseUiTest() {
             } catch (_: Throwable) { false }
         }
 
-        composeTestRule.onNodeWithTag("openCatalogueButton").performClick()
+        composeTestRule.onNodeWithTag("openCatalogueButton").safeClick()
 
         composeTestRule.waitUntil(timeoutMillis = 15000) {
             try {
@@ -134,7 +134,7 @@ class AnimalCatalogueScreenTest : BaseUiTest() {
         waitUntilLoadingFinishes()
 
         composeTestRule.onNodeWithTag("filterButton")
-            .performClick()
+            .safeClick()
 
         composeTestRule.waitForIdle()
 
@@ -155,12 +155,12 @@ class AnimalCatalogueScreenTest : BaseUiTest() {
         composeTestRule.waitForIdle()
         Thread.sleep(2000)
 
-        composeTestRule.onNodeWithTag("sortButton").performClick()
+        composeTestRule.onNodeWithTag("sortButton").safeClick()
         Thread.sleep(500)
 
         composeTestRule.onNodeWithTag("sort_name_asc")
             .assertExists()
-            .performClick()
+            .safeClick()
 
         Thread.sleep(2000)
 
@@ -177,12 +177,12 @@ class AnimalCatalogueScreenTest : BaseUiTest() {
         composeTestRule.waitForIdle()
         Thread.sleep(2000)
 
-        composeTestRule.onNodeWithTag("sortButton").performClick()
+        composeTestRule.onNodeWithTag("sortButton").safeClick()
         Thread.sleep(500)
 
         composeTestRule.onNodeWithTag("sort_recent_desc")
             .assertExists()
-            .performClick()
+            .safeClick()
 
         Thread.sleep(2000)
 
@@ -199,12 +199,12 @@ class AnimalCatalogueScreenTest : BaseUiTest() {
         composeTestRule.waitForIdle()
         Thread.sleep(2000)
 
-        composeTestRule.onNodeWithTag("sortButton").performClick()
+        composeTestRule.onNodeWithTag("sortButton").safeClick()
         Thread.sleep(500)
 
         composeTestRule.onNodeWithTag("sort_age_desc")
             .assertExists()
-            .performClick()
+            .safeClick()
 
         Thread.sleep(2000)
 
@@ -242,7 +242,7 @@ class AnimalCatalogueScreenTest : BaseUiTest() {
             .assertExists()
 
         composeTestRule.onNodeWithTag("nextPageButton")
-            .performClick()
+            .safeClick()
 
         composeTestRule.waitUntil(timeoutMillis = 10_000) {
             composeTestRule.onAllNodes(hasText("2")).fetchSemanticsNodes().isNotEmpty()
@@ -257,14 +257,14 @@ class AnimalCatalogueScreenTest : BaseUiTest() {
     fun pagination_previousPage_changesBackToFirstPage() {
         waitUntilLoadingFinishes()
 
-        composeTestRule.onNodeWithTag("nextPageButton").performClick()
+        composeTestRule.onNodeWithTag("nextPageButton").safeClick()
 
         composeTestRule.waitUntil(timeoutMillis = 10_000) {
             composeTestRule.onAllNodes(hasText("2")).fetchSemanticsNodes().isNotEmpty()
         }
 
         composeTestRule.onNodeWithTag("previousPageButton")
-            .performClick()
+            .safeClick()
 
         composeTestRule.waitUntil(timeoutMillis = 10_000) {
             composeTestRule.onAllNodes(hasText("1")).fetchSemanticsNodes().isNotEmpty()

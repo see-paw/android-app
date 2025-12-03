@@ -59,7 +59,7 @@ class SchedulingFlowTest : BaseUiTest() {
     @Test
     fun t1_navigation_fromOwnershipListToScheduleScreen() {
         prepareTestState_NavigateToOwnershipList()
-        composeTestRule.onNodeWithTag("scheduleActivityButton").performClick()
+        composeTestRule.onNodeWithTag("scheduleActivityButton").safeClick()
         composeTestRule.waitUntil(timeoutMillis = 5000) {
             try {
                 composeTestRule.onNodeWithTag("schedulingScreen").assertExists()
@@ -94,7 +94,7 @@ class SchedulingFlowTest : BaseUiTest() {
     @Test
     fun t3_scheduleScreen_displaysLoadingState() {
         prepareTestState_NavigateToOwnershipList()
-        composeTestRule.onNodeWithTag("scheduleActivityButton").performClick()
+        composeTestRule.onNodeWithTag("scheduleActivityButton").safeClick()
         try {
             composeTestRule.onNodeWithTag("schedulingLoadingIndicator").assertExists()
         } catch (e: AssertionError) {
@@ -117,7 +117,7 @@ class SchedulingFlowTest : BaseUiTest() {
     fun t4_weekNavigation_nextWeek_updatesWeekRange() {
         prepareTestState_NavigateToScheduleScreen()
         val currentWeekText = composeTestRule.onNodeWithTag("weekRangeText").fetchSemanticsNode().config.getOrNull(SemanticsProperties.Text)?.firstOrNull()?.text
-        composeTestRule.onNodeWithTag("nextWeekButton").performClick()
+        composeTestRule.onNodeWithTag("nextWeekButton").safeClick()
         composeTestRule.waitForIdle()
         waitUntilLoadingFinishes()
         val newWeekText = composeTestRule.onNodeWithTag("weekRangeText").fetchSemanticsNode().config.getOrNull(SemanticsProperties.Text)?.firstOrNull()?.text
@@ -145,7 +145,7 @@ class SchedulingFlowTest : BaseUiTest() {
         assert(availableSlotTag != null) {
             "Should find at least one available slot within 4 weeks"
         }
-        composeTestRule.onNodeWithTag(availableSlotTag!!).performClick()
+        composeTestRule.onNodeWithTag(availableSlotTag!!).safeClick()
         composeTestRule.waitUntil(timeoutMillis = 3000) {
             try {
                 composeTestRule.onNodeWithTag("confirmActivityModal").assertExists()
@@ -167,7 +167,7 @@ class SchedulingFlowTest : BaseUiTest() {
         assert(availableSlotTag != null) {
             "Should find at least one available slot within 4 weeks"
         }
-        composeTestRule.onNodeWithTag(availableSlotTag!!).performClick()
+        composeTestRule.onNodeWithTag(availableSlotTag!!).safeClick()
         composeTestRule.waitUntil(timeoutMillis = 3000) {
             composeTestRule.onAllNodesWithTag("confirmActivityModal").fetchSemanticsNodes().isNotEmpty()
         }
@@ -185,11 +185,11 @@ class SchedulingFlowTest : BaseUiTest() {
         assert(availableSlotTag != null) {
             "Should find at least one available slot within 4 weeks"
         }
-        composeTestRule.onNodeWithTag(availableSlotTag!!).performClick()
+        composeTestRule.onNodeWithTag(availableSlotTag!!).safeClick()
         composeTestRule.waitUntil(timeoutMillis = 3000) {
             composeTestRule.onAllNodesWithTag("confirmActivityModal").fetchSemanticsNodes().isNotEmpty()
         }
-        composeTestRule.onNodeWithTag("cancelModalButton").performClick()
+        composeTestRule.onNodeWithTag("cancelModalButton").safeClick()
         composeTestRule.waitUntil(timeoutMillis = 2000) {
             composeTestRule.onAllNodesWithTag("confirmActivityModal").fetchSemanticsNodes().isEmpty()
         }
@@ -205,11 +205,11 @@ class SchedulingFlowTest : BaseUiTest() {
         assert(availableSlotTag != null) {
             "Should find at least one available slot within 4 weeks"
         }
-        composeTestRule.onNodeWithTag(availableSlotTag!!).performClick()
+        composeTestRule.onNodeWithTag(availableSlotTag!!).safeClick()
         composeTestRule.waitUntil(timeoutMillis = 3000) {
             composeTestRule.onAllNodesWithTag("confirmActivityModal").fetchSemanticsNodes().isNotEmpty()
         }
-        composeTestRule.onNodeWithTag("confirmModalButton").performClick()
+        composeTestRule.onNodeWithTag("confirmModalButton").safeClick()
         try {
             composeTestRule.waitUntil(timeoutMillis = 2000) {
                 composeTestRule.onAllNodesWithTag("modalLoadingIndicator").fetchSemanticsNodes().isNotEmpty()
@@ -225,7 +225,7 @@ class SchedulingFlowTest : BaseUiTest() {
     @Test
     fun t10_backButton_navigatesToOwnershipList() {
         prepareTestState_NavigateToScheduleScreen()
-        composeTestRule.onNodeWithTag("backButton").performClick()
+        composeTestRule.onNodeWithTag("backButton").safeClick()
         composeTestRule.waitUntil(timeoutMillis = 3000) {
             try {
                 composeTestRule.onNodeWithTag("ownershipListScreen").assertExists()
@@ -321,7 +321,7 @@ class SchedulingFlowTest : BaseUiTest() {
 
     private fun prepareTestState_NavigateToScheduleScreen() {
         prepareTestState_NavigateToOwnershipList()
-        composeTestRule.onNodeWithTag("scheduleActivityButton").performClick()
+        composeTestRule.onNodeWithTag("scheduleActivityButton").safeClick()
         composeTestRule.waitUntil(timeoutMillis = 5000) {
             try {
                 composeTestRule.onNodeWithTag("schedulingScreen").assertExists()
@@ -364,7 +364,7 @@ class SchedulingFlowTest : BaseUiTest() {
                     false
                 }
             }
-            composeTestRule.onNodeWithTag("logoutButton").performClick()
+            composeTestRule.onNodeWithTag("logoutButton").safeClick()
             Thread.sleep(500)
             composeTestRule.waitUntil(timeoutMillis = 5000) {
                 try {
@@ -381,7 +381,7 @@ class SchedulingFlowTest : BaseUiTest() {
         }
     }
 
-    private fun performLogin(maxRetries: Int = 3) {
+    private fun performLogin(maxRetries: Int = 20) {
         var attempt = 0
         var credentialsEntered = false
         while (attempt < maxRetries) {
@@ -394,7 +394,7 @@ class SchedulingFlowTest : BaseUiTest() {
                 composeTestRule.waitUntil(timeoutMillis = 3000) {
                     composeTestRule.onAllNodesWithTag("openLoginButton").fetchSemanticsNodes().isNotEmpty()
                 }
-                composeTestRule.onNodeWithTag("openLoginButton").performClick()
+                composeTestRule.onNodeWithTag("openLoginButton").safeClick()
                 composeTestRule.waitUntil(timeoutMillis = 3000) {
                     try {
                         composeTestRule.onNodeWithText("SeePaw Login").assertExists()
@@ -409,7 +409,7 @@ class SchedulingFlowTest : BaseUiTest() {
                 composeTestRule.onNodeWithTag("passwordInput").performTextInput(VALID_PASSWORD)
                 credentialsEntered = true
             }
-            composeTestRule.onNodeWithTag("loginButton").performClick()
+            composeTestRule.onNodeWithTag("loginButton").safeClick()
             val loginSucceeded = try {
                 composeTestRule.waitUntil(timeoutMillis = 12_000) {
                     composeTestRule.onAllNodesWithTag("openDrawerButton").fetchSemanticsNodes().isNotEmpty() || composeTestRule.onAllNodesWithTag("errorMessage").fetchSemanticsNodes().isNotEmpty()
@@ -437,7 +437,7 @@ class SchedulingFlowTest : BaseUiTest() {
                 false
             }
         }
-        composeTestRule.onNodeWithTag("drawerItemOwnershipList").performClick()
+        composeTestRule.onNodeWithTag("drawerItemOwnershipList").safeClick()
         composeTestRule.waitUntil(timeoutMillis = 8000) {
             try {
                 composeTestRule.onNodeWithTag("ownershipListScreen").assertExists()

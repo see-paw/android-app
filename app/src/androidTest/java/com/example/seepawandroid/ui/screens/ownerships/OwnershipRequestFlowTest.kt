@@ -101,7 +101,7 @@ class OwnershipRequestFlowTest : BaseUiTest() {
 
         // Pass Terms & Conditions
         swipeUpUntilEnabled("termsScrollArea", "acceptTermsButton")
-        composeTestRule.onNodeWithTag("acceptTermsButton").performClick()
+        composeTestRule.onNodeWithTag("acceptTermsButton").safeClick()
 
         // Wait for Form transition
         composeTestRule.waitUntil(timeoutMillis = 5000) {
@@ -131,14 +131,14 @@ class OwnershipRequestFlowTest : BaseUiTest() {
 
         // Navigate to Form
         swipeUpUntilEnabled("termsScrollArea", "acceptTermsButton")
-        composeTestRule.onNodeWithTag("acceptTermsButton").performClick()
+        composeTestRule.onNodeWithTag("acceptTermsButton").safeClick()
 
         composeTestRule.waitUntil(timeoutMillis = 5000) {
             composeTestRule.onAllNodesWithTag("formContent").fetchSemanticsNodes().isNotEmpty()
         }
 
         // Click Back
-        composeTestRule.onNodeWithTag("backButton").performClick()
+        composeTestRule.onNodeWithTag("backButton").safeClick()
 
         // Verify we returned to Terms
         composeTestRule.waitUntil(timeoutMillis = 5000) {
@@ -158,13 +158,13 @@ class OwnershipRequestFlowTest : BaseUiTest() {
 
         // 1. Accept Terms
         swipeUpUntilEnabled("termsScrollArea", "acceptTermsButton")
-        composeTestRule.onNodeWithTag("acceptTermsButton").performClick()
+        composeTestRule.onNodeWithTag("acceptTermsButton").safeClick()
 
         // 2. Submit Form
         composeTestRule.waitUntil(timeoutMillis = 5000) {
             composeTestRule.onAllNodesWithTag("formContent").fetchSemanticsNodes().isNotEmpty()
         }
-        composeTestRule.onNodeWithTag("submitRequestButton").performClick()
+        composeTestRule.onNodeWithTag("submitRequestButton").safeClick()
 
         // 3. Validate Success Screen
         composeTestRule.waitUntil(timeoutMillis = 10_000) {
@@ -173,7 +173,7 @@ class OwnershipRequestFlowTest : BaseUiTest() {
                 true
             } catch (e: Throwable) { false }
         }
-        composeTestRule.onNodeWithTag("doneButton").performClick()
+        composeTestRule.onNodeWithTag("doneButton").safeClick()
 
         // 4. Navigate to Ownership List
         composeTestRule.waitUntil(timeoutMillis = 5000) {
@@ -265,7 +265,7 @@ class OwnershipRequestFlowTest : BaseUiTest() {
                     true
                 } catch (e: Throwable) { false }
             }
-            composeTestRule.onNodeWithTag("logoutButton").performClick()
+            composeTestRule.onNodeWithTag("logoutButton").safeClick()
             composeTestRule.waitUntil(timeoutMillis = 3000) {
                 try {
                     composeTestRule.onNodeWithTag("openLoginButton").assertExists()
@@ -285,7 +285,7 @@ class OwnershipRequestFlowTest : BaseUiTest() {
             composeTestRule.waitUntil(timeoutMillis = 3000) {
                 composeTestRule.onAllNodesWithTag("openLoginButton").fetchSemanticsNodes().isNotEmpty()
             }
-            composeTestRule.onNodeWithTag("openLoginButton").performClick()
+            composeTestRule.onNodeWithTag("openLoginButton").safeClick()
             composeTestRule.waitUntil(timeoutMillis = 3000) {
                 try {
                     composeTestRule.onNodeWithText("SeePaw Login").assertExists()
@@ -297,34 +297,34 @@ class OwnershipRequestFlowTest : BaseUiTest() {
         // Input credentials
         composeTestRule.onNodeWithTag("emailInput").performTextInput(VALID_EMAIL)
         composeTestRule.onNodeWithTag("passwordInput").performTextInput(VALID_PASSWORD)
-        composeTestRule.onNodeWithTag("loginButton").performClick()
+        composeTestRule.onNodeWithTag("loginButton").safeClick()
 
         waitUntilLoadingFinishes()
     }
 
     private fun navigateToCatalogue() {
-        composeTestRule.onNodeWithTag("openDrawerButton").performClick()
+        composeTestRule.onNodeWithTag("openDrawerButton").safeClick()
         composeTestRule.waitUntil(timeoutMillis = 2000) {
             try {
                 composeTestRule.onNodeWithTag("drawerItemCatalogue").assertExists()
                 true
             } catch (e: Throwable) { false }
         }
-        composeTestRule.onNodeWithTag("drawerItemCatalogue").performClick()
+        composeTestRule.onNodeWithTag("drawerItemCatalogue").safeClick()
         composeTestRule.waitUntil(timeoutMillis = 10_000) {
             composeTestRule.onAllNodes(hasTestTagStartingWith("animalCard_")).fetchSemanticsNodes().isNotEmpty()
         }
     }
 
     private fun navigateToOwnershipList() {
-        composeTestRule.onNodeWithTag("openDrawerButton").performClick()
+        composeTestRule.onNodeWithTag("openDrawerButton").safeClick()
         composeTestRule.waitUntil(timeoutMillis = 5000) {
             try {
                 composeTestRule.onNodeWithTag("drawerItemOwnershipList").assertExists()
                 true
             } catch (e: Throwable) { false }
         }
-        composeTestRule.onNodeWithTag("drawerItemOwnershipList").performClick()
+        composeTestRule.onNodeWithTag("drawerItemOwnershipList").safeClick()
         composeTestRule.waitUntil(timeoutMillis = 8000) {
             try {
                 composeTestRule.onNodeWithTag("ownershipListScreen").assertExists()
@@ -342,7 +342,7 @@ class OwnershipRequestFlowTest : BaseUiTest() {
             try {
                 composeTestRule.onNodeWithTag("animalGrid")
                     .performScrollToNode(hasTestTag("animalCard_$animalId"))
-                composeTestRule.onNodeWithTag("animalCard_$animalId").performClick()
+                composeTestRule.onNodeWithTag("animalCard_$animalId").safeClick()
                 return
             } catch (_: Throwable) { /* Animal not on this page */ }
 
@@ -358,7 +358,7 @@ class OwnershipRequestFlowTest : BaseUiTest() {
         return try {
             composeTestRule.onNodeWithTag("nextPageButton").assertExists()
             composeTestRule.onNodeWithTag("nextPageButton").assertIsEnabled()
-            composeTestRule.onNodeWithTag("nextPageButton").performClick()
+            composeTestRule.onNodeWithTag("nextPageButton").safeClick()
             composeTestRule.waitUntil(timeoutMillis = 5000) {
                 composeTestRule.onAllNodes(hasTestTagStartingWith("animalCard_")).fetchSemanticsNodes().isNotEmpty()
             }
