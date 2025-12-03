@@ -117,13 +117,42 @@ class SchedulingFlowTest : BaseUiTest() {
     @Test
     fun t4_weekNavigation_nextWeek_updatesWeekRange() {
         prepareTestState_NavigateToScheduleScreen()
-        val currentWeekText = composeTestRule.onNodeWithTag("weekRangeText").fetchSemanticsNode().config.getOrNull(SemanticsProperties.Text)?.firstOrNull()?.text
+        
+        composeTestRule.waitUntil(timeoutMillis = 5000) {
+            try {
+                composeTestRule.onNodeWithTag("weekRangeText").assertExists()
+                true
+            } catch (e: Throwable) {
+                false
+            }
+        }
+        
+        val currentWeekText = composeTestRule.onNodeWithTag("weekRangeText")
+            .fetchSemanticsNode()
+            .config.getOrNull(SemanticsProperties.Text)?.firstOrNull()?.text
+        
         composeTestRule.onNodeWithTag("nextWeekButton").safeClick()
         composeTestRule.waitForIdle()
         waitUntilLoadingFinishes()
-        val newWeekText = composeTestRule.onNodeWithTag("weekRangeText").fetchSemanticsNode().config.getOrNull(SemanticsProperties.Text)?.firstOrNull()?.text
+        Thread.sleep(1000)
+        
+        composeTestRule.waitUntil(timeoutMillis = 5000) {
+            try {
+                val newText = composeTestRule.onNodeWithTag("weekRangeText")
+                    .fetchSemanticsNode()
+                    .config.getOrNull(SemanticsProperties.Text)?.firstOrNull()?.text
+                newText != null && newText != currentWeekText
+            } catch (e: Throwable) {
+                false
+            }
+        }
+        
+        val newWeekText = composeTestRule.onNodeWithTag("weekRangeText")
+            .fetchSemanticsNode()
+            .config.getOrNull(SemanticsProperties.Text)?.firstOrNull()?.text
+        
         assert(currentWeekText != newWeekText) {
-            "Week range should update after clicking next week button"
+            "Week range should update after clicking next week button. Old: $currentWeekText, New: $newWeekText"
         }
     }
 
@@ -335,21 +364,61 @@ class SchedulingFlowTest : BaseUiTest() {
     }
 
     private fun findFirstAvailableSlot(): String? {
+        // IMPORTANTE: Avançar 1 semana primeiro para evitar slots dentro de 24h
+        // A regra de negócio exige que reservas sejam feitas com pelo menos 24h de antecedência
         try {
+            composeTestRule.onNodeWithTag("nextWeekButton").awaitDisplayedAndEnabled()
             composeTestRule.onNodeWithTag("nextWeekButton").safeClick()
             composeTestRule.waitForIdle()
-            waitUntilLoadingFinishes()
-            Thread.sleep(500) // Give UI time to update
+            waitUntilLoadingFinishes(timeout = 30_000)
+            Thread.sleep(1000)
         } catch (e: Exception) {
-            // Can't navigate, try current week
+            android.util.Log.w("SchedulingFlowTest", "Failed to navigate to next week, trying current week", e)
         }
-        val nodes = composeTestRule.onAllNodes(hasTestTagStartingWith("timeSlot_")).fetchSemanticsNodes()
+        
+        // Try current week (which is now next week if navigation succeeded)
+        val currentWeekSlot = findAvailableSlotInCurrentWeek()
+        if (currentWeekSlot != null) {
+            return currentWeekSlot
+        }
+        
+        // Try next 3 more weeks (total 4 weeks from start)
+        for (week in 1..3) {
+            try {
+                composeTestRule.onNodeWithTag("nextWeekButton").awaitDisplayedAndEnabled()
+                composeTestRule.onNodeWithTag("nextWeekButton").safeClick()
+                composeTestRule.waitForIdle()
+                waitUntilLoadingFinishes(timeout = 30_000)
+                Thread.sleep(1000)
+                
+                val slot = findAvailableSlotInCurrentWeek()
+                if (slot != null) {
+                    return slot
+                }
+            } catch (e: Exception) {
+                android.util.Log.w("SchedulingFlowTest", "Failed to navigate to week $week", e)
+            }
+        }
+        
+        return null
+    }
+    
+    private fun findAvailableSlotInCurrentWeek(): String? {
+        composeTestRule.waitUntil(timeoutMillis = 10_000) {
+            composeTestRule.onAllNodes(hasTestTagStartingWith("timeSlot_"))
+                .fetchSemanticsNodes().isNotEmpty()
+        }
+        
+        val nodes = composeTestRule.onAllNodes(hasTestTagStartingWith("timeSlot_"))
+            .fetchSemanticsNodes()
+        
         for (node in nodes) {
             val tag = node.config.getOrNull(SemanticsProperties.TestTag)
             if (tag != null && tag.endsWith("_AVAILABLE")) {
                 return tag
             }
         }
+        
         return null
     }
 
