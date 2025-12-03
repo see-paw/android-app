@@ -22,17 +22,25 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
-    private const val LOCAL_URL = "http://10.0.2.2:5000/"
+    // Local URLs:
+    // - EMULATOR: Use 10.0.2.2 (special alias for host machine's localhost)
+    // - PHYSICAL DEVICE: Use your machine's IP address (e.g., 192.168.1.5)
+    private const val LOCAL_EMULATOR_URL = "http://10.0.2.2:5000/"
+    private const val LOCAL_DEVICE_URL = "http://192.168.1.5:5000/"
+
     private const val NGROK_URL = "https://nonmischievous-petulant-rosa.ngrok-free.dev/"
     private const val AZURE_URL = "https://seepaw-api-gdhvbkcvckeub9et.francecentral-01.azurewebsites.net/"
 
+    // Configuration flags
     private const val USE_NGROK = false
     private const val USE_AZURE = false
+    private const val USE_PHYSICAL_DEVICE = false  // Set to true if using physical device
 
     private val BASE_URL = when {
         USE_NGROK -> NGROK_URL
         USE_AZURE -> AZURE_URL
-        else -> LOCAL_URL
+        USE_PHYSICAL_DEVICE -> LOCAL_DEVICE_URL
+        else -> LOCAL_EMULATOR_URL
     }
 
     /**
