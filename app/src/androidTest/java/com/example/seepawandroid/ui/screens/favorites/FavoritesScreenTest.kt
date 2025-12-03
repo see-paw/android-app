@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.compose.ui.semantics.getOrNull
 import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
@@ -93,7 +94,18 @@ class FavoritesScreenTest {
         // Enter valid test credentials
         composeTestRule.onNodeWithTag("emailInput").performTextInput(VALID_EMAIL)
         composeTestRule.onNodeWithTag("passwordInput").performTextInput(VALID_PASSWORD)
-        composeTestRule.onNodeWithTag("submitLoginButton").performClick()
+
+        // Wait for login button to be enabled (requires non-blank email and password)
+        composeTestRule.waitUntil(timeoutMillis = 3000) {
+            try {
+                composeTestRule.onNodeWithTag("loginButton").assertIsEnabled()
+                true
+            } catch (_: Throwable) {
+                false
+            }
+        }
+
+        composeTestRule.onNodeWithTag("loginButton").performClick()
 
         // Wait for login to complete and navigate to user homepage
         composeTestRule.waitUntil(timeoutMillis = 15000) {
