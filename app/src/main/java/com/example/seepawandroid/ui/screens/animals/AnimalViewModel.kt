@@ -29,12 +29,21 @@ class AnimalViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _uiState = MutableLiveData<AnimalCatalogueUiState>()
+    /**
+     * The current state of the UI.
+     */
     val uiState: LiveData<AnimalCatalogueUiState> = _uiState
 
     private val _breeds = MutableLiveData<List<String>>()
+    /**
+     * The list of available breeds.
+     */
     val breeds: LiveData<List<String>> = _breeds
 
     private var searchQuery: String = ""
+    /**
+     * The current search query.
+     */
     val currentSearchQuery: String
         get() = searchQuery
 
@@ -42,8 +51,14 @@ class AnimalViewModel @Inject constructor(
     private var sortBy: String? = null
     private var order: String? = null
 
+    /**
+     * The current page number.
+     */
     var currentPage: Int = 1
         private set
+    /**
+     * The total number of pages.
+     */
     var totalPages: Int = 1
         private set
 

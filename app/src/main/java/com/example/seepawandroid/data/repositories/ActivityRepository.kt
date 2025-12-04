@@ -7,9 +7,22 @@ import org.json.JSONObject
 import java.io.IOException
 import javax.inject.Inject
 
+/**
+ * Repository for managing animal activities.
+ */
 class ActivityRepository @Inject constructor(
     private val apiService: BackendApiService
 ) {
+    /**
+     * Creates a new ownership activity for a specific time slot.
+     *
+     * @param dto The request containing animal ID and activity time details.
+     * @return Result indicating success or specific activity exception.
+     * @throws ActivityException.SlotAlreadyBookedException if slot is already booked.
+     * @throws ActivityException.InvalidSlotException if slot data is invalid.
+     * @throws ActivityException.ServerException if server error occurs.
+     * @throws ActivityException.NetworkException if network error occurs.
+     */
     suspend fun createOwnershipActivity(
         dto: ReqCreateOwnershipActivityDto) : Result<Unit> {
         return try {

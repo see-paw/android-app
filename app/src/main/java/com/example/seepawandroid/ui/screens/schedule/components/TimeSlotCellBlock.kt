@@ -32,7 +32,14 @@ import com.example.seepawandroid.ui.theme.ReservedSlotColor
 import com.example.seepawandroid.ui.theme.UnavailableSlotColor
 import java.time.LocalDate
 
-
+/**
+ * A composable that displays a block for a time slot cell.
+ *
+ * @param cell The time slot cell to be displayed.
+ * @param date The date of the time slot.
+ * @param onClick A callback that is invoked when the cell is clicked.
+ * @param modifier The modifier to be applied to the component.
+ */
 @Composable
 fun TimeSlotCellBlock(
     cell: TimeSlotCell,

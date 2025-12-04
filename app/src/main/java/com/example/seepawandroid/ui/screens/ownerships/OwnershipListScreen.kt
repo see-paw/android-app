@@ -349,6 +349,7 @@ private fun OwnershipRequestCard(
  *
  * @param ownedAnimal The owned animal data.
  * @param onClick Callback when card is clicked.
+ * @param onScheduleVisit Callback to schedule a visit for the animal.
  */
 @Composable
 private fun OwnedAnimalCard(

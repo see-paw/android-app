@@ -22,7 +22,14 @@ import com.example.seepawandroid.data.models.schedule.DaySchedule
 import com.example.seepawandroid.ui.screens.schedule.toTimeSlotCells
 import java.time.DayOfWeek
 
-
+/**
+ * A composable that displays a column for a single day in the schedule.
+ *
+ * @param dailySchedule The schedule for the day.
+ * @param verticalScrollState The scroll state for the column.
+ * @param onSelectSlotCell A callback that is invoked when a slot is selected.
+ * @param modifier The modifier to be applied to the component.
+ */
 @Composable
 fun DayColumn(
     dailySchedule: DaySchedule,

@@ -32,12 +32,21 @@ class AnimalDetailViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _uiState = MutableLiveData<AnimalDetailUiState>(AnimalDetailUiState.Loading)
+    /**
+     * The current state of the UI.
+     */
     val uiState: LiveData<AnimalDetailUiState> = _uiState
 
     private val _showLoginDialog = MutableLiveData(false)
+    /**
+     * Whether to show the login dialog.
+     */
     val showLoginDialog: LiveData<Boolean> = _showLoginDialog
 
     private val _showOwnershipExistsDialog = MutableLiveData<String?>()
+    /**
+     * The name of the animal for which an ownership request already exists, or null.
+     */
     val showOwnershipExistsDialog: LiveData<String?> = _showOwnershipExistsDialog
 
     /**

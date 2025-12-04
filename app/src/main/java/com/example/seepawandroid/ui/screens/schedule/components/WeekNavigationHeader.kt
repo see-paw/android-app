@@ -18,6 +18,15 @@ import androidx.compose.ui.res.stringResource
 import com.example.seepawandroid.R
 import java.time.LocalDate
 
+/**
+ * A composable that displays the header for the week navigation.
+ *
+ * @param weekStartDate The start date of the week.
+ * @param onPrevWeek A callback that is invoked when the user clicks the previous week button.
+ * @param onNextWeek A callback that is invoked when the user clicks the next week button.
+ * @param canNavigatePrevious Whether the user can navigate to the previous week.
+ * @param modifier The modifier to be applied to the component.
+ */
 @Composable
 fun WeekNavigationHeader(
     weekStartDate: LocalDate,

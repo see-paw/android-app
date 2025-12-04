@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CalendarToday
+import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Error
 import androidx.compose.material.icons.filled.Schedule
 import androidx.compose.material3.AlertDialog
@@ -31,6 +32,15 @@ import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 import java.util.Locale
 
+/**
+ * A modal dialog for confirming an activity.
+ *
+ * @param slot The slot for the activity.
+ * @param animalName The name of the animal.
+ * @param onConfirm A callback that is invoked when the confirmation button is clicked.
+ * @param onCancel A callback that is invoked when the dialog is dismissed.
+ * @param modifier The modifier to be applied to the component.
+ */
 @Composable
 fun ConfirmActivityModal(
     slot: AvailableSlot,
@@ -115,6 +125,14 @@ fun ConfirmActivityModal(
     )
 }
 
+/**
+ * A modal dialog for displaying an error.
+ *
+ * @param message The error message to be displayed.
+ * @param onConfirm A callback that is invoked when the confirmation button is clicked.
+ * @param onDismiss A callback that is invoked when the dialog is dismissed.
+ * @param modifier The modifier to be applied to the component.
+ */
 @Composable
 fun ErrorModal(
     message: String,
@@ -164,6 +182,92 @@ fun ErrorModal(
                 modifier = Modifier.testTag("errorModalCancelButton")
             ) {
                 Text(stringResource(R.string.cancel))
+            }
+        }
+    )
+}
+
+/**
+ * A modal dialog for displaying a success message after confirming an activity.
+ *
+ * @param animalName The name of the animal.
+ * @param date The formatted date of the activity.
+ * @param time The formatted time range of the activity.
+ * @param onDismiss A callback that is invoked when the dialog is dismissed.
+ * @param modifier The modifier to be applied to the component.
+ */
+@Composable
+fun SuccessModal(
+    animalName: String,
+    date: String,
+    time: String,
+    onDismiss: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        modifier = modifier.testTag("successModal"),
+        icon = {
+            Icon(
+                imageVector = Icons.Default.CheckCircle,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.primary
+            )
+        },
+        title = {
+            Text(
+                text = stringResource(R.string.modal_success_title),
+                style = MaterialTheme.typography.headlineSmall,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.primary
+            )
+        },
+        text = {
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                Text(
+                    text = stringResource(R.string.modal_success_message, animalName),
+                    style = MaterialTheme.typography.bodyLarge,
+                    modifier = Modifier.testTag("successModalMessage")
+                )
+
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.primaryContainer
+                    )
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        DateTimeInfoRow(
+                            icon = Icons.Default.CalendarToday,
+                            label = stringResource(R.string.modal_date_label),
+                            value = date
+                        )
+                        DateTimeInfoRow(
+                            icon = Icons.Default.Schedule,
+                            label = stringResource(R.string.modal_time_label),
+                            value = time
+                        )
+                    }
+                }
+            }
+        },
+        confirmButton = {
+            Button(
+                onClick = onDismiss,
+                modifier = Modifier.testTag("successModalButton"),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.primary
+                )
+            ) {
+                Text(stringResource(R.string.ok))
             }
         }
     )

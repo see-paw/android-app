@@ -6,9 +6,7 @@ import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.assertIsNotEnabled
-import androidx.compose.ui.test.hasProgressBarRangeInfo
 import androidx.compose.ui.test.hasTestTag
-import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithTag
@@ -19,17 +17,13 @@ import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeUp
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.example.seepawandroid.MainActivity
-import com.example.seepawandroid.data.managers.SessionManager
-import dagger.hilt.android.testing.HiltAndroidRule
+import com.example.seepawandroid.BaseUiTest
 import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Before
 import org.junit.FixMethodOrder
-import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.MethodSorters
-import javax.inject.Inject
 
 /**
  * Test Suite for the Ownership Request Flow.
@@ -47,16 +41,7 @@ import javax.inject.Inject
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-class OwnershipRequestFlowTest {
-
-    @get:Rule(order = 0)
-    val hiltRule = HiltAndroidRule(this)
-
-    @get:Rule(order = 1)
-    val composeTestRule = createAndroidComposeRule<MainActivity>()
-
-    @Inject
-    lateinit var sessionManager: SessionManager
+class OwnershipRequestFlowTest : BaseUiTest() {
 
     companion object {
         private const val VALID_EMAIL = "carlos@test.com"
@@ -70,8 +55,8 @@ class OwnershipRequestFlowTest {
     }
 
     @Before
-    fun setup() {
-        hiltRule.inject()
+    override fun setUp() {
+        super.setUp()
         composeTestRule.waitForIdle()
         logoutIfNeeded()
     }
@@ -84,7 +69,7 @@ class OwnershipRequestFlowTest {
     fun t1_terms_acceptButton_startsDisabled() {
         prepareTestState_NavigateToWizard()
 
-        composeTestRule.onNodeWithTag("termsContent").assertIsDisplayed()
+        composeTestRule.onNodeWithTag("termsContent").awaitDisplayedAndEnabled().assertExists()
 
         // Ensure user cannot proceed without scrolling
         composeTestRule.onNodeWithTag("acceptTermsButton").assertIsNotEnabled()
@@ -97,9 +82,6 @@ class OwnershipRequestFlowTest {
     @Test
     fun t2_terms_scroll_enablesButton() {
         prepareTestState_NavigateToWizard()
-
-        // Initial state
-        composeTestRule.onNodeWithTag("acceptTermsButton").assertIsNotEnabled()
 
         // Action: Swipe up until the button becomes enabled
         swipeUpUntilEnabled("termsScrollArea", "acceptTermsButton")
@@ -119,7 +101,7 @@ class OwnershipRequestFlowTest {
 
         // Pass Terms & Conditions
         swipeUpUntilEnabled("termsScrollArea", "acceptTermsButton")
-        composeTestRule.onNodeWithTag("acceptTermsButton").performClick()
+        composeTestRule.onNodeWithTag("acceptTermsButton").safeClick()
 
         // Wait for Form transition
         composeTestRule.waitUntil(timeoutMillis = 5000) {
@@ -149,14 +131,14 @@ class OwnershipRequestFlowTest {
 
         // Navigate to Form
         swipeUpUntilEnabled("termsScrollArea", "acceptTermsButton")
-        composeTestRule.onNodeWithTag("acceptTermsButton").performClick()
+        composeTestRule.onNodeWithTag("acceptTermsButton").safeClick()
 
         composeTestRule.waitUntil(timeoutMillis = 5000) {
             composeTestRule.onAllNodesWithTag("formContent").fetchSemanticsNodes().isNotEmpty()
         }
 
         // Click Back
-        composeTestRule.onNodeWithTag("backButton").performClick()
+        composeTestRule.onNodeWithTag("backButton").safeClick()
 
         // Verify we returned to Terms
         composeTestRule.waitUntil(timeoutMillis = 5000) {
@@ -176,13 +158,13 @@ class OwnershipRequestFlowTest {
 
         // 1. Accept Terms
         swipeUpUntilEnabled("termsScrollArea", "acceptTermsButton")
-        composeTestRule.onNodeWithTag("acceptTermsButton").performClick()
+        composeTestRule.onNodeWithTag("acceptTermsButton").safeClick()
 
         // 2. Submit Form
         composeTestRule.waitUntil(timeoutMillis = 5000) {
             composeTestRule.onAllNodesWithTag("formContent").fetchSemanticsNodes().isNotEmpty()
         }
-        composeTestRule.onNodeWithTag("submitRequestButton").performClick()
+        composeTestRule.onNodeWithTag("submitRequestButton").safeClick()
 
         // 3. Validate Success Screen
         composeTestRule.waitUntil(timeoutMillis = 10_000) {
@@ -191,7 +173,7 @@ class OwnershipRequestFlowTest {
                 true
             } catch (e: Throwable) { false }
         }
-        composeTestRule.onNodeWithTag("doneButton").performClick()
+        composeTestRule.onNodeWithTag("doneButton").safeClick()
 
         // 4. Navigate to Ownership List
         composeTestRule.waitUntil(timeoutMillis = 5000) {
@@ -229,7 +211,7 @@ class OwnershipRequestFlowTest {
         composeTestRule.onNodeWithTag("animalDetailContent")
             .performScrollToNode(hasTestTag("ownershipButton"))
 
-        composeTestRule.onNodeWithTag("ownershipButton").performClick()
+        composeTestRule.onNodeWithTag("ownershipButton").safeClick()
 
         // Wait for Wizard screen entry
         composeTestRule.waitUntil(timeoutMillis = 5000) {
@@ -262,7 +244,7 @@ class OwnershipRequestFlowTest {
                 // Button not enabled yet
             }
 
-            composeTestRule.onNodeWithTag(scrollableTag).performTouchInput {
+            composeTestRule.onNodeWithTag(scrollableTag).awaitDisplayed().performTouchInput {
                 swipeUp(durationMillis = 200)
             }
             composeTestRule.waitForIdle()
@@ -283,7 +265,7 @@ class OwnershipRequestFlowTest {
                     true
                 } catch (e: Throwable) { false }
             }
-            composeTestRule.onNodeWithTag("logoutButton").performClick()
+            composeTestRule.onNodeWithTag("logoutButton").safeClick()
             composeTestRule.waitUntil(timeoutMillis = 3000) {
                 try {
                     composeTestRule.onNodeWithTag("openLoginButton").assertExists()
@@ -303,7 +285,7 @@ class OwnershipRequestFlowTest {
             composeTestRule.waitUntil(timeoutMillis = 3000) {
                 composeTestRule.onAllNodesWithTag("openLoginButton").fetchSemanticsNodes().isNotEmpty()
             }
-            composeTestRule.onNodeWithTag("openLoginButton").performClick()
+            composeTestRule.onNodeWithTag("openLoginButton").safeClick()
             composeTestRule.waitUntil(timeoutMillis = 3000) {
                 try {
                     composeTestRule.onNodeWithText("SeePaw Login").assertExists()
@@ -315,34 +297,34 @@ class OwnershipRequestFlowTest {
         // Input credentials
         composeTestRule.onNodeWithTag("emailInput").performTextInput(VALID_EMAIL)
         composeTestRule.onNodeWithTag("passwordInput").performTextInput(VALID_PASSWORD)
-        composeTestRule.onNodeWithTag("loginButton").performClick()
+        composeTestRule.onNodeWithTag("loginButton").safeClick()
 
         waitUntilLoadingFinishes()
     }
 
     private fun navigateToCatalogue() {
-        composeTestRule.onNodeWithTag("openDrawerButton").performClick()
+        composeTestRule.onNodeWithTag("openDrawerButton").safeClick()
         composeTestRule.waitUntil(timeoutMillis = 2000) {
             try {
                 composeTestRule.onNodeWithTag("drawerItemCatalogue").assertExists()
                 true
             } catch (e: Throwable) { false }
         }
-        composeTestRule.onNodeWithTag("drawerItemCatalogue").performClick()
+        composeTestRule.onNodeWithTag("drawerItemCatalogue").safeClick()
         composeTestRule.waitUntil(timeoutMillis = 10_000) {
             composeTestRule.onAllNodes(hasTestTagStartingWith("animalCard_")).fetchSemanticsNodes().isNotEmpty()
         }
     }
 
     private fun navigateToOwnershipList() {
-        composeTestRule.onNodeWithTag("openDrawerButton").performClick()
+        composeTestRule.onNodeWithTag("openDrawerButton").safeClick()
         composeTestRule.waitUntil(timeoutMillis = 5000) {
             try {
                 composeTestRule.onNodeWithTag("drawerItemOwnershipList").assertExists()
                 true
             } catch (e: Throwable) { false }
         }
-        composeTestRule.onNodeWithTag("drawerItemOwnershipList").performClick()
+        composeTestRule.onNodeWithTag("drawerItemOwnershipList").safeClick()
         composeTestRule.waitUntil(timeoutMillis = 8000) {
             try {
                 composeTestRule.onNodeWithTag("ownershipListScreen").assertExists()
@@ -360,7 +342,7 @@ class OwnershipRequestFlowTest {
             try {
                 composeTestRule.onNodeWithTag("animalGrid")
                     .performScrollToNode(hasTestTag("animalCard_$animalId"))
-                composeTestRule.onNodeWithTag("animalCard_$animalId").performClick()
+                composeTestRule.onNodeWithTag("animalCard_$animalId").safeClick()
                 return
             } catch (_: Throwable) { /* Animal not on this page */ }
 
@@ -376,7 +358,7 @@ class OwnershipRequestFlowTest {
         return try {
             composeTestRule.onNodeWithTag("nextPageButton").assertExists()
             composeTestRule.onNodeWithTag("nextPageButton").assertIsEnabled()
-            composeTestRule.onNodeWithTag("nextPageButton").performClick()
+            composeTestRule.onNodeWithTag("nextPageButton").safeClick()
             composeTestRule.waitUntil(timeoutMillis = 5000) {
                 composeTestRule.onAllNodes(hasTestTagStartingWith("animalCard_")).fetchSemanticsNodes().isNotEmpty()
             }
@@ -391,14 +373,6 @@ class OwnershipRequestFlowTest {
                 composeTestRule.onNodeWithTag("animalDetailScreen").assertExists()
                 true
             } catch (e: Throwable) { false }
-        }
-    }
-
-    private fun waitUntilLoadingFinishes() {
-        composeTestRule.waitUntil(timeoutMillis = 20_000) {
-            composeTestRule.onAllNodes(
-                hasProgressBarRangeInfo(androidx.compose.ui.semantics.ProgressBarRangeInfo.Indeterminate)
-            ).fetchSemanticsNodes().isEmpty()
         }
     }
 

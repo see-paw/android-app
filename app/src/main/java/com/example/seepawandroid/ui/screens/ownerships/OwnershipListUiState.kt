@@ -15,10 +15,11 @@ sealed class OwnershipListUiState {
     object Loading : OwnershipListUiState()
 
     /**
-     * Success state with list of ownership requests.
+     * Represents the success state, containing the lists of active requests and owned animals.
      *
-     * @param requests List of user's ownership requests, sorted by date (newest first).
-     * @param isRefreshing Whether a pull-to-refresh is in progress.
+     * @property activeRequests The list of active ownership requests.
+     * @property ownedAnimals The list of animals owned by the user.
+     * @property isRefreshing Whether a pull-to-refresh is in progress.
      */
     data class Success(
         val activeRequests: List<ResOwnershipRequestListDto>,
@@ -32,9 +33,9 @@ sealed class OwnershipListUiState {
     object Empty : OwnershipListUiState()
 
     /**
-     * Error state - failed to load ownership requests.
+     * Represents the error state.
      *
-     * @param message Error message to display.
+     * @property message The error message to be displayed.
      */
     data class Error(val message: String) : OwnershipListUiState()
 }

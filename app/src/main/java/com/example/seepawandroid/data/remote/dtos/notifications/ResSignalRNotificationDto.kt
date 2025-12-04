@@ -12,21 +12,39 @@ import com.google.gson.annotations.SerializedName
  * Received from: SignalR "ReceiveNotification" event
  */
 data class ResSignalRNotificationDto(
+    /**
+     * The unique identifier of the notification.
+     */
     @SerializedName("id")
     val id: String,
 
+    /**
+     * The type of notification.
+     */
     @SerializedName("type")
     val type: String,
 
+    /**
+     * The notification message content.
+     */
     @SerializedName("message")
     val message: String,
 
+    /**
+     * The ID of the related animal, if applicable.
+     */
     @SerializedName("animalId")
     val animalId: String?,
 
+    /**
+     * The ID of the related ownership request, if applicable.
+     */
     @SerializedName("ownershipRequestId")
     val ownershipRequestId: String?,
 
+    /**
+     * The timestamp when the notification was created.
+     */
     @SerializedName("createdAt")
     val createdAt: String
 ) {

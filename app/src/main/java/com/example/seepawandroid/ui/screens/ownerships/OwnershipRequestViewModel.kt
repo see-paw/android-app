@@ -38,6 +38,9 @@ class OwnershipRequestViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _uiState = MutableLiveData<OwnershipRequestUiState>(OwnershipRequestUiState.Loading)
+    /**
+     * The current state of the ownership request UI.
+     */
     val uiState: LiveData<OwnershipRequestUiState> = _uiState
 
     // Cache for data loaded during the flow

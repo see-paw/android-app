@@ -38,6 +38,9 @@ class SessionManager @Inject constructor(
         }
     }
 
+    /**
+     * Companion object containing constants for encryption and storage.
+     */
     companion object {
         private const val PREF_NAME = "secure_auth_prefs"
         private const val ANDROID_KEYSTORE = "AndroidKeyStore"

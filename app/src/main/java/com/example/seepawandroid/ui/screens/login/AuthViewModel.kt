@@ -11,6 +11,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/**
+ * ViewModel for handling authentication state.
+ *
+ * @param sessionManager The manager for the current user session.
+ * @param notificationManager The manager for notifications.
+ */
 @HiltViewModel
 class AuthViewModel @Inject constructor(
     private val sessionManager: SessionManager,
@@ -18,11 +24,20 @@ class AuthViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _isAuthenticated = MutableLiveData(sessionManager.isAuthenticated())
+    /**
+     * Whether the user is authenticated.
+     */
     val isAuthenticated: LiveData<Boolean> = _isAuthenticated
 
     private val _userRole = MutableLiveData(sessionManager.getUserRole() ?: "")
+    /**
+     * The role of the current user.
+     */
     val userRole: LiveData<String> = _userRole
 
+    /**
+     * Checks the authentication state and updates the UI state accordingly.
+     */
     fun checkAuthState() {
         val wasAuthenticated = _isAuthenticated.value ?: false
         _isAuthenticated.value = sessionManager.isAuthenticated()

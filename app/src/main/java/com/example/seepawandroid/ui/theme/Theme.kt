@@ -32,6 +32,13 @@ private val LightColorScheme = lightColorScheme(
     */
 )
 
+/**
+ * Main theme composable for the SeePaw Android application.
+ *
+ * @param darkTheme Whether to use dark theme colors.
+ * @param dynamicColor Whether to use dynamic colors (Android 12+).
+ * @param content The composable content to apply the theme to.
+ */
 @Composable
 fun SeePawAndroidTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),

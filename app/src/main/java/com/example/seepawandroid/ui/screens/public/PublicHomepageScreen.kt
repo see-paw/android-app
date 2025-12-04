@@ -99,6 +99,9 @@ fun PublicHomepageScreen(
     }
 }
 
+/**
+ * A preview for the public homepage screen.
+ */
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
 fun PreviewPublicHomepageScreen() {

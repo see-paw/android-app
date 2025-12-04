@@ -53,6 +53,9 @@ enum class NotificationType {
      */
     FOSTERING_ACTIVITY_END_REMINDER_USER;
 
+    /**
+     * Companion object containing utility methods for NotificationType.
+     */
     companion object {
         /**
          * Converts a string from the backend to NotificationType enum.

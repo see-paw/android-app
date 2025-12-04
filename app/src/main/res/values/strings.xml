@@ -237,4 +237,8 @@ Por favor, lê atentamente todos os termos antes de prosseguir com um pedido de 
     <string name="modal_error_title">Erro ao agendar</string>
     <string name="modal_error_retry">Tentar novamente</string>
 
+    <string name="modal_success_title">Agendamento confirmado!</string>
+    <string name="modal_success_message">A sua visita com %1$s foi agendada com sucesso.</string>
+    <string name="ok">OK</string>
+
 </resources>

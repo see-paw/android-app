@@ -9,6 +9,16 @@ import androidx.compose.ui.unit.dp
 import com.example.seepawandroid.data.models.schedule.AvailableSlot
 import com.example.seepawandroid.data.models.schedule.Schedule
 
+/**
+ * A composable that displays the main content of the scheduling screen.
+ *
+ * @param schedule The schedule to be displayed.
+ * @param onPrevWeek A callback that is invoked when the user clicks the previous week button.
+ * @param onNextWeek A callback that is invoked when the user clicks the next week button.
+ * @param onSelectSlotCell A callback that is invoked when a slot is selected.
+ * @param canNavigatePrevious Whether the user can navigate to the previous week.
+ * @param modifier The modifier to be applied to the component.
+ */
 @Composable
 fun SchedulingContent(
     schedule: Schedule,

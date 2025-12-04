@@ -9,6 +9,12 @@ import com.example.seepawandroid.ui.screens.admin.AdminHomeScreen_DEMO
 import com.example.seepawandroid.ui.screens.admin.DemoViewModel
 import com.example.seepawandroid.ui.screens.login.AuthViewModel
 
+/**
+ * Defines the navigation graph for the admin section of the application.
+ *
+ * @param navController The NavHostController for navigating between screens.
+ * @param authViewModel The ViewModel for authentication-related logic.
+ */
 @Composable
 fun NavGraphAdmin(navController: NavHostController, authViewModel: AuthViewModel) {
     NavHost(

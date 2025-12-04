@@ -52,6 +52,9 @@ class OwnershipStateManager @Inject constructor(
     // ========== LOADING STATE ==========
 
     private val _isLoading = MutableLiveData<Boolean>(false)
+    /**
+     * LiveData indicating whether ownership data is being loaded.
+     */
     val isLoading: LiveData<Boolean> = _isLoading
 
     // ========== PUBLIC METHODS ==========

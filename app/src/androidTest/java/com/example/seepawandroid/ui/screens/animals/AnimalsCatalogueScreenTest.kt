@@ -13,6 +13,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.example.seepawandroid.BaseUiTest
 import com.example.seepawandroid.MainActivity
 import com.example.seepawandroid.utils.NetworkUtils
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -30,17 +31,11 @@ import org.junit.runner.RunWith
  */
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
-class AnimalCatalogueScreenTest {
-
-    @get:Rule(order = 0)
-    val hiltRule = HiltAndroidRule(this)
-
-    @get:Rule(order = 1)
-    val composeTestRule = createAndroidComposeRule<MainActivity>()
+class AnimalCatalogueScreenTest : BaseUiTest() {
 
     @Before
-    fun setup() {
-        hiltRule.inject()
+    override fun setUp() {
+        super.setUp()
         forceNetworkAvailable()
 
         composeTestRule.waitForIdle()
@@ -56,7 +51,7 @@ class AnimalCatalogueScreenTest {
             } catch (_: Throwable) { false }
         }
 
-        composeTestRule.onNodeWithTag("openCatalogueButton").performClick()
+        composeTestRule.onNodeWithTag("openCatalogueButton").safeClick()
 
         composeTestRule.waitUntil(timeoutMillis = 15000) {
             try {
@@ -139,7 +134,7 @@ class AnimalCatalogueScreenTest {
         waitUntilLoadingFinishes()
 
         composeTestRule.onNodeWithTag("filterButton")
-            .performClick()
+            .safeClick()
 
         composeTestRule.waitForIdle()
 
@@ -160,12 +155,12 @@ class AnimalCatalogueScreenTest {
         composeTestRule.waitForIdle()
         Thread.sleep(2000)
 
-        composeTestRule.onNodeWithTag("sortButton").performClick()
+        composeTestRule.onNodeWithTag("sortButton").safeClick()
         Thread.sleep(500)
 
         composeTestRule.onNodeWithTag("sort_name_asc")
             .assertExists()
-            .performClick()
+            .safeClick()
 
         Thread.sleep(2000)
 
@@ -182,12 +177,12 @@ class AnimalCatalogueScreenTest {
         composeTestRule.waitForIdle()
         Thread.sleep(2000)
 
-        composeTestRule.onNodeWithTag("sortButton").performClick()
+        composeTestRule.onNodeWithTag("sortButton").safeClick()
         Thread.sleep(500)
 
         composeTestRule.onNodeWithTag("sort_recent_desc")
             .assertExists()
-            .performClick()
+            .safeClick()
 
         Thread.sleep(2000)
 
@@ -204,12 +199,12 @@ class AnimalCatalogueScreenTest {
         composeTestRule.waitForIdle()
         Thread.sleep(2000)
 
-        composeTestRule.onNodeWithTag("sortButton").performClick()
+        composeTestRule.onNodeWithTag("sortButton").safeClick()
         Thread.sleep(500)
 
         composeTestRule.onNodeWithTag("sort_age_desc")
             .assertExists()
-            .performClick()
+            .safeClick()
 
         Thread.sleep(2000)
 
@@ -247,7 +242,7 @@ class AnimalCatalogueScreenTest {
             .assertExists()
 
         composeTestRule.onNodeWithTag("nextPageButton")
-            .performClick()
+            .safeClick()
 
         composeTestRule.waitUntil(timeoutMillis = 10_000) {
             composeTestRule.onAllNodes(hasText("2")).fetchSemanticsNodes().isNotEmpty()
@@ -262,14 +257,14 @@ class AnimalCatalogueScreenTest {
     fun pagination_previousPage_changesBackToFirstPage() {
         waitUntilLoadingFinishes()
 
-        composeTestRule.onNodeWithTag("nextPageButton").performClick()
+        composeTestRule.onNodeWithTag("nextPageButton").safeClick()
 
         composeTestRule.waitUntil(timeoutMillis = 10_000) {
             composeTestRule.onAllNodes(hasText("2")).fetchSemanticsNodes().isNotEmpty()
         }
 
         composeTestRule.onNodeWithTag("previousPageButton")
-            .performClick()
+            .safeClick()
 
         composeTestRule.waitUntil(timeoutMillis = 10_000) {
             composeTestRule.onAllNodes(hasText("1")).fetchSemanticsNodes().isNotEmpty()

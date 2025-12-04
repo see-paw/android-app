@@ -6,6 +6,9 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
+/**
+ * Utility object for date and time operations.
+ */
 object DateUtils {
     /**
      * Parses an ISO 8601 date-time string to LocalDateTime.

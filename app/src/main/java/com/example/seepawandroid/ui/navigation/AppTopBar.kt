@@ -40,18 +40,13 @@ import com.example.seepawandroid.ui.screens.notifications.NotificationViewModel
 import pt.ipp.estg.seepawandroid.ui.components.NotificationDropdown
 
 /**
- * Main top app bar displayed in authenticated screens.
+ * A composable that displays the top app bar for the application.
  *
- * Shows:
- * - App logo
- * - Navigation menu icon (authenticated users only)
- * - Notification bell with badge (authenticated users only)
- * - Logout button
- *
- * @param isAuthenticated Indicates whether the user is authenticated.
- * @param currentRoute Current active navigation route.
- * @param onMenuClick Opens the side drawer.
- * @param onLogoutClick Executes logout action.
+ * @param isAuthenticated Whether the user is authenticated.
+ * @param currentRoute The current navigation route.
+ * @param onMenuClick A callback that is invoked when the menu icon is clicked.
+ * @param onLogoutClick A callback that is invoked when the logout icon is clicked.
+ * @param notificationViewModel The view model for notifications.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
