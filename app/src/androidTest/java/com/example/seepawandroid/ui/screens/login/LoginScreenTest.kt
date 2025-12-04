@@ -1,20 +1,22 @@
 package com.example.seepawandroid.ui.screens.login
 
-import androidx.compose.ui.semantics.ProgressBarRangeInfo
-import androidx.compose.ui.test.*
-import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertIsEnabled
+import androidx.compose.ui.test.assertIsNotEnabled
+import androidx.compose.ui.test.onAllNodesWithTag
+import androidx.compose.ui.test.onAllNodesWithText
+import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performTextClearance
+import androidx.compose.ui.test.performTextInput
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.example.seepawandroid.MainActivity
-import com.example.seepawandroid.data.managers.SessionManager
-import dagger.hilt.android.testing.HiltAndroidRule
+import com.example.seepawandroid.BaseUiTest
+import com.example.seepawandroid.R
 import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import javax.inject.Inject
-import com.example.seepawandroid.R
-
 
 /**
  * Instrumented tests for the Login screen.
@@ -26,21 +28,12 @@ import com.example.seepawandroid.R
  * exists before execution.
  *
  * Test credentials:
- * - Valid User: carlos@test.com / Pa$$w0rd
- * - Valid Admin: alice@test.com / Pa$$w0rd
+ * - Valid User: carlos@test.com / Pa\$\$w0rd
+ * - Valid Admin: alice@test.com / Pa\$\$w0rd
  */
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
-class LoginScreenTest {
-
-    @get:Rule(order = 0)
-    val hiltRule = HiltAndroidRule(this)
-
-    @get:Rule(order = 1)
-    val composeTestRule = createAndroidComposeRule<MainActivity>()
-
-    @Inject
-    lateinit var sessionManager: SessionManager
+class LoginScreenTest : BaseUiTest() {
 
     companion object {
         // Test credentials (global variables for easy testing)
@@ -51,8 +44,8 @@ class LoginScreenTest {
     }
 
     @Before
-    fun setup() {
-        hiltRule.inject()
+    override fun setUp() {
+        super.setUp()
 
         // Wait for initial composition
         composeTestRule.waitForIdle()
@@ -85,7 +78,7 @@ class LoginScreenTest {
             }
 
             // If we found the logout button, click it
-            composeTestRule.onNodeWithTag("logoutButton").performClick()
+            composeTestRule.onNodeWithTag("logoutButton").safeClick()
 
             // Wait for logout to complete and return to login screen
             composeTestRule.waitUntil(timeoutMillis = 3000) {
@@ -131,7 +124,7 @@ class LoginScreenTest {
         // Click the Login button to navigate HOMEPAGE → LOGIN
         composeTestRule
             .onNodeWithTag("openLoginButton")
-            .performClick()
+            .safeClick()
 
         // Wait for LOGIN screen to load
         composeTestRule.waitUntil(timeoutMillis = 5000) {
@@ -163,18 +156,6 @@ class LoginScreenTest {
             } catch (e: Throwable) {
                 false
             }
-        }
-    }
-
-    /**
-     * Waits until the loading indicator disappears.
-     * Indicates that an async operation has completed.
-     */
-    private fun waitUntilLoadingFinishes() {
-        composeTestRule.waitUntil(timeoutMillis = 20000) {
-            composeTestRule.onAllNodes(
-                hasProgressBarRangeInfo(ProgressBarRangeInfo.Indeterminate)
-            ).fetchSemanticsNodes().isEmpty()
         }
     }
 
@@ -215,7 +196,7 @@ class LoginScreenTest {
     fun login_withInvalidPassword_showsError() {
         composeTestRule.onNodeWithTag("emailInput").performTextInput(VALID_EMAIL)
         composeTestRule.onNodeWithTag("passwordInput").performTextInput(INVALID_PASSWORD)
-        composeTestRule.onNodeWithTag("loginButton").performClick()
+        composeTestRule.onNodeWithTag("loginButton").safeClick()
 
         // Wait for error message to appear using testTag
         // Increased timeout to handle variable network conditions
@@ -236,7 +217,7 @@ class LoginScreenTest {
     fun login_withInvalidEmail_showsError() {
         composeTestRule.onNodeWithTag("emailInput").performTextInput(INVALID_EMAIL)
         composeTestRule.onNodeWithTag("passwordInput").performTextInput(VALID_PASSWORD)
-        composeTestRule.onNodeWithTag("loginButton").performClick()
+        composeTestRule.onNodeWithTag("loginButton").safeClick()
 
         composeTestRule.waitUntil(timeoutMillis = 3000) {
             try {
@@ -254,7 +235,7 @@ class LoginScreenTest {
     fun login_withBothInvalid_showsError() {
         composeTestRule.onNodeWithTag("emailInput").performTextInput(INVALID_EMAIL)
         composeTestRule.onNodeWithTag("passwordInput").performTextInput(INVALID_PASSWORD)
-        composeTestRule.onNodeWithTag("loginButton").performClick()
+        composeTestRule.onNodeWithTag("loginButton").safeClick()
 
         composeTestRule.waitUntil(timeoutMillis = 3000) {
             try {
@@ -276,7 +257,7 @@ class LoginScreenTest {
     fun login_withValidCredentials_navigatesToUserHome() {
         composeTestRule.onNodeWithTag("emailInput").performTextInput(VALID_EMAIL)
         composeTestRule.onNodeWithTag("passwordInput").performTextInput(VALID_PASSWORD)
-        composeTestRule.onNodeWithTag("loginButton").performClick()
+        composeTestRule.onNodeWithTag("loginButton").safeClick()
 
         // Wait until loading finishes
         waitUntilLoadingFinishes()
@@ -305,7 +286,7 @@ class LoginScreenTest {
         // First attempt with wrong credentials
         composeTestRule.onNodeWithTag("emailInput").performTextInput(VALID_EMAIL)
         composeTestRule.onNodeWithTag("passwordInput").performTextInput(INVALID_PASSWORD)
-        composeTestRule.onNodeWithTag("loginButton").performClick()
+        composeTestRule.onNodeWithTag("loginButton").safeClick()
 
         // Wait for error to appear
         composeTestRule.waitUntil(timeoutMillis = 3000) {
@@ -327,7 +308,7 @@ class LoginScreenTest {
         // Retry with correct credentials
         composeTestRule.onNodeWithTag("emailInput").performTextInput(VALID_EMAIL)
         composeTestRule.onNodeWithTag("passwordInput").performTextInput(VALID_PASSWORD)
-        composeTestRule.onNodeWithTag("loginButton").performClick()
+        composeTestRule.onNodeWithTag("loginButton").safeClick()
 
         // Wait for login process to complete
         waitUntilLoadingFinishes()

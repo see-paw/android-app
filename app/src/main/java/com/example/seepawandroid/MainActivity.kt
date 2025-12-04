@@ -1,6 +1,5 @@
 package com.example.seepawandroid
 
-import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -8,7 +7,6 @@ import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
 import com.example.seepawandroid.ui.SeePawApp
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.Locale
 
 /**
  * Main entry point Activity for the SeePaw Android application.

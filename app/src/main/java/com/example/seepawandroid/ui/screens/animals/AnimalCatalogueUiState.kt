@@ -33,6 +33,8 @@ sealed class AnimalCatalogueUiState {
 
     /**
      * Error state containing a descriptive message.
+     *
+     * @property message The error message to be displayed.
      */
     data class Error(val message: String) : AnimalCatalogueUiState()
 

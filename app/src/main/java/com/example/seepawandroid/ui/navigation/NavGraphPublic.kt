@@ -15,20 +15,14 @@ import com.example.seepawandroid.ui.screens.animals.AnimalDetailScreen
 import com.example.seepawandroid.ui.screens.animals.viewmodel.AnimalViewModel
 import com.example.seepawandroid.ui.screens.login.AuthViewModel
 import com.example.seepawandroid.ui.screens.login.LoginScreen
-import com.example.seepawandroid.ui.screens.register.RegisterScreen
 import com.example.seepawandroid.ui.screens.public.PublicHomepageScreen
+import com.example.seepawandroid.ui.screens.register.RegisterScreen
 
 /**
- * Navigation graph for public (unauthenticated) screens.
+ * Defines the navigation graph for the public (unauthenticated) section of the application.
  *
- * Contains routes accessible without authentication.
- * Includes:
- * - Homepage
- * - Login
- * - Register
- * - Animal catalogue in guest mode
- *
- * @param navController Navigation controller managing the navigation stack
+ * @param navController The NavHostController for navigating between screens.
+ * @param authViewModel The ViewModel for authentication-related logic.
  */
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)

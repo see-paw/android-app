@@ -20,9 +20,9 @@ sealed class RegisterUiState {
     object Success : RegisterUiState()
 
     /**
-     * Registration failed with an error.
+     * Represents the error state of the registration process.
      *
-     * @param message Error message to display to the user
+     * @property message The error message to be displayed.
      */
     data class Error(val message: String) : RegisterUiState()
 }

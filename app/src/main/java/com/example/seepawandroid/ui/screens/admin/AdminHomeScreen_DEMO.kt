@@ -1,6 +1,5 @@
 package com.example.seepawandroid.ui.screens.admin
 
-import android.app.Activity
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer

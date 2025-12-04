@@ -1,14 +1,30 @@
 package pt.ipp.estg.seepaw.ui.navigation
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ExitToApp
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Notifications
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Badge
+import androidx.compose.material3.BadgedBox
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -20,22 +36,17 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.seepawandroid.R
 import com.example.seepawandroid.ui.screens.notifications.NotificationDropdownUiState
-import pt.ipp.estg.seepawandroid.ui.components.NotificationDropdown
 import com.example.seepawandroid.ui.screens.notifications.NotificationViewModel
+import pt.ipp.estg.seepawandroid.ui.components.NotificationDropdown
 
 /**
- * Main top app bar displayed in authenticated screens.
+ * A composable that displays the top app bar for the application.
  *
- * Shows:
- * - App logo
- * - Navigation menu icon (authenticated users only)
- * - Notification bell with badge (authenticated users only)
- * - Logout button
- *
- * @param isAuthenticated Indicates whether the user is authenticated.
- * @param currentRoute Current active navigation route.
- * @param onMenuClick Opens the side drawer.
- * @param onLogoutClick Executes logout action.
+ * @param isAuthenticated Whether the user is authenticated.
+ * @param currentRoute The current navigation route.
+ * @param onMenuClick A callback that is invoked when the menu icon is clicked.
+ * @param onLogoutClick A callback that is invoked when the logout icon is clicked.
+ * @param notificationViewModel The view model for notifications.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

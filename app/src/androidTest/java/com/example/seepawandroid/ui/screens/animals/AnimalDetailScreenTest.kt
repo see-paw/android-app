@@ -2,16 +2,24 @@ package com.example.seepawandroid.ui.screens.animals
 
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.semantics.getOrNull
-import androidx.compose.ui.test.*
-import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.SemanticsMatcher
+import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertIsEnabled
+import androidx.compose.ui.test.hasProgressBarRangeInfo
+import androidx.compose.ui.test.hasTestTag
+import androidx.compose.ui.test.onAllNodesWithTag
+import androidx.compose.ui.test.onAllNodesWithText
+import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollToNode
+import androidx.compose.ui.test.performTextInput
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.example.seepawandroid.MainActivity
+import com.example.seepawandroid.BaseUiTest
 import com.example.seepawandroid.R
 import com.example.seepawandroid.data.managers.SessionManager
-import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import javax.inject.Inject
@@ -26,17 +34,11 @@ import javax.inject.Inject
  * Guest tests perform login first to load animals, then logout to test guest behavior.
  *
  * Test credentials:
- * - Valid User: carlos@test.com / Pa$$w0rd
+ * - Valid User: carlos@test.com / Pa\$\$w0rd
  */
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
-class AnimalDetailScreenTest {
-
-    @get:Rule(order = 0)
-    val hiltRule = HiltAndroidRule(this)
-
-    @get:Rule(order = 1)
-    val composeTestRule = createAndroidComposeRule<MainActivity>()
+class AnimalDetailScreenTest : BaseUiTest() {
 
     @Inject
     lateinit var sessionManager: SessionManager
@@ -53,8 +55,8 @@ class AnimalDetailScreenTest {
     }
 
     @Before
-    fun setup() {
-        hiltRule.inject()
+    override fun setUp() {
+        super.setUp()
         composeTestRule.waitForIdle()
         logoutIfNeeded()
     }
@@ -84,7 +86,7 @@ class AnimalDetailScreenTest {
                 }
             }
 
-            composeTestRule.onNodeWithTag("logoutButton").performClick()
+            composeTestRule.onNodeWithTag("logoutButton").safeClick()
 
             composeTestRule.waitUntil(timeoutMillis = 3000) {
                 try {
@@ -100,7 +102,7 @@ class AnimalDetailScreenTest {
     }
 
     private fun performLogout() {
-        composeTestRule.onNodeWithTag("logoutButton").performClick()
+        composeTestRule.onNodeWithTag("logoutButton").safeClick()
 
         composeTestRule.waitUntil(timeoutMillis = 3000) {
             try {
@@ -126,7 +128,7 @@ class AnimalDetailScreenTest {
                     .onAllNodesWithTag("openLoginButton")
                     .fetchSemanticsNodes().isNotEmpty()
             }
-            composeTestRule.onNodeWithTag("openLoginButton").performClick()
+            composeTestRule.onNodeWithTag("openLoginButton").safeClick()
 
             composeTestRule.waitUntil(timeoutMillis = 3000) {
                 try {
@@ -140,7 +142,7 @@ class AnimalDetailScreenTest {
 
         composeTestRule.onNodeWithTag("emailInput").performTextInput(VALID_EMAIL)
         composeTestRule.onNodeWithTag("passwordInput").performTextInput(VALID_PASSWORD)
-        composeTestRule.onNodeWithTag("loginButton").performClick()
+        composeTestRule.onNodeWithTag("loginButton").safeClick()
 
         waitUntilLoadingFinishes()
 
@@ -156,7 +158,7 @@ class AnimalDetailScreenTest {
     }
 
     private fun navigateToCatalogue() {
-        composeTestRule.onNodeWithTag("openDrawerButton").performClick()
+        composeTestRule.onNodeWithTag("openDrawerButton").safeClick()
 
         composeTestRule.waitUntil(timeoutMillis = 2000) {
             try {
@@ -167,7 +169,7 @@ class AnimalDetailScreenTest {
             }
         }
 
-        composeTestRule.onNodeWithTag("drawerItemCatalogue").performClick()
+        composeTestRule.onNodeWithTag("drawerItemCatalogue").safeClick()
 
         composeTestRule.waitUntil(timeoutMillis = 10000) {
             composeTestRule
@@ -196,7 +198,7 @@ class AnimalDetailScreenTest {
         return try {
             composeTestRule.onNodeWithTag("nextPageButton").assertExists()
             composeTestRule.onNodeWithTag("nextPageButton").assertIsEnabled()
-            composeTestRule.onNodeWithTag("nextPageButton").performClick()
+            composeTestRule.onNodeWithTag("nextPageButton").safeClick()
 
             // Wait for page to load
             composeTestRule.waitUntil(timeoutMillis = 5000) {
@@ -230,7 +232,7 @@ class AnimalDetailScreenTest {
                 composeTestRule.onNodeWithTag("animalGrid")
                     .performScrollToNode(hasTestTag("animalCard_$animalId"))
 
-                composeTestRule.onNodeWithTag("animalCard_$animalId").performClick()
+                composeTestRule.onNodeWithTag("animalCard_$animalId").safeClick()
                 return
             } catch (e: Throwable) {
                 // Animal not on this page, try next
@@ -295,7 +297,7 @@ class AnimalDetailScreenTest {
                 .fetchSemanticsNodes().isNotEmpty()
         }
 
-        composeTestRule.onNodeWithTag("openCatalogueButton").performClick()
+        composeTestRule.onNodeWithTag("openCatalogueButton").safeClick()
 
         // Wait for catalogue and find the animal again
         composeTestRule.waitUntil(timeoutMillis = 10000) {
@@ -351,7 +353,7 @@ class AnimalDetailScreenTest {
         composeTestRule.onNodeWithTag("animalDetailContent")
             .performScrollToNode(hasTestTag("ownershipButton"))
 
-        composeTestRule.onNodeWithTag("ownershipButton").performClick()
+        composeTestRule.onNodeWithTag("ownershipButton").safeClick()
 
         composeTestRule.waitUntil(timeoutMillis = 5000) {
             try {
@@ -376,7 +378,7 @@ class AnimalDetailScreenTest {
         composeTestRule.onNodeWithTag("animalDetailContent")
             .performScrollToNode(hasTestTag("ownershipButton"))
 
-        composeTestRule.onNodeWithTag("ownershipButton").performClick()
+        composeTestRule.onNodeWithTag("ownershipButton").safeClick()
 
         composeTestRule.waitUntil(timeoutMillis = 5000) {
             try {
@@ -387,7 +389,7 @@ class AnimalDetailScreenTest {
             }
         }
 
-        composeTestRule.onNodeWithTag("loginDialogOkButton").performClick()
+        composeTestRule.onNodeWithTag("loginDialogOkButton").safeClick()
 
         composeTestRule.waitUntil(timeoutMillis = 5000) {
             try {
@@ -432,7 +434,7 @@ class AnimalDetailScreenTest {
         composeTestRule.onNodeWithTag("animalDetailContent")
             .performScrollToNode(hasTestTag("ownershipButton"))
 
-        composeTestRule.onNodeWithTag("ownershipButton").performClick()
+        composeTestRule.onNodeWithTag("ownershipButton").safeClick()
 
         // Wait for either ownership wizard OR ownership exists dialog
         composeTestRule.waitUntil(timeoutMillis = 10000) {
@@ -495,7 +497,7 @@ class AnimalDetailScreenTest {
         navigateToAnimalDetail()
         waitUntilLoadingFinishes()
 
-        composeTestRule.onNodeWithTag("backButton").performClick()
+        composeTestRule.onNodeWithTag("backButton").safeClick()
 
         composeTestRule.waitUntil(timeoutMillis = 3000) {
             composeTestRule

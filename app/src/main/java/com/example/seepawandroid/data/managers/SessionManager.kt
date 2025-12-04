@@ -38,6 +38,9 @@ class SessionManager @Inject constructor(
         }
     }
 
+    /**
+     * Companion object containing constants for encryption and storage.
+     */
     companion object {
         private const val PREF_NAME = "secure_auth_prefs"
         private const val ANDROID_KEYSTORE = "AndroidKeyStore"
@@ -183,7 +186,7 @@ class SessionManager @Inject constructor(
      * @return true if a valid token exists and has not expired, false otherwise
      */
     fun isAuthenticated(): Boolean {
-        val token = getAuthToken() ?: return false
+        getAuthToken() ?: return false
         val expiration = getDecrypted(KEY_TOKEN_EXPIRATION) ?: return false
 
         return try {

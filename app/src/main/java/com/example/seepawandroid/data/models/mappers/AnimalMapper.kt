@@ -1,12 +1,12 @@
 package com.example.seepawandroid.data.models.mappers
 
 import com.example.seepawandroid.data.local.entities.Animal
-import com.example.seepawandroid.data.remote.dtos.animals.ResAnimalDto
-import com.example.seepawandroid.data.remote.dtos.breeds.ResBreedDto
 import com.example.seepawandroid.data.models.enums.AnimalState
 import com.example.seepawandroid.data.models.enums.SexType
 import com.example.seepawandroid.data.models.enums.SizeType
 import com.example.seepawandroid.data.models.enums.Species
+import com.example.seepawandroid.data.remote.dtos.animals.ResAnimalDto
+import com.example.seepawandroid.data.remote.dtos.breeds.ResBreedDto
 import com.example.seepawandroid.data.remote.dtos.images.ResImageDto
 
 /**
@@ -37,8 +37,8 @@ fun ResAnimalDto.toEntity(): Animal {
         species = species.name,
         size = size.name,
         sex = sex.name,
-        breedName = breed.name,
-        breedId = breed.id,
+        breedName = breed?.name,
+        breedId = breed?.id,
         animalState = animalState.name,
         colour = colour,
         birthDate = birthDate,

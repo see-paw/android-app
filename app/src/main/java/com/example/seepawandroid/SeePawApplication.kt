@@ -1,9 +1,8 @@
 package com.example.seepawandroid
 
 import android.app.Application
-import dagger.hilt.android.HiltAndroidApp
-import com.example.seepawandroid.data.managers.SessionManager
 import com.example.seepawandroid.utils.NetworkUtils
+import dagger.hilt.android.HiltAndroidApp
 
 /**
  * Custom Application class for the SeePaw app.

@@ -1,11 +1,13 @@
 package com.example.seepawandroid.data.remote.api.services
 
 import com.example.seepawandroid.data.remote.dtos.PagedListDto
+import com.example.seepawandroid.data.remote.dtos.activities.ReqCreateOwnershipActivityDto
+import com.example.seepawandroid.data.remote.dtos.schedule.ResScheduleResponseDto
 import com.example.seepawandroid.data.remote.dtos.animals.ResAnimalDto
 import com.example.seepawandroid.data.remote.dtos.animals.ResOwnedAnimalDto
 import com.example.seepawandroid.data.remote.dtos.auth.ReqLoginDto
-import com.example.seepawandroid.data.remote.dtos.auth.ResLoginDto
 import com.example.seepawandroid.data.remote.dtos.auth.ReqRegisterUserDto
+import com.example.seepawandroid.data.remote.dtos.auth.ResLoginDto
 import com.example.seepawandroid.data.remote.dtos.notifications.ResNotificationDto
 import com.example.seepawandroid.data.remote.dtos.ownerships.ReqOwnershipRequestDto
 import com.example.seepawandroid.data.remote.dtos.ownerships.ResOwnershipRequestDto
@@ -161,6 +163,12 @@ interface BackendApiService {
         @Query("unreadOnly") unreadOnly: Boolean? = null
     ): Response<List<ResNotificationDto>>
 
+    /**
+     * Creates a new ownership request for an animal.
+     *
+     * @param request The ownership request containing animal ID and user justification.
+     * @return Response containing the created ownership request.
+     */
     @POST("api/OwnershipRequests")
     suspend fun createOwnershipRequest(@Body request: ReqOwnershipRequestDto): Response<ResOwnershipRequestDto>
 
@@ -210,4 +218,27 @@ interface BackendApiService {
         @Path("id") id: String
     ): Response<Unit>
 
+    /**
+     * Fetches the weekly schedule for a specific animal.
+     *
+     * @param animalId The unique identifier of the animal.
+     * @param startDate The start date of the week in dd/MM/yyyy format.
+     * @return Response containing the weekly schedule.
+     */
+    @GET("api/schedule/animals/{animalId}/schedule/weekly")
+    suspend fun getWeekAnimalSchedule(
+        @Path("animalId") animalId: String,
+        @Query("startDate") startDate: String
+    ): Response<ResScheduleResponseDto>
+
+    /**
+     * Creates a new ownership activity for a specific time slot.
+     *
+     * @param request The request containing animal ID and activity time details.
+     * @return Response with no body on success.
+     */
+    @POST("api/activities/ownership")
+    suspend fun createOwnershipActivity(
+        @Body request: ReqCreateOwnershipActivityDto
+    ): Response<Unit>
 }

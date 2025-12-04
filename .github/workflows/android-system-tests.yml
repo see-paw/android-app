@@ -25,27 +25,35 @@ jobs:
       pull-requests: write
       issues: write
 
-    services:
-      postgres:
-        image: postgres:13
-        env:
-          POSTGRES_USER: seepaw
-          POSTGRES_PASSWORD: seepawpwd
-          POSTGRES_DB: seepaw
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      # ==================== POSTGRESQL ====================
+
+      - name: Start PostgreSQL Container
+        run: |
+          echo "🗄️ Starting fresh PostgreSQL container..."
+          docker run -d \
+            --name postgres-test \
+            --network host \
+            -e POSTGRES_USER=seepaw \
+            -e POSTGRES_PASSWORD=seepawpwd \
+            -e POSTGRES_DB=seepaw \
+            postgres:13
+          
+          echo "⏳ Waiting for PostgreSQL to be ready..."
+          sleep 5
+          
+          until docker exec postgres-test pg_isready -U seepaw; do
+            echo "Waiting for database to be ready..."
+            sleep 2
+          done
+          
+          echo "✅ PostgreSQL is ready!"
+
       # ==================== DOCKER E BACKEND ====================
-      
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
@@ -87,8 +95,38 @@ jobs:
             -e JWT__SigningKey="${JWT__SigningKey}" \
             ${{ env.BACKEND_IMAGE }}
           
-          echo "⏳ Waiting for backend to initialize..."
-          sleep 10
+          echo "⏳ Waiting for backend to initialize and reset database..."
+          sleep 15
+
+      - name: Verify Database Reset
+        run: |
+          echo "🔍 Checking backend logs for database reset confirmation..."
+          echo ""
+          echo "=========================================="
+          echo "       DATABASE RESET LOGS"
+          echo "=========================================="
+          docker logs seepaw-backend 2>&1 | grep -A 50 "TESTING MODE" || echo "⚠️ Testing mode logs not found yet"
+          echo ""
+          echo "=========================================="
+          echo "       FULL STARTUP LOGS"
+          echo "=========================================="
+          docker logs seepaw-backend 2>&1 | tail -50
+          echo ""
+
+      - name: Verify Backend Startup Logs
+        run: |
+          echo "📋 Checking backend startup logs..."
+          echo ""
+          echo "=========================================="
+          echo "       BACKEND STARTUP LOGS (last 150 lines)"
+          echo "=========================================="
+          docker logs seepaw-backend 2>&1 | tail -150
+          echo ""
+          echo "=========================================="
+          echo "       DATABASE INITIALIZATION CHECK"
+          echo "=========================================="
+          docker logs seepaw-backend 2>&1 | grep -E "(TESTING MODE|Database|Migration|Seed|Environment:)" || echo "⚠️ No database logs found"
+          echo ""
 
       - name: Verify Backend Health with Real Data
         run: |
@@ -226,6 +264,12 @@ jobs:
 
             # Parar captura
             kill $LOGCAT_PID || true
+            
+            # Pull screenshots do emulador se existirem
+            echo "📸 Copiando screenshots do emulador..."
+            mkdir -p test-screenshots
+            adb pull /sdcard/Pictures/ test-screenshots/ 2>/dev/null || echo "Sem screenshots no /sdcard/Pictures/"
+            adb shell ls -la /sdcard/Pictures/ || echo "Diretório Pictures não existe"
 
       # =================== LOG CAT =============================
       
@@ -330,6 +374,16 @@ jobs:
             app/build/outputs/androidTest-results/
           retention-days: 30
 
+      - name: Upload Screenshots
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: test-failure-screenshots
+          path: |
+            test-screenshots/
+            app/build/outputs/connected_android_test_additional_output/
+          retention-days: 14
+
       - name: Upload APKs
         uses: actions/upload-artifact@v4
         if: always()
@@ -408,12 +462,14 @@ jobs:
             });
       # ==================== CLEANUP ====================
 
-      - name: Stop Backend Container
+      - name: Stop All Containers
         if: always()
         run: |
-          echo "🛑 Stopping backend container..."
+          echo "🛑 Stopping all containers..."
           docker stop seepaw-backend || true
           docker rm seepaw-backend || true
+          docker stop postgres-test || true
+          docker rm postgres-test || true
           echo "✅ Cleanup completo"
 
       - name: Display Test Summary

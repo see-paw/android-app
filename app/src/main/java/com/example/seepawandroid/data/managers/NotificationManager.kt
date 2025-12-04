@@ -36,19 +36,34 @@ class NotificationManager @Inject constructor(
     // ========== IN-MEMORY CACHE (LiveData) ==========
 
     private val _notifications = MutableLiveData<List<ResNotificationDto>>(emptyList())
+    /**
+     * LiveData containing the list of all cached notifications.
+     */
     val notifications: LiveData<List<ResNotificationDto>> = _notifications
 
     private val _ownershipApprovedEvent = MutableLiveData<OwnershipApprovedEvent?>()
+    /**
+     * LiveData for ownership approval events that trigger UI dialogs.
+     */
     val ownershipApprovedEvent: LiveData<OwnershipApprovedEvent?> = _ownershipApprovedEvent
 
     private val _unreadCount = MutableLiveData(0)
+    /**
+     * LiveData containing the count of unread notifications.
+     */
     val unreadCount: LiveData<Int> = _unreadCount
 
     private val _isLoading = MutableLiveData(false)
+    /**
+     * LiveData indicating whether notifications are being loaded.
+     */
     val isLoading: LiveData<Boolean> = _isLoading
 
     /**
      * Event data for ownership approved notification.
+     *
+     * @property notificationId The unique identifier of the notification.
+     * @property animalId The unique identifier of the animal related to the ownership.
      */
     data class OwnershipApprovedEvent(
         val notificationId: String,
