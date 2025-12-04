@@ -5,16 +5,13 @@
       <SelectionState runConfigName="app">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="SchedulingFlowTest">
+      <SelectionState runConfigName="AnimalCatalogueFavoritesTest">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="t6_slotSelection_availableSlot_opensConfirmationModal()">
+      <SelectionState runConfigName="OwnershipRequestFlowTest">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="t2_scheduleScreen_displaysAllComponents()">
-        <option name="selectionMode" value="DROPDOWN" />
-      </SelectionState>
-      <SelectionState runConfigName="t9_confirmationModal_confirmButton_showsLoadingState()">
+      <SelectionState runConfigName="FavoritesScreenTest">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>
