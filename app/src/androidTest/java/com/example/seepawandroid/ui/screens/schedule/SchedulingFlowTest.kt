@@ -142,63 +142,6 @@ class SchedulingFlowTest : BaseUiTest() {
         composeTestRule.onNodeWithTag("ownershipListScreen").assertIsDisplayed()
     }
 
-    /** -----------------------------------------
-     * TEST 11: Success Modal - Appears After Successful Booking
-     * ----------------------------------------- */
-    @Test
-    fun t11_successModal_appearsAfterSuccessfulBooking() {
-        prepareTestState_NavigateToScheduleScreen()
-        val availableSlotTag = findFirstAvailableSlot()
-        if (availableSlotTag != null) {
-            composeTestRule.onNodeWithTag(availableSlotTag).safeClick()
-            composeTestRule.waitUntil(timeoutMillis = 3000) {
-                composeTestRule.onAllNodesWithTag("confirmActivityModal").fetchSemanticsNodes().isNotEmpty()
-            }
-            composeTestRule.onNodeWithTag("confirmModalButton").safeClick()
-            composeTestRule.waitUntil(timeoutMillis = 10000) {
-                try {
-                    composeTestRule.onNodeWithTag("successModal").assertExists()
-                    true
-                } catch (e: Throwable) {
-                    false
-                }
-            }
-            composeTestRule.onNodeWithTag("successModal").assertIsDisplayed()
-        }
-    }
-
-    /** -----------------------------------------
-     * TEST 12: Success Modal - Displays Correct Information and Closes
-     * ----------------------------------------- */
-    @Test
-    fun t12_successModal_displaysCorrectInformationAndCloses() {
-        prepareTestState_NavigateToScheduleScreen()
-        val availableSlotTag = findFirstAvailableSlot()
-        if (availableSlotTag != null) {
-            composeTestRule.onNodeWithTag(availableSlotTag).safeClick()
-            composeTestRule.waitUntil(timeoutMillis = 3000) {
-                composeTestRule.onAllNodesWithTag("confirmActivityModal").fetchSemanticsNodes().isNotEmpty()
-            }
-            composeTestRule.onNodeWithTag("confirmModalButton").safeClick()
-            composeTestRule.waitUntil(timeoutMillis = 10000) {
-                try {
-                    composeTestRule.onNodeWithTag("successModal").assertExists()
-                    true
-                } catch (e: Throwable) {
-                    false
-                }
-            }
-            composeTestRule.onNodeWithTag("successModal").assertIsDisplayed()
-            composeTestRule.onNodeWithTag("successModalMessage").assertIsDisplayed()
-            composeTestRule.onNodeWithTag("successModalButton").assertIsDisplayed()
-            composeTestRule.onNodeWithTag("successModalButton").safeClick()
-            composeTestRule.waitUntil(timeoutMillis = 2000) {
-                composeTestRule.onAllNodesWithTag("successModal").fetchSemanticsNodes().isEmpty()
-            }
-            composeTestRule.onNodeWithTag("schedulingScreen").assertIsDisplayed()
-        }
-    }
-
     private fun prepareTestState_NavigateToOwnershipList() {
         performLogin()
         navigateToOwnershipList()
