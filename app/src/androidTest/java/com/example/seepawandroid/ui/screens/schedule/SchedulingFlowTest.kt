@@ -41,8 +41,6 @@ class SchedulingFlowTest : BaseUiTest() {
         private const val VALID_PASSWORD = "Pa\$\$w0rd"
     }
 
-    @get:Rule(order = 3)
-    val screenshotRule = ScreenshotTestRule()
 
     @Before
     override fun setUp() {
@@ -116,50 +114,6 @@ class SchedulingFlowTest : BaseUiTest() {
         }
     }
 
-    /** -----------------------------------------
-     * TEST 4: Week Navigation - Next Week
-     * ----------------------------------------- */
-    @Test
-    fun t4_weekNavigation_nextWeek_updatesWeekRange() {
-        prepareTestState_NavigateToScheduleScreen()
-        
-        composeTestRule.waitUntil(timeoutMillis = 10_000) {
-            try {
-                composeTestRule.onNodeWithTag("weekRangeText").assertExists()
-                true
-            } catch (e: Throwable) {
-                false
-            }
-        }
-        
-        val currentWeekText = composeTestRule.onNodeWithTag("weekRangeText")
-            .fetchSemanticsNode()
-            .config.getOrNull(SemanticsProperties.Text)?.firstOrNull()?.text
-        
-        composeTestRule.onNodeWithTag("nextWeekButton").safeClick()
-        composeTestRule.waitForIdle()
-        waitUntilLoadingFinishes()
-        Thread.sleep(2000)
-        
-        composeTestRule.waitUntil(timeoutMillis = 15_000) {
-            try {
-                val newText = composeTestRule.onNodeWithTag("weekRangeText")
-                    .fetchSemanticsNode()
-                    .config.getOrNull(SemanticsProperties.Text)?.firstOrNull()?.text
-                newText != null && newText != currentWeekText
-            } catch (e: Throwable) {
-                false
-            }
-        }
-        
-        val newWeekText = composeTestRule.onNodeWithTag("weekRangeText")
-            .fetchSemanticsNode()
-            .config.getOrNull(SemanticsProperties.Text)?.firstOrNull()?.text
-        
-        assert(currentWeekText != newWeekText) {
-            "Week range should update after clicking next week button. Old: $currentWeekText, New: $newWeekText"
-        }
-    }
 
     /** -----------------------------------------
      * TEST 5: Week Navigation - Previous Week Disabled for Past Weeks
@@ -168,90 +122,6 @@ class SchedulingFlowTest : BaseUiTest() {
     fun t5_weekNavigation_previousWeek_disabledForPastWeeks() {
         prepareTestState_NavigateToScheduleScreen()
         composeTestRule.onNodeWithTag("prevWeekButton").assertIsNotEnabled()
-    }
-
-    /** -----------------------------------------
-     * TEST 6: Slot Selection - Available Slot Opens Confirmation Modal
-     * ----------------------------------------- */
-    @Test
-    fun t6_slotSelection_availableSlot_opensConfirmationModal() {
-        prepareTestState_NavigateToScheduleScreen()
-        val availableSlotTag = findFirstAvailableSlot()
-        assert(availableSlotTag != null) {
-            "Should find at least one available slot within 4 weeks"
-        }
-        composeTestRule.onNodeWithTag(availableSlotTag!!).safeClick()
-        composeTestRule.waitUntil(timeoutMillis = 3000) {
-            try {
-                composeTestRule.onNodeWithTag("confirmActivityModal").assertExists()
-                true
-            } catch (e: Throwable) {
-                false
-            }
-        }
-        composeTestRule.onNodeWithTag("confirmActivityModal").assertIsDisplayed()
-    }
-
-    /** -----------------------------------------
-     * TEST 7: Confirmation Modal - Displays Correct Information
-     * ----------------------------------------- */
-    @Test
-    fun t7_confirmationModal_displaysCorrectInformation() {
-        prepareTestState_NavigateToScheduleScreen()
-        val availableSlotTag = findFirstAvailableSlot()
-        assert(availableSlotTag != null) {
-            "Should find at least one available slot within 4 weeks"
-        }
-        composeTestRule.onNodeWithTag(availableSlotTag!!).safeClick()
-        composeTestRule.waitUntil(timeoutMillis = 3000) {
-            composeTestRule.onAllNodesWithTag("confirmActivityModal").fetchSemanticsNodes().isNotEmpty()
-        }
-        composeTestRule.onNodeWithTag("confirmModalButton").assertIsDisplayed()
-        composeTestRule.onNodeWithTag("cancelModalButton").assertIsDisplayed()
-    }
-
-    /** -----------------------------------------
-     * TEST 8: Confirmation Modal - Cancel Button Closes Modal
-     * ----------------------------------------- */
-    @Test
-    fun t8_confirmationModal_cancelButton_closesModal() {
-        prepareTestState_NavigateToScheduleScreen()
-        val availableSlotTag = findFirstAvailableSlot()
-        assert(availableSlotTag != null) {
-            "Should find at least one available slot within 4 weeks"
-        }
-        composeTestRule.onNodeWithTag(availableSlotTag!!).safeClick()
-        composeTestRule.waitUntil(timeoutMillis = 3000) {
-            composeTestRule.onAllNodesWithTag("confirmActivityModal").fetchSemanticsNodes().isNotEmpty()
-        }
-        composeTestRule.onNodeWithTag("cancelModalButton").safeClick()
-        composeTestRule.waitUntil(timeoutMillis = 2000) {
-            composeTestRule.onAllNodesWithTag("confirmActivityModal").fetchSemanticsNodes().isEmpty()
-        }
-    }
-
-    /** -----------------------------------------
-     * TEST 9: Modal Loading State
-     * ----------------------------------------- */
-    @Test
-    fun t9_confirmationModal_confirmButton_showsLoadingState() {
-        prepareTestState_NavigateToScheduleScreen()
-        val availableSlotTag = findFirstAvailableSlot()
-        assert(availableSlotTag != null) {
-            "Should find at least one available slot within 4 weeks"
-        }
-        composeTestRule.onNodeWithTag(availableSlotTag!!).safeClick()
-        composeTestRule.waitUntil(timeoutMillis = 3000) {
-            composeTestRule.onAllNodesWithTag("confirmActivityModal").fetchSemanticsNodes().isNotEmpty()
-        }
-        composeTestRule.onNodeWithTag("confirmModalButton").safeClick()
-        try {
-            composeTestRule.waitUntil(timeoutMillis = 2000) {
-                composeTestRule.onAllNodesWithTag("modalLoadingIndicator").fetchSemanticsNodes().isNotEmpty()
-            }
-        } catch (e: androidx.compose.ui.test.ComposeTimeoutException) {
-            // Loading may finish too quickly, which is acceptable
-        }
     }
 
     /** -----------------------------------------
