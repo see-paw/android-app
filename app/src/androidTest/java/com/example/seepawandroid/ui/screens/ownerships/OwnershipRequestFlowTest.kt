@@ -257,23 +257,6 @@ class OwnershipRequestFlowTest : BaseUiTest() {
     // HELPERS: NAVIGATION & AUTH (Matches AnimalDetailScreenTest patterns)
     // -------------------------------------------------------------------------
 
-    private fun logoutIfNeeded() {
-        try {
-            composeTestRule.waitUntil(timeoutMillis = 2000) {
-                try {
-                    composeTestRule.onNodeWithTag("logoutButton").assertExists()
-                    true
-                } catch (e: Throwable) { false }
-            }
-            composeTestRule.onNodeWithTag("logoutButton").safeClick()
-            composeTestRule.waitUntil(timeoutMillis = 3000) {
-                try {
-                    composeTestRule.onNodeWithTag("openLoginButton").assertExists()
-                    true
-                } catch (e: Throwable) { false }
-            }
-        } catch (_: Throwable) { /* Already logged out */ }
-    }
 
     private fun performLogin() {
         // Handle navigation to login screen if not already there
@@ -300,20 +283,6 @@ class OwnershipRequestFlowTest : BaseUiTest() {
         composeTestRule.onNodeWithTag("loginButton").safeClick()
 
         waitUntilLoadingFinishes()
-    }
-
-    private fun navigateToCatalogue() {
-        composeTestRule.onNodeWithTag("openDrawerButton").safeClick()
-        composeTestRule.waitUntil(timeoutMillis = 2000) {
-            try {
-                composeTestRule.onNodeWithTag("drawerItemCatalogue").assertExists()
-                true
-            } catch (e: Throwable) { false }
-        }
-        composeTestRule.onNodeWithTag("drawerItemCatalogue").safeClick()
-        composeTestRule.waitUntil(timeoutMillis = 10_000) {
-            composeTestRule.onAllNodes(hasTestTagStartingWith("animalCard_")).fetchSemanticsNodes().isNotEmpty()
-        }
     }
 
     private fun navigateToOwnershipList() {
@@ -373,12 +342,6 @@ class OwnershipRequestFlowTest : BaseUiTest() {
                 composeTestRule.onNodeWithTag("animalDetailScreen").assertExists()
                 true
             } catch (e: Throwable) { false }
-        }
-    }
-
-    private fun hasTestTagStartingWith(prefix: String): SemanticsMatcher {
-        return SemanticsMatcher("TestTag starts with '$prefix'") { node ->
-            node.config.getOrNull(SemanticsProperties.TestTag)?.startsWith(prefix) == true
         }
     }
 }

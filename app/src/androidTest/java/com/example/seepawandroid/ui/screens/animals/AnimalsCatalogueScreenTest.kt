@@ -5,21 +5,18 @@ import androidx.compose.ui.semantics.getOrNull
 import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertTextContains
+import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.isDialog
-import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.seepawandroid.BaseUiTest
-import com.example.seepawandroid.MainActivity
 import com.example.seepawandroid.utils.NetworkUtils
-import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
@@ -41,24 +38,6 @@ class AnimalCatalogueScreenTest : BaseUiTest() {
         composeTestRule.waitForIdle()
 
         navigateToCatalogue()
-    }
-
-    private fun navigateToCatalogue() {
-        composeTestRule.waitUntil(timeoutMillis = 5000) {
-            try {
-                composeTestRule.onNodeWithTag("openCatalogueButton").assertExists()
-                true
-            } catch (_: Throwable) { false }
-        }
-
-        composeTestRule.onNodeWithTag("openCatalogueButton").safeClick()
-
-        composeTestRule.waitUntil(timeoutMillis = 15000) {
-            try {
-                composeTestRule.onNodeWithTag("catalogueScreen").assertExists()
-                true
-            } catch (_: Throwable) { false }
-        }
     }
 
     /** -----------------------------------------
@@ -96,7 +75,7 @@ class AnimalCatalogueScreenTest : BaseUiTest() {
                 .assertIsDisplayed()
 
             val animalCards = composeTestRule.onAllNodes(
-                hasTestTag("animalCard_", substring = true)
+                hasTestTagSubstring("animalCard_")
             )
             assert(animalCards.fetchSemanticsNodes().isNotEmpty()) {
                 "Expected at least 1 animal card"
@@ -165,7 +144,7 @@ class AnimalCatalogueScreenTest : BaseUiTest() {
         Thread.sleep(2000)
 
         composeTestRule
-            .onAllNodes(hasTestTag("animalCard_", substring = true))
+            .onAllNodes(hasTestTagSubstring("animalCard_"))
             .fetchSemanticsNodes()
             .also { nodes ->
                 assert(nodes.isNotEmpty()) { "Deve haver animais após sort" }
@@ -187,7 +166,7 @@ class AnimalCatalogueScreenTest : BaseUiTest() {
         Thread.sleep(2000)
 
         composeTestRule
-            .onAllNodes(hasTestTag("animalCard_", substring = true))
+            .onAllNodes(hasTestTagSubstring("animalCard_"))
             .fetchSemanticsNodes()
             .also { nodes ->
                 assert(nodes.isNotEmpty()) { "Deve haver animais após sort" }
@@ -209,7 +188,7 @@ class AnimalCatalogueScreenTest : BaseUiTest() {
         Thread.sleep(2000)
 
         composeTestRule
-            .onAllNodes(hasTestTag("animalCard_", substring = true))
+            .onAllNodes(hasTestTagSubstring("animalCard_"))
             .fetchSemanticsNodes()
             .also { nodes ->
                 assert(nodes.isNotEmpty()) { "Deve haver animais após sort" }
@@ -287,7 +266,7 @@ class AnimalCatalogueScreenTest : BaseUiTest() {
         // Since we navigate as guest, favorite icons should not be displayed
         // Note: This test is run as guest (no login in setup)
         val favoriteIcons = composeTestRule.onAllNodes(
-            hasTestTag("animalFavoriteIcon", substring = false)
+            hasTestTag("animalFavoriteIcon")
         ).fetchSemanticsNodes()
 
         // In guest mode, there should be no favorite icons
@@ -308,16 +287,12 @@ class AnimalCatalogueScreenTest : BaseUiTest() {
         }
     }
 
-    private fun hasTestTag(tag: String, substring: Boolean = false): SemanticsMatcher {
-        return if (substring) {
-            SemanticsMatcher("TestTag contains '$tag'") {
-                val tagValue = it.config.getOrNull(
-                    androidx.compose.ui.semantics.SemanticsProperties.TestTag
-                )
-                tagValue?.contains(tag) == true
-            }
-        } else {
-            hasTestTag(tag)
+    private fun hasTestTagSubstring(tag: String): SemanticsMatcher {
+        return SemanticsMatcher("TestTag contains '$tag'") {
+            val tagValue = it.config.getOrNull(
+                androidx.compose.ui.semantics.SemanticsProperties.TestTag
+            )
+            tagValue?.contains(tag) == true
         }
     }
 

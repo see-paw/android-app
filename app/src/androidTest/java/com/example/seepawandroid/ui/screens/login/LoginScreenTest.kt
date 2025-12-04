@@ -59,44 +59,6 @@ class LoginScreenTest : BaseUiTest() {
     }
 
     /**
-     * Logs out if the user is currently authenticated.
-     *
-     * Checks for the presence of demo screens (User or Admin)
-     * and clicks the logout button if found.
-     */
-    private fun logoutIfNeeded() {
-        try {
-            // Wait a bit to see if we're on a demo screen
-            composeTestRule.waitUntil(timeoutMillis = 2000) {
-                try {
-                    // Check if logout button exists (User or Admin demo screen)
-                    composeTestRule.onNodeWithTag("logoutButton").assertExists()
-                    true
-                } catch (e: Throwable) {
-                    false
-                }
-            }
-
-            // If we found the logout button, click it
-            composeTestRule.onNodeWithTag("logoutButton").safeClick()
-
-            // Wait for logout to complete and return to login screen
-            composeTestRule.waitUntil(timeoutMillis = 3000) {
-                try {
-                    composeTestRule.onNodeWithText("SeePaw Login").assertExists()
-                    true
-                } catch (e: Throwable) {
-                    false
-                }
-            }
-
-        } catch (e: Throwable) {
-            // No logout button found, assume we're already logged out
-            // This is fine, continue to next step
-        }
-    }
-
-    /**
      * Ensures the app is on the login screen.
      * Waits for the "SeePaw Login" title to appear.
      */

@@ -93,7 +93,6 @@ fun AnimalCard(
                     modifier = Modifier.testTag("animalName")
                 )
 
-
                 //Favorite icon (only when logged in)
                 if (isLoggedIn) {
                     IconButton(
@@ -106,7 +105,7 @@ fun AnimalCard(
                             else
                                 Icons.Outlined.FavoriteBorder,
                             contentDescription = stringResource(R.string.favorite),
-                            tint = MaterialTheme.colorScheme.primary
+                            tint = MaterialTheme.colorScheme.primary,
                         )
                     }
                 }

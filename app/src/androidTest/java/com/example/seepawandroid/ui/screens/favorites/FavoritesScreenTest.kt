@@ -12,6 +12,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.example.seepawandroid.BaseUiTest
 import com.example.seepawandroid.MainActivity
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -31,13 +32,7 @@ import org.junit.runner.RunWith
  */
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
-class FavoritesScreenTest {
-
-    @get:Rule(order = 0)
-    val hiltRule = HiltAndroidRule(this)
-
-    @get:Rule(order = 1)
-    val composeTestRule = createAndroidComposeRule<MainActivity>()
+class FavoritesScreenTest : BaseUiTest() {
 
     companion object {
         // Valid test credentials from backend
@@ -46,75 +41,14 @@ class FavoritesScreenTest {
     }
 
     @Before
-    fun setup() {
-        hiltRule.inject()
+    override fun setUp() {
+        super.setUp()
         composeTestRule.waitForIdle()
+        logoutIfNeeded()
 
         // Login first to access authenticated features
-        loginAsTestUser()
+        loginAsTestUser(VALID_EMAIL, VALID_PASSWORD)
     }
-
-    private fun loginAsTestUser() {
-        // First, ensure we're on homepage
-        composeTestRule.waitUntil(timeoutMillis = 5000) {
-            try {
-                composeTestRule.onNodeWithTag("openLoginButton").assertExists()
-                true
-            } catch (_: Throwable) {
-                false
-            }
-        }
-
-        // Click to navigate to login screen
-        composeTestRule.onNodeWithTag("openLoginButton").performClick()
-
-        // Wait for login screen to load
-        composeTestRule.waitUntil(timeoutMillis = 5000) {
-            try {
-                composeTestRule.onNodeWithText("SeePaw Login").assertExists()
-                true
-            } catch (_: Throwable) {
-                false
-            }
-        }
-
-        // Wait for email input to be available
-        composeTestRule.waitUntil(timeoutMillis = 5000) {
-            try {
-                composeTestRule.onNodeWithTag("emailInput").assertExists()
-                true
-            } catch (_: Throwable) {
-                false
-            }
-        }
-
-        // Enter valid test credentials
-        composeTestRule.onNodeWithTag("emailInput").performTextInput(VALID_EMAIL)
-        composeTestRule.onNodeWithTag("passwordInput").performTextInput(VALID_PASSWORD)
-
-        // Wait for login button to be enabled (requires non-blank email and password)
-        composeTestRule.waitUntil(timeoutMillis = 3000) {
-            try {
-                composeTestRule.onNodeWithTag("loginButton").assertIsEnabled()
-                true
-            } catch (_: Throwable) {
-                false
-            }
-        }
-
-        composeTestRule.onNodeWithTag("loginButton").performClick()
-
-        // Wait for login to complete and navigate to user homepage
-        composeTestRule.waitUntil(timeoutMillis = 15000) {
-            try {
-                composeTestRule.onNodeWithTag("openCatalogueButton").assertExists()
-                true
-            } catch (_: Throwable) {
-                false
-            }
-        }
-    }
-
     private fun navigateToFavorites() {
         // Open drawer
         composeTestRule.waitUntil(timeoutMillis = 5000) {
@@ -145,28 +79,6 @@ class FavoritesScreenTest {
         }
     }
 
-    private fun navigateToCatalogue() {
-        composeTestRule.waitUntil(timeoutMillis = 5000) {
-            try {
-                composeTestRule.onNodeWithTag("openCatalogueButton").assertExists()
-                true
-            } catch (_: Throwable) {
-                false
-            }
-        }
-
-        composeTestRule.onNodeWithTag("openCatalogueButton").performClick()
-
-        composeTestRule.waitUntil(timeoutMillis = 15000) {
-            try {
-                composeTestRule.onNodeWithTag("catalogueScreen").assertExists()
-                true
-            } catch (_: Throwable) {
-                false
-            }
-        }
-    }
-
     /** -----------------------------------------
      *  BASIC UI TESTS
      *  ----------------------------------------- */
@@ -186,7 +98,7 @@ class FavoritesScreenTest {
         waitUntilLoadingFinishes()
 
         // The title should be displayed (Portuguese: "Os Meus Favoritos")
-        composeTestRule.onNodeWithText("Os Meus Favoritos", substring = true, useUnmergedTree = true)
+        composeTestRule.onNodeWithText("Os Meus Favoritos")
             .assertExists()
     }
 
@@ -227,8 +139,11 @@ class FavoritesScreenTest {
 
         if (firstAnimalCard != null) {
             // Favorite icon should be displayed for logged-in users
-            composeTestRule.onNodeWithTag("animalFavoriteIcon")
-                .assertExists()
+            val favoriteIcons = composeTestRule.onAllNodes(
+                hasTestTag("animalFavoriteIcon")
+            ).fetchSemanticsNodes()
+
+            assert(!favoriteIcons.isEmpty())
         }
     }
 
@@ -243,7 +158,7 @@ class FavoritesScreenTest {
         ).fetchSemanticsNodes()
 
         if (favoriteIcons.isNotEmpty()) {
-            composeTestRule.onAllNodes(hasTestTag("animalFavoriteIcon"))[0].performClick()
+            composeTestRule.onAllNodes(hasTestTag("animalFavoriteIcon"))[1].performClick()
 
             // Wait for API call to complete
             Thread.sleep(2000)
@@ -313,7 +228,6 @@ class FavoritesScreenTest {
 
     @Test
     fun favoritesScreen_clickAnimalCard_navigatesToDetail() {
-        // First ensure we have at least one favorite
         navigateToCatalogue()
         waitUntilLoadingFinishes()
 
