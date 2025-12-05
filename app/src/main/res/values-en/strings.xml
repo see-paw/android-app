@@ -229,4 +229,47 @@ Please read all terms carefully before proceeding with a special adoption reques
     <string name="modal_success_message">Your visit with %1$s has been successfully scheduled.</string>
     <string name="ok">OK</string>
 
+    <!-- FOSTERING -->
+    <string name="fostering_support_label">Fostering support</string>
+    <string name="fostering_fully_supported">100% Fostered!</string>
+    <string name="fostering_percentage">%1$d%%</string>
+    <string name="fostering_amount_progress">%.2f € / %.2f € monthly</string>
+
+    <!-- FOSTERING DIALOG -->
+    <string name="fostering_dialog_title">Foster %1$s</string>
+    <string name="fostering_dialog_description">Choose the monthly fostering amount:</string>
+    <string name="fostering_amount_option">%1$.2f € / month</string>
+    <string name="fostering_custom_amount">Custom amount</string>
+    <string name="fostering_custom_amount_label">Custom amount (€)</string>
+    <string name="fostering_invalid_amount">Please enter a valid amount greater than 0</string>
+    <string name="confirm">Confirm</string>
+
+    <!-- FOSTERING RESULT -->
+    <string name="fostering_success_title">Fostering confirmed!</string>
+    <string name="fostering_success_message">Your fostering has been created successfully.</string>
+    <string name="fostering_error_title">Error</string>
+    <string name="fostering_error_message">Could not create fostering. Please try again.</string>
+
+    <!-- FOSTERING PAYMENT MOCK -->
+    <string name="fostering_payment_title">Confirm payment</string>
+    <string name="fostering_payment_description">Foster %1$s for %2$.2f € / month</string>
+    <string name="fostering_payment_account">Account number</string>
+    <string name="fostering_payment_holder">Holder name</string>
+    <string name="fostering_payment_cvv">CVV</string>
+
+    <!-- FOSTERING LIST -->
+    <string name="fostering_list_title">My fosterings</string>
+    <string name="fostering_active_tab">Active</string>
+    <string name="fostering_receipts_tab">Receipts</string>
+    <string name="fostering_amount_monthly">%.2f € / month</string>
+    <string name="fostering_since">Since %1$s</string>
+    <string name="fostering_cancel_button">Cancel fostering</string>
+    <string name="fostering_cancel_title">Cancel fostering</string>
+    <string name="fostering_cancel_message">Are you sure you want to cancel the fostering of %1$s?</string>
+    <string name="fostering_no_active">You haven\'t fostered any animals yet</string>
+    <string name="fostering_list_empty_title">No fosterings</string>
+    <string name="fostering_list_empty_message">Start fostering animals and help them find a home!</string>
+    <string name="fostering_list_empty_action">View catalogue</string>
+
+    <string name="my_fosterings">My fosterings</string>
 </resources>

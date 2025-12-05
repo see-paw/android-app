@@ -241,4 +241,48 @@ Por favor, lê atentamente todos os termos antes de prosseguir com um pedido de 
     <string name="modal_success_message">A sua visita com %1$s foi agendada com sucesso.</string>
     <string name="ok">OK</string>
 
+    <!-- FOSTERING -->
+    <string name="fostering_support_label">Apoio de apadrinhamento</string>
+    <string name="fostering_fully_supported">100% Apadrinhado!</string>
+    <string name="fostering_percentage">%1$d%%</string>
+    <string name="fostering_amount_progress">%.2f € / %.2f € mensais</string>
+
+    <!-- FOSTERING DIALOG -->
+    <string name="fostering_dialog_title">Apadrinhar %1$s</string>
+    <string name="fostering_dialog_description">Escolha o valor mensal do apadrinhamento:</string>
+    <string name="fostering_amount_option">%1$.2f € / mês</string>
+    <string name="fostering_custom_amount">Outro valor</string>
+    <string name="fostering_custom_amount_label">Valor personalizado (€)</string>
+    <string name="fostering_invalid_amount">Insira um valor válido maior que 0</string>
+    <string name="confirm">Confirmar</string>
+
+    <!-- FOSTERING RESULT -->
+    <string name="fostering_success_title">Apadrinhamento confirmado!</string>
+    <string name="fostering_success_message">O seu apadrinhamento foi criado com sucesso.</string>
+    <string name="fostering_error_title">Erro</string>
+    <string name="fostering_error_message">Não foi possível criar o apadrinhamento. Tente novamente.</string>
+
+    <!-- FOSTERING PAYMENT MOCK -->
+    <string name="fostering_payment_title">Confirmar pagamento</string>
+    <string name="fostering_payment_description">Apadrinhar %1$s por %2$.2f € / mês</string>
+    <string name="fostering_payment_account">Número de conta</string>
+    <string name="fostering_payment_holder">Titular</string>
+    <string name="fostering_payment_cvv">CVV</string>
+
+    <!-- FOSTERING LIST -->
+    <string name="fostering_list_title">Os meus apadrinhamentos</string>
+    <string name="fostering_active_tab">Ativos</string>
+    <string name="fostering_receipts_tab">Recibos</string>
+    <string name="fostering_amount_monthly">%.2f € / mês</string>
+    <string name="fostering_since">Desde %1$s</string>
+    <string name="fostering_cancel_button">Cancelar apadrinhamento</string>
+    <string name="fostering_cancel_title">Cancelar apadrinhamento</string>
+    <string name="fostering_cancel_message">Tem a certeza que deseja cancelar o apadrinhamento de %1$s?</string>
+    <string name="fostering_no_active">Ainda não apadrinhou nenhum animal</string>
+    <string name="fostering_list_empty_title">Sem apadrinhamentos</string>
+    <string name="fostering_list_empty_message">Comece a apadrinhar animais e ajude-os a encontrar um lar!</string>
+    <string name="fostering_list_empty_action">Ver catálogo</string>
+
+    <string name="my_fosterings">Os meus apadrinhamentos</string>
+
 </resources>

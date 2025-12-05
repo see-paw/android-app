@@ -17,6 +17,7 @@ import com.example.seepawandroid.ui.screens.animals.AnimalDetailScreen
 import com.example.seepawandroid.ui.screens.animals.viewmodel.AnimalViewModel
 import com.example.seepawandroid.ui.screens.favorites.FavoritesScreen
 import com.example.seepawandroid.ui.screens.favorites.FavoritesViewModel
+import com.example.seepawandroid.ui.screens.fosterings.FosteringListScreen
 import com.example.seepawandroid.ui.screens.login.AuthViewModel
 import com.example.seepawandroid.ui.screens.ownerships.OwnershipListScreen
 import com.example.seepawandroid.ui.screens.ownerships.OwnershipRequestScreen
@@ -147,6 +148,21 @@ fun NavGraphUser(
             FavoritesScreen(
                 viewModel = favoritesViewModel,
                 onAnimalClick = { animalId ->
+                    navController.navigate("${NavigationRoutes.ANIMAL_DETAIL_PAGE_BASE}/$animalId")
+                }
+            )
+        }
+
+        // FOSTERING LIST (User's fosterings)
+        composable(NavigationRoutes.FOSTERING_LIST) {
+            FosteringListScreen(
+                onNavigateBack = { navController.popBackStack() },
+                onNavigateToCatalogue = {
+                    navController.navigate(NavigationRoutes.ANIMALS_CATALOGUE) {
+                        popUpTo(NavigationRoutes.USER_HOMEPAGE) { inclusive = false }
+                    }
+                },
+                onNavigateToAnimal = { animalId ->
                     navController.navigate("${NavigationRoutes.ANIMAL_DETAIL_PAGE_BASE}/$animalId")
                 }
             )

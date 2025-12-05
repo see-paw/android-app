@@ -23,7 +23,7 @@ import com.example.seepawandroid.data.utils.Converters
  */
 @Database(
     entities = [Animal::class],
-    version = 2, // important: update version when modifying the DB schema
+    version = 5, // important: update version when modifying the DB schema
     exportSchema = false
 )
 @TypeConverters(Converters::class)

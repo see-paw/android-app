@@ -9,6 +9,10 @@ import com.example.seepawandroid.data.remote.dtos.auth.ReqLoginDto
 import com.example.seepawandroid.data.remote.dtos.auth.ReqRegisterUserDto
 import com.example.seepawandroid.data.remote.dtos.auth.ResLoginDto
 import com.example.seepawandroid.data.remote.dtos.favorites.ResGetFavoritesDto
+import com.example.seepawandroid.data.remote.dtos.fosterings.ReqAddFosteringDto
+import com.example.seepawandroid.data.remote.dtos.fosterings.ResActiveFosteringDto
+import com.example.seepawandroid.data.remote.dtos.fosterings.ResActiveFosteringIdDto
+import com.example.seepawandroid.data.remote.dtos.fosterings.ResCancelFosteringDto
 import com.example.seepawandroid.data.remote.dtos.notifications.ResNotificationDto
 import com.example.seepawandroid.data.remote.dtos.ownerships.ReqOwnershipRequestDto
 import com.example.seepawandroid.data.remote.dtos.ownerships.ResOwnershipRequestDto
@@ -259,4 +263,46 @@ interface BackendApiService {
     suspend fun removeFavorite(
         @Path("animalId") animalId: String
     ) : Response<Unit>
+
+    // ========== FOSTERINGS ==========
+
+    /**
+     * Fetches all active fosterings for the authenticated user.
+     *
+     * @return Response containing list of active fosterings.
+     */
+    @GET("api/fosterings")
+    suspend fun getActiveFosterings(): Response<List<ResActiveFosteringDto>>
+
+    /**
+     * Fetches the IDs of active fosterings for the authenticated user.
+     *
+     * @return Response containing list of fostering and animal IDs.
+     */
+    @GET("api/fosterings/ids")
+    suspend fun getActiveFosteringIds(): Response<List<ResActiveFosteringIdDto>>
+
+    /**
+     * Creates a new fostering for an animal.
+     *
+     * @param animalId The unique identifier of the animal to foster.
+     * @param request The request containing the monthly contribution amount.
+     * @return Response containing the created fostering.
+     */
+    @POST("api/fosterings/{animalId}/fosterings")
+    suspend fun createFostering(
+        @Path("animalId") animalId: String,
+        @Body request: ReqAddFosteringDto
+    ): Response<ResActiveFosteringDto>
+
+    /**
+     * Cancels an active fostering.
+     *
+     * @param id The unique identifier of the fostering to cancel.
+     * @return Response containing the cancelled fostering details.
+     */
+    @PATCH("api/fosterings/{id}/cancel")
+    suspend fun cancelFostering(
+        @Path("id") id: String
+    ): Response<ResCancelFosteringDto>
 }
