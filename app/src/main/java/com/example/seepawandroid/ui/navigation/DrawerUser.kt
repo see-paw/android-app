@@ -11,6 +11,7 @@ import androidx.compose.material.icons.outlined.CalendarMonth
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.ListAlt
 import androidx.compose.material.icons.outlined.Pets
+import androidx.compose.material.icons.outlined.VolunteerActivism
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -51,6 +52,7 @@ fun getUserDrawerOptions() = listOf(
     DrawerOption(R.string.schedule_activities, Icons.Outlined.CalendarMonth, "ScheduleActivities"),
     DrawerOption(R.string.active_activities, Icons.Outlined.CalendarMonth, "ActiveActivities"),
     DrawerOption(R.string.requests, Icons.Outlined.ListAlt, NavigationRoutes.OWNERSHIP_LIST),
+    DrawerOption(R.string.my_fosterings, Icons.Outlined.VolunteerActivism, NavigationRoutes.FOSTERING_LIST),
 )
 
 /**
@@ -100,6 +102,10 @@ fun DrawerUser(
                     Modifier
                         .padding(NavigationDrawerItemDefaults.ItemPadding)
                         .testTag("drawerItemOwnershipList")
+                else if (item.route == NavigationRoutes.FOSTERING_LIST)
+                    Modifier
+                        .padding(NavigationDrawerItemDefaults.ItemPadding)
+                        .testTag("drawerItemFosteringList")
                 else
                     Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
 

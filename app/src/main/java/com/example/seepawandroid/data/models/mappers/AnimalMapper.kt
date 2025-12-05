@@ -49,7 +49,8 @@ fun ResAnimalDto.toEntity(): Animal {
         cost = cost.toDouble(),
         shelterId = shelterId,
         imageUrl = mainImage,
-        imageUrls = allImages
+        imageUrls = allImages,
+        currentSupportValue = currentSupportValue
     )
 }
 
@@ -117,6 +118,7 @@ fun Animal.toDto(): ResAnimalDto {
         features = features,
         cost = cost,
         shelterId = shelterId,
-        images = imagesList
+        images = imagesList,
+        currentSupportValue = currentSupportValue
     )
 }

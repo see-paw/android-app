@@ -87,4 +87,9 @@ object NavigationRoutes {
 
     //Favorites (authenticated mode - view user's favorite animals)
     const val FAVORITES = "favorites"
+
+    /**
+     * Route for viewing the user's active fosterings list.
+     */
+    const val FOSTERING_LIST = "fostering_list"
 }

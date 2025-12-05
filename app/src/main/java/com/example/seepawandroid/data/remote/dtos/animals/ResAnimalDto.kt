@@ -47,5 +47,6 @@ data class ResAnimalDto(
     val features: String?,
     val cost: Double,
     val shelterId: String,
-    val images: List<ResImageDto>?
+    val images: List<ResImageDto>?,
+    val currentSupportValue: Double = 0.0
 )

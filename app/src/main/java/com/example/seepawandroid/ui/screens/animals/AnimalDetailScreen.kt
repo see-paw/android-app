@@ -45,6 +45,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.seepawandroid.R
 import com.example.seepawandroid.data.models.enums.AnimalState
 import com.example.seepawandroid.data.remote.dtos.animals.ResAnimalDto
+import com.example.seepawandroid.ui.components.FosteringAmountDialog
+import com.example.seepawandroid.ui.components.FosteringPaymentMockDialog
+import com.example.seepawandroid.ui.components.FosteringProgressBar
 import com.example.seepawandroid.ui.components.ImageCarousel
 import com.example.seepawandroid.ui.navigation.NavigationRoutes
 
@@ -82,6 +85,17 @@ fun AnimalDetailScreen(
     val uiState by viewModel.uiState.observeAsState(AnimalDetailUiState.Loading)
     val showLoginDialog by viewModel.showLoginDialog.observeAsState(false)
     val showOwnershipExistsDialog by viewModel.showOwnershipExistsDialog.observeAsState()
+
+    // Observe fostering
+    val showFosteringDialog by viewModel.showFosteringDialog.observeAsState(false)
+    val selectedFosteringAmount by viewModel.selectedFosteringAmount.observeAsState()
+    val customFosteringAmount by viewModel.customFosteringAmount.observeAsState("")
+    val fosteringAmountError by viewModel.fosteringAmountError.observeAsState(false)
+    val fosteringResult by viewModel.fosteringResult.observeAsState()
+
+    // Mock fostering payment
+    val showPaymentMockDialog by viewModel.showPaymentMockDialog.observeAsState(false)
+    val mockPaymentData by viewModel.mockPaymentData.observeAsState()
 
     // Load animal on first composition
     LaunchedEffect(animalId) {
@@ -134,6 +148,67 @@ fun AnimalDetailScreen(
         )
     }
 
+    // Fostering amount dialog
+    if (showFosteringDialog) {
+        FosteringAmountDialog(
+            animalName = (uiState as? AnimalDetailUiState.Success)?.animal?.name ?: "",
+            selectedAmount = selectedFosteringAmount,
+            customAmount = customFosteringAmount,
+            showError = fosteringAmountError,
+            onDismiss = { viewModel.dismissFosteringDialog() },
+            onAmountSelected = { amount -> viewModel.selectFosteringAmount(amount) },
+            onCustomAmountChanged = { value -> viewModel.updateCustomFosteringAmount(value) },
+            onConfirm = { viewModel.confirmFosteringAmount(animalId) }
+        )
+    }
+
+    // Fostering payment mock dialog
+    if (showPaymentMockDialog) {
+        mockPaymentData?.let { paymentData ->
+            FosteringPaymentMockDialog(
+                animalName = (uiState as? AnimalDetailUiState.Success)?.animal?.name ?: "",
+                amount = viewModel.pendingFosteringAmount ?: 0.0,
+                paymentData = paymentData,
+                onDismiss = { viewModel.dismissPaymentMockDialog() },
+                onConfirm = { viewModel.confirmMockPayment() }
+            )
+        }
+    }
+
+    // Fostering result handling
+    fosteringResult?.let { result ->
+        AlertDialog(
+            onDismissRequest = { viewModel.clearFosteringResult() },
+            title = {
+                Text(
+                    if (result.isSuccess)
+                        stringResource(R.string.fostering_success_title)
+                    else
+                        stringResource(R.string.fostering_error_title)
+                )
+            },
+            text = {
+                Text(
+                    if (result.isSuccess)
+                        stringResource(R.string.fostering_success_message)
+                    else
+                        result.exceptionOrNull()?.message ?: stringResource(R.string.fostering_error_message)
+                )
+            },
+            confirmButton = {
+                Button(
+                    onClick = { viewModel.clearFosteringResult() },
+                    modifier = Modifier.testTag("fosteringResultOkButton")
+                ) {
+                    Text("OK")
+                }
+            },
+            modifier = Modifier.testTag(
+                if (result.isSuccess) "fosteringSuccessDialog" else "fosteringErrorDialog"
+            )
+        )
+    }
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -175,7 +250,13 @@ fun AnimalDetailScreen(
                         isAuthenticated = isAuthenticated,
                         canFoster = state.canFoster,
                         canRequestOwnership = state.canRequestOwnership,
-                        onFosteringClick = { /* Disabled for now */ },
+                        onFosteringClick = {
+                            if (isAuthenticated) {
+                                viewModel.showFosteringDialog()
+                            } else {
+                                viewModel.showLoginDialog()
+                            }
+                        },
                         onOwnershipClick = {
                             if (isAuthenticated) {
                                 // Check if user already has ownership request
@@ -279,6 +360,12 @@ private fun AnimalDetailContent(
             animalName = animal.name
         )
 
+        // Fostering progress bar
+        FosteringProgressBar(
+            currentSupportValue = animal.currentSupportValue,
+            totalCost = animal.cost
+        )
+
         // Animal information
         Column(
             modifier = Modifier
@@ -376,9 +463,12 @@ private fun AnimalDetailContent(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
+                    // Calculate if animal is fully fostered
+                    val isFullyFostered = animal.currentSupportValue >= animal.cost
+
                     Button(
                         onClick = onFosteringClick,
-                        enabled = false, // TODO: Enable when implemented: canFoster
+                        enabled = canFoster && !isFullyFostered && isOnline,
                         modifier = Modifier
                             .weight(1f)
                             .testTag("fosteringButton")
@@ -388,7 +478,7 @@ private fun AnimalDetailContent(
 
                     Button(
                         onClick = onOwnershipClick,
-                        enabled = canRequestOwnership,
+                        enabled = canRequestOwnership && isOnline,
                         modifier = Modifier
                             .weight(1f)
                             .testTag("ownershipButton")

@@ -7,9 +7,12 @@ import androidx.lifecycle.viewModelScope
 import com.example.seepawandroid.data.managers.OwnershipStateManager
 import com.example.seepawandroid.data.models.enums.AnimalState
 import com.example.seepawandroid.data.repositories.AnimalRepository
+import com.example.seepawandroid.data.repositories.FosteringRepository
+import com.example.seepawandroid.ui.models.MockPaymentData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.random.Random
 
 /**
  * ViewModel for the Animal Detail screen.
@@ -28,7 +31,8 @@ import javax.inject.Inject
 @HiltViewModel
 class AnimalDetailViewModel @Inject constructor(
     private val repository: AnimalRepository,
-    private val ownershipStateManager: OwnershipStateManager
+    private val ownershipStateManager: OwnershipStateManager,
+    private val fosteringRepository: FosteringRepository
 ) : ViewModel() {
 
     private val _uiState = MutableLiveData<AnimalDetailUiState>(AnimalDetailUiState.Loading)
@@ -48,6 +52,39 @@ class AnimalDetailViewModel @Inject constructor(
      * The name of the animal for which an ownership request already exists, or null.
      */
     val showOwnershipExistsDialog: LiveData<String?> = _showOwnershipExistsDialog
+
+    // Fostering dialog state
+    private val _showFosteringDialog = MutableLiveData(false)
+    val showFosteringDialog: LiveData<Boolean> = _showFosteringDialog
+
+    private val _selectedFosteringAmount = MutableLiveData<Double?>(null)
+    val selectedFosteringAmount: LiveData<Double?> = _selectedFosteringAmount
+
+    private val _customFosteringAmount = MutableLiveData("")
+    val customFosteringAmount: LiveData<String> = _customFosteringAmount
+
+    private val _fosteringAmountError = MutableLiveData(false)
+    val fosteringAmountError: LiveData<Boolean> = _fosteringAmountError
+
+    private val _fosteringResult = MutableLiveData<Result<Unit>?>(null)
+    val fosteringResult: LiveData<Result<Unit>?> = _fosteringResult
+
+    // Mock payment dialog state
+    private val _showPaymentMockDialog = MutableLiveData(false)
+    /**
+     * Whether to show the payment mock dialog.
+     */
+    val showPaymentMockDialog: LiveData<Boolean> = _showPaymentMockDialog
+
+    private val _mockPaymentData = MutableLiveData<MockPaymentData>()
+    /**
+     * Mock payment data to display.
+     */
+    val mockPaymentData: LiveData<MockPaymentData> = _mockPaymentData
+
+    private var pendingFosteringAnimalId: String? = null
+    var pendingFosteringAmount: Double? = null
+        private set
 
     /**
      * Shows the login required dialog.
@@ -93,6 +130,127 @@ class AnimalDetailViewModel @Inject constructor(
         } else {
             // No existing request, allow navigation
             true
+        }
+    }
+
+    /**
+     * Dismisses the payment mock dialog.
+     */
+    fun dismissPaymentMockDialog() {
+        _showPaymentMockDialog.value = false
+    }
+
+    /**
+     * Shows the fostering amount selection dialog.
+     */
+    fun showFosteringDialog() {
+        _showFosteringDialog.value = true
+        // Reset state when opening dialog
+        _selectedFosteringAmount.value = null
+        _customFosteringAmount.value = ""
+        _fosteringAmountError.value = false
+    }
+
+    /**
+     * Dismisses the fostering amount selection dialog.
+     */
+    fun dismissFosteringDialog() {
+        _showFosteringDialog.value = false
+    }
+
+    /**
+     * Updates the selected fostering amount.
+     */
+    fun selectFosteringAmount(amount: Double?) {
+        _selectedFosteringAmount.value = amount
+        if (amount != -1.0) {
+            _customFosteringAmount.value = ""
+        }
+        _fosteringAmountError.value = false
+    }
+
+    /**
+     * Updates the custom fostering amount input.
+     */
+    fun updateCustomFosteringAmount(value: String) {
+        _customFosteringAmount.value = value
+        _fosteringAmountError.value = false
+    }
+
+    /**
+     * Confirms the fostering amount and creates the fostering.
+     */
+    /**
+     * Confirms the fostering amount and shows payment mock dialog.
+     */
+    fun confirmFosteringAmount(animalId: String) {
+        val selected = _selectedFosteringAmount.value
+        val finalAmount = if (selected == -1.0) {
+            _customFosteringAmount.value?.toDoubleOrNull()
+        } else {
+            selected
+        }
+
+        if (finalAmount != null && finalAmount > 0) {
+            // Store for later use
+            pendingFosteringAnimalId = animalId
+            pendingFosteringAmount = finalAmount
+
+            // Generate mock payment data
+            _mockPaymentData.value = MockPaymentData(
+                accountNumber = generateMockAccountNumber(),
+                holderName = generateMockHolderName(),
+                cvv = generateMockCvv()
+            )
+
+            // Close amount dialog, open payment dialog
+            dismissFosteringDialog()
+            _showPaymentMockDialog.value = true
+        } else {
+            _fosteringAmountError.value = true
+        }
+    }
+
+    /**
+     * Confirms the mock payment and creates the fostering.
+     */
+    fun confirmMockPayment() {
+        val animalId = pendingFosteringAnimalId
+        val amount = pendingFosteringAmount
+
+        if (animalId != null && amount != null) {
+            createFostering(animalId, amount)
+            dismissPaymentMockDialog()
+        }
+    }
+
+    /**
+     * Clears fostering result (after showing success/error message).
+     */
+    fun clearFosteringResult() {
+        _fosteringResult.value = null
+    }
+
+    /**
+     * Creates a fostering for the given animal with the specified amount.
+     */
+    private fun createFostering(animalId: String, amount: Double) {
+        viewModelScope.launch {
+            try {
+                val result = fosteringRepository.createFostering(animalId, amount)
+
+                if (result.isSuccess) {
+                    _fosteringResult.value = Result.success(Unit)
+                    // Reload animal to update fostering progress
+                    loadAnimal(animalId)
+                } else {
+                    _fosteringResult.value = Result.failure(
+                        result.exceptionOrNull() ?: Exception("Failed to create fostering")
+                    )
+                }
+            } catch (e: Exception) {
+                _fosteringResult.value = Result.failure(e)
+            }
         }
     }
 
@@ -150,6 +308,22 @@ class AnimalDetailViewModel @Inject constructor(
         }
     }
 
+    // ========== MOCK DATA GENERATORS ==========
+
+    private fun generateMockAccountNumber(): String {
+        return "${Random.nextInt(1000, 9999)} ${Random.nextInt(1000, 9999)} ${Random.nextInt(1000, 9999)} ${Random.nextInt(1000, 9999)}"
+    }
+
+    private fun generateMockHolderName(): String {
+        val firstNames = listOf("João", "Maria", "Pedro", "Ana", "Carlos", "Sofia", "Miguel", "Inês")
+        val lastNames = listOf("Silva", "Santos", "Costa", "Ferreira", "Rodrigues", "Pereira", "Almeida", "Carvalho")
+        return "${firstNames.random()} ${lastNames.random()}"
+    }
+
+    private fun generateMockCvv(): String {
+        return Random.nextInt(100, 999).toString()
+    }
+
     /**
      * Resets the UI state back to Loading.
      * Useful when retrying after an error.
@@ -157,4 +331,6 @@ class AnimalDetailViewModel @Inject constructor(
     fun retry(animalId: String) {
         loadAnimal(animalId)
     }
+
+
 }
