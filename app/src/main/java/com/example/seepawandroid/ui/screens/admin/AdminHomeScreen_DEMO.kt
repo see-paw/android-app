@@ -1,6 +1,5 @@
 package com.example.seepawandroid.ui.screens.admin
 
-import android.app.Activity
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -13,9 +12,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import com.example.seepawandroid.data.providers.SessionManager
+import com.example.seepawandroid.data.managers.SessionManager
 import com.example.seepawandroid.ui.screens.login.AuthViewModel
 
 /**
@@ -39,7 +37,7 @@ fun AdminHomeScreen_DEMO(authViewModel: AuthViewModel, sessionManager: SessionMa
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Text("Logged in as: AdminCAA")
+        Text("Logged in as: AdminCAA. Android App is currently for final Users only.")
 
         Spacer(modifier = Modifier.height(8.dp))
 

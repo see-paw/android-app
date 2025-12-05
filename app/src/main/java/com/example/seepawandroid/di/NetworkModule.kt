@@ -1,6 +1,8 @@
 package com.example.seepawandroid.di
 
-import com.example.seepawandroid.data.providers.SessionManager
+import android.os.Build
+import android.util.Log
+import com.example.seepawandroid.data.managers.SessionManager
 import com.example.seepawandroid.data.remote.api.interceptors.AuthInterceptor
 import com.example.seepawandroid.data.remote.api.services.BackendApiService
 import dagger.Module
@@ -24,7 +26,11 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
     private const val USE_AZURE = false
-    private const val LOCAL_URL = "http://10.0.2.2:5000/"
+    private val LOCAL_URL = if (isEmulator()) {
+        "http://10.0.2.2:5000/"
+    } else {
+        "http://localhost:5000/"
+    }
     private const val AZURE_URL = "https://seepaw-api-gdhvbkcvckeub9et.francecentral-01.azurewebsites.net/"
 
     private val BASE_URL = if (USE_AZURE) AZURE_URL else LOCAL_URL
@@ -78,5 +84,30 @@ object NetworkModule {
     @Singleton
     fun provideBackendApiService(retrofit: Retrofit): BackendApiService {
         return retrofit.create(BackendApiService::class.java)
+    }
+
+    /**
+     * Provides the base URL for API and SignalR connections.
+     */
+    @Provides
+    @Singleton
+    fun provideBaseUrl(): String {
+        return BASE_URL
+    }
+
+    /**
+     * Check if it's using and emulator
+     */
+    private fun isEmulator(): Boolean {
+        return (Build.FINGERPRINT.startsWith("generic")
+                || Build.FINGERPRINT.startsWith("unknown")
+                || Build.FINGERPRINT.contains("sdk_gphone")
+                || Build.MODEL.contains("google_sdk")
+                || Build.MODEL.contains("Emulator")
+                || Build.MODEL.contains("Android SDK")
+                || Build.MODEL.contains("sdk_gphone")
+                || Build.MANUFACTURER.contains("Genymotion")
+                || Build.PRODUCT.contains("sdk")
+                || Build.PRODUCT.contains("emulator"))
     }
 }

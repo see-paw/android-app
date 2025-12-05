@@ -1,15 +1,35 @@
 package com.example.seepawandroid.data.remote.api.services
 
+import com.example.seepawandroid.data.remote.dtos.PagedListDto
+import com.example.seepawandroid.data.remote.dtos.activities.ReqCreateOwnershipActivityDto
+import com.example.seepawandroid.data.remote.dtos.schedule.ResScheduleResponseDto
+import com.example.seepawandroid.data.remote.dtos.animals.ResAnimalDto
+import com.example.seepawandroid.data.remote.dtos.animals.ResOwnedAnimalDto
 import com.example.seepawandroid.data.remote.dtos.auth.ReqLoginDto
-import com.example.seepawandroid.data.remote.dtos.auth.ResLoginDto
 import com.example.seepawandroid.data.remote.dtos.auth.ReqRegisterUserDto
+import com.example.seepawandroid.data.remote.dtos.auth.ResLoginDto
+import com.example.seepawandroid.data.remote.dtos.favorites.ResGetFavoritesDto
+import com.example.seepawandroid.data.remote.dtos.fosterings.ReqAddFosteringDto
+import com.example.seepawandroid.data.remote.dtos.fosterings.ResActiveFosteringDto
+import com.example.seepawandroid.data.remote.dtos.fosterings.ResActiveFosteringIdDto
+import com.example.seepawandroid.data.remote.dtos.fosterings.ResCancelFosteringDto
+import com.example.seepawandroid.data.remote.dtos.notifications.ResNotificationDto
+import com.example.seepawandroid.data.remote.dtos.ownerships.ReqOwnershipRequestDto
+import com.example.seepawandroid.data.remote.dtos.ownerships.ResOwnershipRequestDto
+import com.example.seepawandroid.data.remote.dtos.ownerships.ResOwnershipRequestListDto
+import com.example.seepawandroid.data.remote.dtos.shelter.ResShelterDto
 import com.example.seepawandroid.data.remote.dtos.user.ResUserDataDto
 import com.example.seepawandroid.data.remote.dtos.user.ResUserIdDto
 import com.example.seepawandroid.data.remote.dtos.user.ResUserRoleDto
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.PATCH
 import retrofit2.http.POST
+import retrofit2.http.PUT
+import retrofit2.http.Path
+import retrofit2.http.Query
 
 /**
  * Retrofit service interface for backend API communication.
@@ -20,6 +40,46 @@ import retrofit2.http.POST
  * All methods are suspend functions to support Kotlin coroutines for asynchronous operations.
  */
 interface BackendApiService {
+
+    /**
+     * Fetches a paginated list of animals from the backend API with optional filtering
+     * and sorting criteria.
+     *
+     * This endpoint supports multiple query parameters that allow the client
+     * to refine the search results based on species, age, size, color, sex, name,
+     * shelter name, breed, sorting field, sorting order, and pagination.
+     *
+     * All parameters are optional unless specified otherwise.
+     *
+     * @param species Optional species filter (e.g., "Dog", "Cat").
+     * @param age Optional age filter (in years).
+     * @param size Optional size filter (e.g., "Small", "Medium", "Large").
+     * @param color Optional color filter (string match).
+     * @param sex Optional sex filter ("Male" or "Female").
+     * @param name Optional search filter for animal name.
+     * @param shelterName Optional filter for the name of the shelter.
+     * @param breed Optional breed filter.
+     * @param sortBy Optional sorting field (e.g., "name", "age", "size").
+     * @param order Optional sorting direction ("asc" or "desc").
+     * @param pageNumber The page index to request. Defaults to 1.
+     *
+     * @return A paginated response containing a list of animal DTOs.
+     */
+    @GET("api/animals")
+    suspend fun getAnimals(
+        @Query("species") species: String? = null,
+        @Query("age") age: Int? = null,
+        @Query("size") size: String? = null,
+        @Query("color") color: String? = null,
+        @Query("sex") sex: String? = null,
+        @Query("name") name: String? = null,
+        @Query("shelterName") shelterName: String? = null,
+        @Query("breed") breed: String? = null,
+        @Query("sortBy") sortBy: String? = null,
+        @Query("order") order: String? = null,
+        @Query("pageNumber") pageNumber: Int = 1
+    ): Response<PagedListDto<ResAnimalDto>>
+
     /**
      * Fetches the authenticated user's role from the backend.
      *
@@ -49,6 +109,76 @@ interface BackendApiService {
     suspend fun getUserData(): Response<ResUserDataDto>
 
     /**
+     * Fetches detailed information about a single animal by its ID.
+     *
+     * @param id The unique identifier of the animal.
+     * @return Response containing the animal DTO.
+     */
+    @GET("api/Animals/{id}")
+    suspend fun getAnimalById(@Path("id") id: String): Response<ResAnimalDto>
+
+    /**
+     * Fetches detailed information about a specific shelter by its ID.
+     *
+     * @param shelterId The unique identifier of the shelter.
+     * @return Response containing shelter data.
+     */
+    @GET("api/Shelters/{shelterId}")
+    suspend fun getShelterById(@Path("shelterId") shelterId: String): Response<ResShelterDto>
+
+    /**
+     * Fetches all ownership requests made by the authenticated user.
+     *
+     * Returns list format with animal images and extended information.
+     * Requires authentication via bearer token.
+     *
+     * @return Response containing list of ownership requests with images.
+     */
+    @GET("api/OwnershipRequests/user-requests")
+    suspend fun getUserOwnershipRequests(): Response<List<ResOwnershipRequestListDto>>
+
+    /**
+     * Creates a new ownership request for an animal.
+     *
+     * Requires authentication via bearer token.
+     *
+     * @param request The ownership request body containing animalId.
+     * @return Response containing the created ownership request.
+     */
+
+    /**
+     * Fetches animals owned by the authenticated user (approved ownership requests).
+     *
+     * Requires authentication via bearer token.
+     *
+     * @return Response containing list of owned animals.
+     */
+    @GET("api/OwnershipRequests/owned-animals")
+    suspend fun getOwnedAnimals(): Response<List<ResOwnedAnimalDto>>
+
+    /**
+     * Fetches notifications for the authenticated user.
+     *
+     * Requires authentication via bearer token.
+     *
+     * @param unreadOnly Optional filter to fetch only unread notifications.
+     * @return Response containing list of notifications.
+     */
+    @GET("api/Notifications")
+    suspend fun getNotifications(
+        @Query("unreadOnly") unreadOnly: Boolean? = null
+    ): Response<List<ResNotificationDto>>
+
+    /**
+     * Creates a new ownership request for an animal.
+     *
+     * @param request The ownership request containing animal ID and user justification.
+     * @return Response containing the created ownership request.
+     */
+    @POST("api/OwnershipRequests")
+    suspend fun createOwnershipRequest(@Body request: ReqOwnershipRequestDto): Response<ResOwnershipRequestDto>
+
+    /**
      * Authenticates a user with email and password.
      *
      * Endpoint: POST /api/login
@@ -57,7 +187,6 @@ interface BackendApiService {
      * @return Response containing authentication token and user info on success
      */
     @POST("api/login")
-
     suspend fun login(@Body credentials: ReqLoginDto): Response<ResLoginDto>
 
     /**
@@ -68,4 +197,112 @@ interface BackendApiService {
      */
     @POST("api/Account/register")
     suspend fun register(@Body registerData: ReqRegisterUserDto): Response<Unit>
+
+    /**
+     * Marks a notification as read.
+     *
+     * Requires authentication via bearer token.
+     *
+     * @param id The unique identifier of the notification.
+     * @return Response with no body on success (200 OK).
+     */
+    @PUT("api/Notifications/{id}/read")
+    suspend fun markNotificationAsRead(
+        @Path("id") id: String
+    ): Response<Unit>
+
+    /**
+     * Deletes a notification.
+     *
+     * Requires authentication via bearer token.
+     *
+     * @param id The unique identifier of the notification.
+     * @return Response with no body on success (200 OK).
+     */
+    @DELETE("api/Notifications/{id}")
+    suspend fun deleteNotification(
+        @Path("id") id: String
+    ): Response<Unit>
+
+    /**
+     * Fetches the weekly schedule for a specific animal.
+     *
+     * @param animalId The unique identifier of the animal.
+     * @param startDate The start date of the week in dd/MM/yyyy format.
+     * @return Response containing the weekly schedule.
+     */
+    @GET("api/schedule/animals/{animalId}/schedule/weekly")
+    suspend fun getWeekAnimalSchedule(
+        @Path("animalId") animalId: String,
+        @Query("startDate") startDate: String
+    ): Response<ResScheduleResponseDto>
+
+    /**
+     * Creates a new ownership activity for a specific time slot.
+     *
+     * @param request The request containing animal ID and activity time details.
+     * @return Response with no body on success.
+     */
+    @POST("api/activities/ownership")
+    suspend fun createOwnershipActivity(
+        @Body request: ReqCreateOwnershipActivityDto
+    ): Response<Unit>
+
+    @GET("api/favorites")
+    suspend fun getFavorites(
+        @Query("pageNumber") pageNumber: Int = 1,
+        @Query("pageSize") pageSize: Int = 10
+    ) : Response<PagedListDto<ResGetFavoritesDto>>
+
+    @POST("api/favorites/{animalId}")
+    suspend fun addFavorite(
+        @Path("animalId") animalId: String
+    ) : Response<Unit>
+
+    @PATCH("api/favorites/{animalId}/deactivate")
+    suspend fun removeFavorite(
+        @Path("animalId") animalId: String
+    ) : Response<Unit>
+
+    // ========== FOSTERINGS ==========
+
+    /**
+     * Fetches all active fosterings for the authenticated user.
+     *
+     * @return Response containing list of active fosterings.
+     */
+    @GET("api/fosterings")
+    suspend fun getActiveFosterings(): Response<List<ResActiveFosteringDto>>
+
+    /**
+     * Fetches the IDs of active fosterings for the authenticated user.
+     *
+     * @return Response containing list of fostering and animal IDs.
+     */
+    @GET("api/fosterings/ids")
+    suspend fun getActiveFosteringIds(): Response<List<ResActiveFosteringIdDto>>
+
+    /**
+     * Creates a new fostering for an animal.
+     *
+     * @param animalId The unique identifier of the animal to foster.
+     * @param request The request containing the monthly contribution amount.
+     * @return Response containing the created fostering.
+     */
+    @POST("api/fosterings/{animalId}/fosterings")
+    suspend fun createFostering(
+        @Path("animalId") animalId: String,
+        @Body request: ReqAddFosteringDto
+    ): Response<ResActiveFosteringDto>
+
+    /**
+     * Cancels an active fostering.
+     *
+     * @param id The unique identifier of the fostering to cancel.
+     * @return Response containing the cancelled fostering details.
+     */
+    @PATCH("api/fosterings/{id}/cancel")
+    suspend fun cancelFostering(
+        @Path("id") id: String
+    ): Response<ResCancelFosteringDto>
 }

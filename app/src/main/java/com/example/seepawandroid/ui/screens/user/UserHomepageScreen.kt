@@ -1,0 +1,90 @@
+package com.example.seepawandroid.ui.screens.user
+
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.example.seepawandroid.R
+
+/**
+ * Home screen displayed to authenticated users.
+ *
+ * Provides:
+ * - A welcome message
+ * - Introductory text
+ * - A simple slogan reinforcing the mission of the application
+ *
+ * The screen is static and serves as a friendly entry point after login.
+ */
+@Composable
+fun UserHomepageScreen() {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(horizontal = 20.dp)
+            .testTag("userHomepageScreen"),
+        contentAlignment = Alignment.TopStart
+    ) {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(20.dp),
+            horizontalAlignment = Alignment.Start
+        ) {
+            Text(
+                text = stringResource(R.string.home_title),
+                style = MaterialTheme.typography.headlineMedium.copy(
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 26.sp
+                )
+            )
+
+            Text(
+                text = stringResource(R.string.home_intro_1),
+                style = MaterialTheme.typography.bodyLarge,
+                textAlign = TextAlign.Start
+            )
+
+            Text(
+                text = stringResource(R.string.home_intro_2),
+                style = MaterialTheme.typography.bodyLarge,
+                textAlign = TextAlign.Start
+            )
+
+            Spacer(modifier = Modifier.height(40.dp))
+
+            Text(
+                text = stringResource(R.string.home_slogan),
+                style = MaterialTheme.typography.titleMedium.copy(
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 20.sp
+                ),
+                textAlign = TextAlign.Start
+            )
+        }
+    }
+}
+
+/**
+ * A preview for the user homepage screen.
+ */
+@Preview(showSystemUi = true, showBackground = true)
+@Composable
+fun PreviewUserHomeScreen() {
+    MaterialTheme {
+        UserHomepageScreen()
+    }
+}

@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.seepawandroid.data.providers.SessionManager
+import com.example.seepawandroid.data.managers.SessionManager
 import com.example.seepawandroid.data.repositories.AuthRepository
 import com.example.seepawandroid.data.repositories.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -25,12 +25,21 @@ class LoginViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _email = MutableLiveData("")
+    /**
+     * The email address entered by the user.
+     */
     val email: LiveData<String> = _email
 
     private val _password = MutableLiveData("")
+    /**
+     * The password entered by the user.
+     */
     val password: LiveData<String> = _password
 
     private val _uiState = MutableLiveData<LoginUiState>(LoginUiState.Idle)
+    /**
+     * The current state of the login process.
+     */
     val uiState: LiveData<LoginUiState> = _uiState
 
     /**
@@ -72,6 +81,7 @@ class LoginViewModel @Inject constructor(
                 userRepository.fetchUserData().onSuccess { userData ->
                     sessionManager.saveUserId(userData.userId)
                     sessionManager.saveUserRole(userData.role)
+                    sessionManager.saveUserName(userData.name)
 
                     // Update UI state
                     _uiState.value = LoginUiState.Success(userData.userId, userData.role)

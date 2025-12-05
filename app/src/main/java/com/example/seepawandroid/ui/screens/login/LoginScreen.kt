@@ -22,17 +22,12 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.seepawandroid.ui.navigation.NavigationRoutes
 
 /**
- * Login screen composable.
+ * A composable that displays the login screen.
  *
- * Provides UI for user authentication with email and password.
- * Observes LoginViewModel state and reacts to changes.
- *
- * @param viewModel ViewModel managing login logic and state
- * @param onLoginSuccess Callback invoked when login succeeds, receives userId and role
+ * @param authViewModel The ViewModel for authentication-related logic.
+ * @param onNavigateToRegister A callback that is invoked when the user clicks the "Create Account" button.
  */
 @Composable
 fun LoginScreen(
@@ -92,7 +87,9 @@ fun LoginScreen(
 
         Button(
             onClick = { viewModel.login() },
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .testTag("loginButton"),
             enabled = uiState !is LoginUiState.Loading && email.isNotBlank() && password.isNotBlank()
         ) {
             Text("Login")

@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     id("com.google.dagger.hilt.android")
     id("kotlin-kapt")
+    id("io.gitlab.arturbosch.detekt")
 }
 
 android {
@@ -12,7 +13,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.seepawandroid"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 36
         versionCode = 1
         versionName = "1.0"
@@ -136,4 +137,17 @@ dependencies {
     // Compose Testing
     androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.9.5")
     debugImplementation("androidx.compose.ui:ui-test-manifest:1.9.5")
+
+    // Swipe actions
+    implementation("me.saket.swipe:swipe:1.3.0")
+
+    // SignalR for real-time notifications
+    implementation("com.microsoft.signalr:signalr:10.0.0")
+
+    // RxJava (required by SignalR)
+    implementation("io.reactivex.rxjava3:rxjava:3.1.12")
+    implementation("io.reactivex.rxjava3:rxandroid:3.0.2")
+
+    implementation("io.github.boguszpawlowski.composecalendar:composecalendar:1.3.0")
+    implementation("io.github.boguszpawlowski.composecalendar:kotlinx-datetime:1.3.0")
 }

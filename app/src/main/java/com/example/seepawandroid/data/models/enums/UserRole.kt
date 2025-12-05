@@ -6,7 +6,12 @@ package com.example.seepawandroid.data.models.enums
  * Defines the different permission levels and access types for users.
  * Each role corresponds to a role string returned by the backend API.
  */
-enum class UserRole(val value: String) {
+enum class UserRole(
+    /**
+     * The string value of the role as returned by the backend API.
+     */
+    val value: String
+) {
     /**
      * Regular user with basic permissions.
      * Can browse animals, create adoption requests, and manage favorites.
@@ -25,6 +30,9 @@ enum class UserRole(val value: String) {
      */
     PLATFORM_ADMIN("PlatformAdmin");
 
+    /**
+     * Companion object containing utility methods for UserRole.
+     */
     companion object {
         /**
          * Converts a role string from the backend to a UserRole enum.

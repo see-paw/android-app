@@ -23,16 +23,16 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
 /**
- * Stateless date picker field component.
+ * A composable that displays a date picker field.
  *
- * Displays a text field with a calendar icon that opens a date picker dialog.
- *
- * @param value Currently selected date, or null if no date is selected
- * @param onDateSelected Callback invoked when user selects a date
- * @param label Label text for the field
- * @param modifier Modifier for styling
- * @param enabled Whether the field is enabled
- * @param supportingText Optional supporting text shown below the field
+ * @param value The currently selected date.
+ * @param onDateSelected A callback that is invoked when a date is selected.
+ * @param label The label for the text field.
+ * @param modifier The modifier to be applied to the component.
+ * @param enabled Whether the date picker is enabled.
+ * @param supportingText Optional supporting text to be displayed.
+ * @param isTestMode A flag to indicate if the component is in test mode.
+ * @param testDateProvider A provider for a test date.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

@@ -1,3 +1,288 @@
 <resources>
-    <string name="app_name">SeePawAndroid</string>
+    <!-- App Name -->
+    <string name="app_name">SeePaw</string>
+
+    <!-- Animals Catalogue -->
+    <string name="catalog_search_placeholder">Pesquisar</string>
+    <string name="catalog_empty">Nenhum animal encontrado.</string>
+    <string name="catalog_error">Ocorreu um erro: %1$s</string>
+    <string name="catalog_no_results">Nenhum animal corresponde à sua pesquisa ou filtros.</string>
+
+    <!-- SORT OPTIONS -->
+    <string name="sort_most_recent">Mais recentes</string>
+    <string name="sort_oldest">Mais antigos</string>
+    <string name="sort_name_asc">Nome A–Z</string>
+    <string name="sort_name_desc">Nome Z–A</string>
+    <string name="sort_age_asc">Idade crescente</string>
+    <string name="sort_age_desc">Idade decrescente</string>
+
+    <!-- FILTER UI -->
+    <string name="filter_title">Filtros</string>
+    <string name="filter_species">Espécie</string>
+    <string name="filter_size">Porte</string>
+    <string name="filter_sex">Sexo</string>
+    <string name="filter_breed">Raça</string>
+    <string name="filter_shelter">Abrigo</string>
+    <string name="filter_apply">Aplicar</string>
+    <string name="filter_reset">Limpar filtros</string>
+    <string name="species_dog_label">Cão</string>
+    <string name="species_cat_label">Gato</string>
+    <string name="size_small_label">Pequeno</string>
+    <string name="size_medium_label">Médio</string>
+    <string name="size_large_label">Grande</string>
+    <string name="sex_male_label">Macho</string>
+    <string name="sex_female_label">Fêmea</string>
+
+
+
+
+    <!-- Animal Card -->
+    <string name="animal_years_suffix">anos</string>
+    <string name="favorite">Favorito</string>
+    <string name="remove_favorite">Remover dos favoritos</string>
+
+    <!-- Favorites Screen -->
+    <string name="favorites_title">Os Meus Favoritos</string>
+    <string name="favorites_empty">Ainda não tens animais favoritos.\nExplora o catálogo e adiciona os teus preferidos!</string>
+    <string name="favorites_error">Erro ao carregar favoritos: %1$s</string>
+
+    <!-- Images -->
+    <string name="animal_image_desc">Imagem do animal %1$s</string>
+
+
+    <!-- Navigation Drawer Options -->
+    <string name="catalogue">Catálogo de Animais</string>
+    <string name="favorites">Favoritos</string>
+    <string name="schedule_activities">Agendar Atividades</string>
+    <string name="requests">Os Meus Ownerships</string>
+    <string name="active_activities">Atividades ativas</string>
+
+
+    <!-- Top Bar -->
+    <string name="open_menu">Abrir Menu</string>
+    <string name="close_menu">Fechar Menu</string>
+    <string name="logout">Sair</string>
+    <string name="logo_description">Logótipo da aplicação SeePaw</string>
+
+
+    <!-- User Homepage Screen -->
+    <string name="home_title">Bem-vindo à plataforma SeePaw</string>
+    <string name="home_intro_1">
+    A SeePaw é uma plataforma que centraliza, num só local, informação sobre animais disponíveis para adoção e apadrinhamento, recolhida de abrigos que desejam divulgar os seus patudos.
+    </string>
+    <string name="home_intro_2">
+    Acreditamos que a tecnologia pode ser uma aliada poderosa no combate ao abandono animal, bem como no apoio às associações que muitas vezes só sobrevivem graças à sua ajuda monetária. Cada ajuda é uma vida transformada — juntos, fazemos a diferença!
+    </string>
+    <string name="home_slogan">"Humanos Porreiros Adotam Rafeiros"</string>
+
+    <!-- PUBLIC HOMESCREEN -->
+    <string name="public_home_title">Bem-vindo à SeePaw</string>
+    <string name="public_home_intro">
+    Encontre animais adoráveis para adoção ou apadrinhamento. Explore o catálogo sem conta ou autentique-se para aceder a todas as funcionalidades.
+    </string>
+    <string name="public_home_login">Iniciar sessão</string>
+    <string name="public_home_register">Criar conta</string>
+    <string name="public_home_catalogue">Ver catálogo de animais</string>
+
+    <!-- Animal Detail Screen -->
+    <string name="animal_details">Detalhes do Animal</string>
+    <string name="animal_description_label">Descrição</string>
+    <string name="animal_info_label">Informações sobre o animal</string>
+    <string name="animal_features_label">Características</string>
+    <string name="breed">Raça</string>
+    <string name="size">Tamanho</string>
+    <string name="sex">Sexo</string>
+    <string name="colour">Cor</string>
+    <string name="sterilized">Esterilizado</string>
+    <string name="yes">Sim</string>
+    <string name="no">Não</string>
+    <string name="fostering_button">Apadrinhar</string>
+    <string name="ownership_button">Adotar Especial</string>
+    <string name="offline_actions_disabled">Ações desativadas (sem internet)</string>
+    <string name="login_required">Login Necessário</string>
+    <string name="login_required_message">É necessário fazer login para realizar esta ação.</string>
+    <string name="cancel">Cancelar</string>
+    <string name="back">Voltar</string>
+    <string name="needs_internet_for_details">É necessário ter internet para ver os detalhes deste animal.</string>
+    <string name="error_loading_animal">Erro ao carregar animal: %1$s</string>
+    <string name="retry">Tentar Novamente</string>
+
+    <!-- ========== OWNERSHIP REQUEST STRINGS ========== -->
+
+    <!-- Screen Title -->
+    <string name="ownership_request_title">Pedido de Adoção</string>
+
+    <!-- Terms Screen -->
+    <string name="ownership_terms_title">Informações Importantes</string>
+    <string name="ownership_terms_subtitle">Sobre a adoção de %1$s</string>
+    <string name="ownership_terms_content">
+Ao submeter este pedido de adoção, você concorda com os seguintes termos e condições:\n\n
+1. RESPONSABILIDADE\n
+Serás responsável pelo bem-estar completo do animal, incluindo alimentação, cuidados veterinários e um ambiente seguro e saudável. Esse valor está englobado no pagamento mensal.\n\n
+2. COMPROMISSO FINANCEIRO\n
+A adoção implica custos contínuos. Certifique-se de que tem capacidade financeira para cuidar do animal ao longo da sua vida. O contrato de uma adoção especial é vitalício. A leitura dos termos não substitui o contrato com o abrigo.\n\n
+3. ESTERILIZAÇÃO\n
+Se o animal ainda não foi esterilizado, você compromete-se a realizar o procedimento conforme orientações veterinárias.\n\n
+4. IDENTIFICAÇÃO\n
+O animal deve ser registado e mantido com identificação adequada (microchip) conforme legislação vigente, caso ainda não esteja esterilizado.\n\n
+5. AGENDAMENTO DE ATIVIDADES\n
+A adoção especial permite que o animal continue hospedado no centro de abrigo, com custos associados. Poderás agendar atividades com o animal através desta plataforma. As atividades podem ser de longa duração (em que levas o animal e passas o tempo que achares necessário com ele) ou atividades curtas de apenas algumas horas.\n\n
+6. VÍNCULO CONTRATUAL VITALÍCIO\n
+A aceitação destes termos serve apenas para informar como funcionam as adoções especiais. Não substitui o contrato com o centro de abrigo, que será de acordo com as regras do abrigo. Só após a assinatura deste contrato por ambas as partes é que o administrador pode aprovar a adoção especial na plataforma.\n\n
+Por favor, lê atentamente todos os termos antes de prosseguir com um pedido de adoção especial.
+</string>
+
+    <string name="accept_terms">Aceitar e Continuar</string>
+
+    <!-- Form Screen -->
+    <string name="ownership_form_title">Dados de Pagamento</string>
+    <string name="ownership_form_subtitle">Finalizar adoção de %1$s</string>
+    <string name="account_number">Número da Conta</string>
+    <string name="holder_name">Nome do Titular</string>
+    <string name="cvv">CVV</string>
+    <string name="citizen_card">Cartão de Cidadão</string>
+    <string name="password">Palavra-passe</string>
+    <string name="submit_ownership_request">Fazer Pedido</string>
+
+    <!-- Success Screen -->
+    <string name="ownership_success_title">Obrigada, %1$s!</string>
+    <string name="ownership_success_message">O seu pedido de adoção de %1$s foi submetido com sucesso ao centro de abrigo %2$s.</string>
+    <string name="ownership_success_notification">Será notificado quando o seu pedido for analisado.</string>
+    <string name="done">Concluir</string>
+
+    <!-- Ownership Accepted Pop-up -->
+    <string name="ownership_approved_title">Obrigado %1$s!</string>
+    <string name="ownership_approved_subtitle">Ansioso(a) por te conhecer</string>
+
+    <!-- ========== OWNERSHIP VERIFICATION & ADOPTED ANIMAL STRINGS ========== -->
+
+    <!-- Ownership Exists Dialog -->
+    <string name="ownership_exists_title">Pedido Existente</string>
+    <string name="ownership_exists_message">Já fizeste um pedido de adoção especial para %1$s!</string>
+
+    <!-- Adopted Animal Card -->
+    <string name="animal_adopted">O %1$s foi adotado! 💚</string>
+
+    <!-- ========== OWNERSHIP LIST STRINGS (PORTUGUÊS) ========== -->
+
+    <!-- Screen Title -->
+    <string name="ownership_list_title">Os Meus Pedidos</string>
+
+    <!-- Empty State -->
+    <string name="ownership_list_empty_title">Sem Pedidos</string>
+    <string name="ownership_list_empty_message">Ainda não fez nenhum pedido de adoção especial.\n\nExplore o catálogo e encontre o seu novo amigo!</string>
+    <string name="ownership_list_empty_action">Ver Animais</string>
+
+    <!-- Error State -->
+    <string name="ownership_list_retry">Tentar Novamente</string>
+
+    <!-- Status Labels -->
+    <string name="ownership_status_pending">Pendente</string>
+    <string name="ownership_status_analysing">Em Análise</string>
+    <string name="ownership_status_approved">Aprovado</string>
+    <string name="ownership_status_rejected">Rejeitado</string>
+
+    <!-- Card Content -->
+    <string name="ownership_requested_at">Pedido em %1$s</string>
+
+    <!-- Pull to Refresh -->
+
+    <!-- ========== OWNERSHIP LIST - TABS ========== -->
+    <string name="ownership_active_requests">Pedidos Ativos</string>
+    <string name="ownership_owned_animals">Os Meus Animais</string>
+
+    <!-- ========== OWNERSHIP LIST - EMPTY TAB STATES ========== -->
+    <string name="ownership_no_active_requests">Sem pedidos ativos</string>
+    <string name="ownership_no_owned_animals">Ainda não adotou nenhum animal</string>
+
+    <!-- ========== OWNERSHIP LIST - LABELS ========== -->
+    <string name="ownership_approved_at">Aprovado em %1$s</string>
+
+    <!-- NOTIFICATIONS -->
+    <string name="notifications">Notificações</string>
+    <string name="no_notifications">Sem notificações para mostrar</string>
+    <string name="delete_notification">Apagar</string>
+    <string name="close">Fechar</string>
+
+    <string name="create_activity">Agendar atividade</string>
+
+    <!-- ========== SCHEDULING SCREEN ========== -->
+    <string name="scheduling_title">Agenda de %1$s</string>
+    <string name="previous_week">Semana anterior</string>
+    <string name="next_week">Próxima semana</string>
+
+    <!-- Days of Week (Short) -->
+    <string name="day_monday_short">Seg</string>
+    <string name="day_tuesday_short">Ter</string>
+    <string name="day_wednesday_short">Qua</string>
+    <string name="day_thursday_short">Qui</string>
+    <string name="day_friday_short">Sex</string>
+    <string name="day_saturday_short">Sáb</string>
+    <string name="day_sunday_short">Dom</string>
+
+    <!-- ========== SCHEDULE LEGEND ========== -->
+    <string name="schedule_legend_title">Legenda:</string>
+    <string name="schedule_slot_available">Disponível</string>
+    <string name="schedule_slot_own_reservation">Tua reserva</string>
+    <string name="schedule_slot_reserved">Reservado</string>
+    <string name="schedule_slot_unavailable">Indisponível</string>
+
+    <!-- ========== ACTIVITY BOOKING MODALS ========== -->
+    <string name="modal_confirm_title">Confirmar atividade</string>
+    <string name="modal_confirm_message">Deseja agendar uma atividade com %1$s?</string>
+    <string name="modal_confirm_button">Confirmar</string>
+    <string name="modal_date_label">Data</string>
+    <string name="modal_time_label">Horário</string>
+
+    <string name="modal_error_title">Erro ao agendar</string>
+    <string name="modal_error_retry">Tentar novamente</string>
+
+    <string name="modal_success_title">Agendamento confirmado!</string>
+    <string name="modal_success_message">A sua visita com %1$s foi agendada com sucesso.</string>
+    <string name="ok">OK</string>
+
+    <!-- FOSTERING -->
+    <string name="fostering_support_label">Apoio de apadrinhamento</string>
+    <string name="fostering_fully_supported">100% Apadrinhado!</string>
+    <string name="fostering_percentage">%1$d%%</string>
+    <string name="fostering_amount_progress">%.2f € / %.2f € mensais</string>
+
+    <!-- FOSTERING DIALOG -->
+    <string name="fostering_dialog_title">Apadrinhar %1$s</string>
+    <string name="fostering_dialog_description">Escolha o valor mensal do apadrinhamento:</string>
+    <string name="fostering_amount_option">%1$.2f € / mês</string>
+    <string name="fostering_custom_amount">Outro valor</string>
+    <string name="fostering_custom_amount_label">Valor personalizado (€)</string>
+    <string name="fostering_invalid_amount">Insira um valor válido maior que 0</string>
+    <string name="confirm">Confirmar</string>
+
+    <!-- FOSTERING RESULT -->
+    <string name="fostering_success_title">Apadrinhamento confirmado!</string>
+    <string name="fostering_success_message">O seu apadrinhamento foi criado com sucesso.</string>
+    <string name="fostering_error_title">Erro</string>
+    <string name="fostering_error_message">Não foi possível criar o apadrinhamento. Tente novamente.</string>
+
+    <!-- FOSTERING PAYMENT MOCK -->
+    <string name="fostering_payment_title">Confirmar pagamento</string>
+    <string name="fostering_payment_description">Apadrinhar %1$s por %2$.2f € / mês</string>
+    <string name="fostering_payment_account">Número de conta</string>
+    <string name="fostering_payment_holder">Titular</string>
+    <string name="fostering_payment_cvv">CVV</string>
+
+    <!-- FOSTERING LIST -->
+    <string name="fostering_list_title">Os meus apadrinhamentos</string>
+    <string name="fostering_active_tab">Ativos</string>
+    <string name="fostering_receipts_tab">Recibos</string>
+    <string name="fostering_amount_monthly">%.2f € / mês</string>
+    <string name="fostering_since">Desde %1$s</string>
+    <string name="fostering_cancel_button">Cancelar apadrinhamento</string>
+    <string name="fostering_cancel_title">Cancelar apadrinhamento</string>
+    <string name="fostering_cancel_message">Tem a certeza que deseja cancelar o apadrinhamento de %1$s?</string>
+    <string name="fostering_no_active">Ainda não apadrinhou nenhum animal</string>
+    <string name="fostering_list_empty_title">Sem apadrinhamentos</string>
+    <string name="fostering_list_empty_message">Comece a apadrinhar animais e ajude-os a encontrar um lar!</string>
+    <string name="fostering_list_empty_action">Ver catálogo</string>
+
+    <string name="my_fosterings">Os meus apadrinhamentos</string>
+
 </resources>

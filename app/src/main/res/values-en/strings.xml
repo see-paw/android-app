@@ -1,3 +1,275 @@
 <resources>
-    <string name="app_name">SeePawAndroid</string>
+    <!-- App Name -->
+    <string name="app_name">SeePaw</string>
+
+    <!-- Animals Catalogue -->
+    <string name="catalog_search_placeholder">Search</string>
+    <string name="catalog_empty">No animals found.</string>
+    <string name="catalog_error">An error occurred: %1$s</string>
+    <string name="catalog_no_results">No animals match your search or filters.</string>
+
+    <!-- SORT OPTIONS -->
+    <string name="sort_most_recent">Most recent</string>
+    <string name="sort_oldest">Oldest</string>
+    <string name="sort_name_asc">Name A–Z</string>
+    <string name="sort_name_desc">Name Z–A</string>
+    <string name="sort_age_asc">Age ascending</string>
+    <string name="sort_age_desc">Age descending</string>
+
+    <!-- FILTER UI -->
+    <string name="filter_title">Filters</string>
+    <string name="filter_species">Species</string>
+    <string name="filter_size">Size</string>
+    <string name="filter_sex">Sex</string>
+    <string name="filter_breed">Breed</string>
+    <string name="filter_shelter">Shelter</string>
+    <string name="filter_apply">Apply</string>
+    <string name="filter_reset">Reset filters</string>
+    <string name="species_dog_label">Dog</string>
+    <string name="species_cat_label">Cat</string>
+    <string name="size_small_label">Small</string>
+    <string name="size_medium_label">Medium</string>
+    <string name="size_large_label">Large</string>
+    <string name="sex_male_label">Male</string>
+    <string name="sex_female_label">Female</string>
+
+
+
+    <!-- Animal Card -->
+    <string name="animal_years_suffix">years</string>
+    <string name="favorite">Favorite</string>
+
+    <!-- Images -->
+    <string name="animal_image_desc">Animal image %1$s</string>
+
+    <!-- Navigation Drawer Options -->
+    <string name="catalogue">Animals Catalogue</string>
+    <string name="favorites">Favorites</string>
+    <string name="schedule_activities">Schedule Ativities</string>
+    <string name="requests">My Ownerships</string>
+    <string name="active_activities">Active Ativities</string>
+
+
+    <!-- Top Bar -->
+    <string name="open_menu">Open Menu</string>
+    <string name="close_menu">Close Menu</string>
+    <string name="logout">Logout</string>
+    <string name="logo_description">SeePaw application logo</string>
+
+    <!-- User homepage screen -->
+    <string name="home_title">Welcome to the SeePaw platform</string>
+    <string name="home_intro_1">
+    SeePaw is a platform that centralizes, in one place, information about animals available for ownership and fostering, collected from shelters that wish to share their pets with the world.
+</string>
+    <string name="home_intro_2">
+    We believe technology can be a powerful ally in the fight against animal abandonment, as well as in supporting rescue associations that often survive only thanks to yours generosity. Every contribution transforms a life — together, we make a difference!
+</string>
+    <string name="home_slogan">"Cool Humans Adopt Mutts"</string>
+
+    <!-- PUBLIC HOMESCREEN -->
+    <string name="public_home_title">Welcome to SeePaw</string>
+    <string name="public_home_intro">
+    Discover lovely animals available for ownership or fostering. Browse the catalogue as a guest or sign in to access all features.
+</string>
+    <string name="public_home_login">Log in</string>
+    <string name="public_home_register">Create account</string>
+    <string name="public_home_catalogue">View animal catalogue</string>
+
+    <!-- Animal Detail Screen -->
+    <string name="animal_details">Animal Details</string>
+    <string name="animal_description_label">Description</string>
+    <string name="animal_info_label">Animal Information</string>
+    <string name="animal_features_label">Features</string>
+    <string name="breed">Breed</string>
+    <string name="size">Size</string>
+    <string name="sex">Sex</string>
+    <string name="colour">Color</string>
+    <string name="sterilized">Sterilized</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="fostering_button">Foster</string>
+    <string name="ownership_button">Special Adoption</string>
+    <string name="offline_actions_disabled">Actions disabled (no internet)</string>
+    <string name="login_required">Login Required</string>
+    <string name="login_required_message">You must be logged in to perform this action.</string>
+    <string name="cancel">Cancel</string>
+    <string name="back">Back</string>
+    <string name="needs_internet_for_details">Internet connection required to view this animal\'s details.</string>
+    <string name="error_loading_animal">Error loading animal: %1$s</string>
+    <string name="retry">Retry</string>
+
+    <!-- Screen Title -->
+    <string name="ownership_request_title">Adoption Request</string>
+
+    <!-- Terms Screen -->
+    <string name="ownership_terms_title">Important Information</string>
+    <string name="ownership_terms_subtitle">About adopting %1$s</string>
+    <string name="ownership_terms_content">
+By submitting this adoption request, you agree to the following terms and conditions:\n\n
+1. RESPONSIBILITY\n
+You will be responsible for the animal’s complete well-being, including food, veterinary care, and a safe and healthy environment. This responsibility is included in the monthly payment.\n\n
+2. FINANCIAL COMMITMENT\n
+Adoption involves ongoing costs. Ensure you have the financial capacity to care for the animal throughout its life. The special adoption contract is lifelong and these terms do not replace the official contract with the shelter.\n\n
+3. STERILIZATION\n
+If the animal has not yet been neutered, you agree to carry out the procedure according to veterinary guidance.\n\n
+4. IDENTIFICATION\n
+The animal must be registered and kept with proper identification (microchip) according to current legislation, if not already sterilized.\n\n
+5. ACTIVITY SCHEDULING\n
+Special adoption allows the animal to remain housed at the shelter with associated costs. You will be able to schedule activities with the animal through this platform. Activities may be long duration (taking the animal with you for extended periods) or short-time visits lasting only a few hours.\n\n
+6. LIFELONG CONTRACTUAL BOND\n
+Accepting these terms serves only to explain how special adoptions work. It does not replace the official contract with the animal shelter, which is governed by shelter rules. Only after the contract is signed by both parties can the administrator approve the special adoption on this platform.\n\n
+Please read all terms carefully before proceeding with a special adoption request.
+</string>
+
+    <string name="accept_terms">Accept and Continue</string>
+
+    <!-- Form Screen -->
+    <string name="ownership_form_title">Payment Details</string>
+    <string name="ownership_form_subtitle">Complete adoption of %1$s</string>
+    <string name="account_number">Account Number</string>
+    <string name="holder_name">Account Holder</string>
+    <string name="cvv">CVV</string>
+    <string name="citizen_card">Citizen Card</string>
+    <string name="password">Password</string>
+    <string name="submit_ownership_request">Submit Request</string>
+
+    <!-- Success Screen -->
+    <string name="ownership_success_title">Thank you, %1$s!</string>
+    <string name="ownership_success_message">Your adoption request for %1$s has been successfully submitted to the shelter %2$s.</string>
+    <string name="ownership_success_notification">You will be notified once your request is reviewed.</string>
+    <string name="done">Finish</string>
+
+    <!-- Ownership Accepted Pop-up -->
+    <string name="ownership_approved_title">Thank you %1$s!</string>
+    <string name="ownership_approved_subtitle">Excited to meet you</string>
+
+    <!-- ========== OWNERSHIP VERIFICATION & ADOPTED ANIMAL STRINGS ========== -->
+
+    <!-- Ownership Exists Dialog -->
+    <string name="ownership_exists_title">Pedido Existente</string>
+    <string name="ownership_exists_message">Já fizeste um pedido de adoção especial para %1$s!</string>
+
+    <!-- Adopted Animal Card -->
+    <string name="animal_adopted">O %1$s foi adotado! 💚</string>
+
+    <!-- ========== OWNERSHIP LIST STRINGS (ENGLISH) ========== -->
+
+    <!-- Screen Title -->
+    <string name="ownership_list_title">My Requests</string>
+
+    <!-- Empty State -->
+    <string name="ownership_list_empty_title">No Requests</string>
+    <string name="ownership_list_empty_message">You haven\'t made any ownership requests yet.\n\nExplore the catalogue and find your new friend!</string>
+    <string name="ownership_list_empty_action">View Animals</string>
+
+    <!-- Error State -->
+    <string name="ownership_list_retry">Try Again</string>
+
+    <!-- Status Labels -->
+    <string name="ownership_status_pending">Pending</string>
+    <string name="ownership_status_analysing">Analyzing</string>
+    <string name="ownership_status_approved">Approved</string>
+    <string name="ownership_status_rejected">Rejected</string>
+
+    <!-- Card Content -->
+    <string name="ownership_requested_at">Requested on %1$s</string>
+
+    <!-- Pull to Refresh -->
+
+    <!-- ========== OWNERSHIP LIST - TABS ========== -->
+    <string name="ownership_active_requests">Active Requests</string>
+    <string name="ownership_owned_animals">My Animals</string>
+
+    <!-- ========== OWNERSHIP LIST - EMPTY TAB STATES ========== -->
+    <string name="ownership_no_active_requests">No active requests</string>
+    <string name="ownership_no_owned_animals">You haven\'t adopted any animals yet</string>
+
+    <!-- ========== OWNERSHIP LIST - LABELS ========== -->
+    <string name="ownership_approved_at">Approved on %1$s</string>
+
+    <!-- NOTIFICATIONS -->
+    <string name="notifications">Notifications</string>
+    <string name="no_notifications">No notifications to show</string>
+    <string name="delete_notification">Delete</string>
+    <string name="close">Close</string>
+    <string name="create_activity">Schedule activity</string>
+
+    <!-- ========== SCHEDULING SCREEN ========== -->
+    <string name="scheduling_title">%1$s\'s Schedule</string>
+    <string name="previous_week">Previous week</string>
+    <string name="next_week">Next week</string>
+
+    <!-- Days of Week (Short) -->
+    <string name="day_monday_short">Mon</string>
+    <string name="day_tuesday_short">Tue</string>
+    <string name="day_wednesday_short">Wed</string>
+    <string name="day_thursday_short">Thu</string>
+    <string name="day_friday_short">Fri</string>
+    <string name="day_saturday_short">Sat</string>
+    <string name="day_sunday_short">Sun</string>
+
+    <!-- ========== SCHEDULE LEGEND ========== -->
+    <string name="schedule_legend_title">Legend:</string>
+    <string name="schedule_slot_available">Available</string>
+    <string name="schedule_slot_own_reservation">Your booking</string>
+    <string name="schedule_slot_reserved">Reserved</string>
+    <string name="schedule_slot_unavailable">Unavailable</string>
+
+    <!-- ========== ACTIVITY BOOKING MODALS ========== -->
+    <string name="modal_confirm_title">Confirm activity</string>
+    <string name="modal_confirm_message">Would you like to schedule an activity with %1$s?</string>
+    <string name="modal_confirm_button">Confirm</string>
+    <string name="modal_date_label">Date</string>
+    <string name="modal_time_label">Time</string>
+
+    <string name="modal_error_title">Booking error</string>
+    <string name="modal_error_retry">Try again</string>
+
+    <string name="modal_success_title">Booking confirmed!</string>
+    <string name="modal_success_message">Your visit with %1$s has been successfully scheduled.</string>
+    <string name="ok">OK</string>
+
+    <!-- FOSTERING -->
+    <string name="fostering_support_label">Fostering support</string>
+    <string name="fostering_fully_supported">100% Fostered!</string>
+    <string name="fostering_percentage">%1$d%%</string>
+    <string name="fostering_amount_progress">%.2f € / %.2f € monthly</string>
+
+    <!-- FOSTERING DIALOG -->
+    <string name="fostering_dialog_title">Foster %1$s</string>
+    <string name="fostering_dialog_description">Choose the monthly fostering amount:</string>
+    <string name="fostering_amount_option">%1$.2f € / month</string>
+    <string name="fostering_custom_amount">Custom amount</string>
+    <string name="fostering_custom_amount_label">Custom amount (€)</string>
+    <string name="fostering_invalid_amount">Please enter a valid amount greater than 0</string>
+    <string name="confirm">Confirm</string>
+
+    <!-- FOSTERING RESULT -->
+    <string name="fostering_success_title">Fostering confirmed!</string>
+    <string name="fostering_success_message">Your fostering has been created successfully.</string>
+    <string name="fostering_error_title">Error</string>
+    <string name="fostering_error_message">Could not create fostering. Please try again.</string>
+
+    <!-- FOSTERING PAYMENT MOCK -->
+    <string name="fostering_payment_title">Confirm payment</string>
+    <string name="fostering_payment_description">Foster %1$s for %2$.2f € / month</string>
+    <string name="fostering_payment_account">Account number</string>
+    <string name="fostering_payment_holder">Holder name</string>
+    <string name="fostering_payment_cvv">CVV</string>
+
+    <!-- FOSTERING LIST -->
+    <string name="fostering_list_title">My fosterings</string>
+    <string name="fostering_active_tab">Active</string>
+    <string name="fostering_receipts_tab">Receipts</string>
+    <string name="fostering_amount_monthly">%.2f € / month</string>
+    <string name="fostering_since">Since %1$s</string>
+    <string name="fostering_cancel_button">Cancel fostering</string>
+    <string name="fostering_cancel_title">Cancel fostering</string>
+    <string name="fostering_cancel_message">Are you sure you want to cancel the fostering of %1$s?</string>
+    <string name="fostering_no_active">You haven\'t fostered any animals yet</string>
+    <string name="fostering_list_empty_title">No fosterings</string>
+    <string name="fostering_list_empty_message">Start fostering animals and help them find a home!</string>
+    <string name="fostering_list_empty_action">View catalogue</string>
+
+    <string name="my_fosterings">My fosterings</string>
 </resources>

@@ -3,7 +3,12 @@ package com.example.seepawandroid.utils
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
+import java.time.format.DateTimeFormatter
+import java.util.Locale
 
+/**
+ * Utility object for date and time operations.
+ */
 object DateUtils {
     /**
      * Parses an ISO 8601 date-time string to LocalDateTime.
@@ -17,6 +22,51 @@ object DateUtils {
             LocalDateTime.ofInstant(instant, ZoneId.systemDefault())
         } catch (e: Exception) {
             null
+        }
+    }
+
+    /**
+     * Formats an ISO datetime string to Portuguese date format (day/month/year only).
+     *
+     * @param isoDateTime ISO datetime string (e.g., "2025-11-26T18:56:36.332622").
+     * @return Formatted date string (e.g., "26/11/2025") or original string if parsing fails.
+     */
+    fun formatToPortugueseDate(isoDateTime: String): String {
+        return try {
+            val dateTime = LocalDateTime.parse(isoDateTime)
+            val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale("pt", "PT"))
+            dateTime.format(formatter)
+        } catch (e: Exception) {
+            try {
+                val instant = Instant.parse(isoDateTime)
+                val formatter = DateTimeFormatter
+                    .ofPattern("dd/MM/yyyy", Locale("pt", "PT"))
+                    .withZone(ZoneId.of("Europe/Lisbon"))
+                formatter.format(instant)
+            } catch (e2: Exception) {
+                isoDateTime  // Last fallback
+            }
+        }
+    }
+
+    /**
+     * Formats ISO timestamp to relative time.
+     */
+    fun formatTimestampRelative(isoTimestamp: String): String {
+        return try {
+            val instant = Instant.parse(isoTimestamp)
+            val now = Instant.now()
+            val duration = java.time.Duration.between(instant, now)
+
+            when {
+                duration.toMinutes() < 1 -> "Agora" // TODO: usar stringResource
+                duration.toMinutes() < 60 -> "${duration.toMinutes()}m"
+                duration.toHours() < 24 -> "${duration.toHours()}h"
+                duration.toDays() < 7 -> "${duration.toDays()}d"
+                else -> formatToPortugueseDate(isoTimestamp)
+            }
+        } catch (e: Exception) {
+            isoTimestamp
         }
     }
 }
