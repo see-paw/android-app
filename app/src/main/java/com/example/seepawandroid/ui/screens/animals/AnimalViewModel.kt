@@ -4,9 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.seepawandroid.data.remote.dtos.Animals.AnimalFilterDto
+import com.example.seepawandroid.data.remote.dtos.animals.AnimalFilterDto
 import com.example.seepawandroid.data.repositories.AnimalRepository
-import com.example.seepawandroid.ui.screens.Animals.AnimalCatalogueUiState
+import com.example.seepawandroid.data.repositories.FavoriteRepository
+import com.example.seepawandroid.ui.screens.animals.AnimalCatalogueUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -23,7 +24,8 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class AnimalViewModel @Inject constructor(
-    private val repository: AnimalRepository
+    private val repository: AnimalRepository,
+    private val favoriteRepository: FavoriteRepository
 ) : ViewModel() {
 
     private val _uiState = MutableLiveData<AnimalCatalogueUiState>()
@@ -59,6 +61,8 @@ class AnimalViewModel @Inject constructor(
      */
     var totalPages: Int = 1
         private set
+
+    private var favoriteIds: MutableSet<String> = mutableSetOf()
 
     /**
      * Loads animals for the given page, applying filters, sorting,
@@ -97,7 +101,8 @@ class AnimalViewModel @Inject constructor(
                         animals = paged.items,
                         currentPage = paged.currentPage,
                         totalPages = paged.totalPages,
-                        totalCount = paged.totalCount
+                        totalCount = paged.totalCount,
+                        favoriteIds = favoriteIds.toSet()
                     )
                 }
 
@@ -205,4 +210,69 @@ class AnimalViewModel @Inject constructor(
         return filters != null && filters != AnimalFilterDto()
     }
 
+    /**
+     * Loads the user's favorites from the backend.
+     * Should be called when the user is authenticated.
+     */
+    fun loadFavorites() {
+        viewModelScope.launch {
+            try {
+                val result = favoriteRepository.getFavorites(pageNumber = 1, pageSize = 1000)
+                result.onSuccess { pagedList ->
+                    favoriteIds.clear()
+                    favoriteIds.addAll(pagedList.items.map { it.id })
+
+                    // Refresh UI state with updated favorites
+                    val currentState = _uiState.value
+                    if (currentState is AnimalCatalogueUiState.Success) {
+                        _uiState.value = currentState.copy(favoriteIds = favoriteIds.toSet())
+                    }
+                }
+            } catch (e: Exception) {
+                android.util.Log.e("AnimalViewModel", "Error loading favorites", e)
+            }
+        }
+    }
+
+    /**
+     * Toggles the favorite status of an animal.
+     * If the animal is currently a favorite, it will be removed.
+     * If it's not a favorite, it will be added.
+     *
+     * @param animalId The ID of the animal to toggle
+     */
+    fun toggleFavorite(animalId: String) {
+        viewModelScope.launch {
+            try {
+                val isFavorite = favoriteIds.contains(animalId)
+
+                val result = if (isFavorite) {
+                    favoriteRepository.removeFavorite(animalId)
+                } else {
+                    favoriteRepository.addFavorite(animalId)
+                }
+
+                result.onSuccess {
+                    // Update local state
+                    if (isFavorite) {
+                        favoriteIds.remove(animalId)
+                    } else {
+                        favoriteIds.add(animalId)
+                    }
+
+                    // Refresh UI state with updated favorites
+                    val currentState = _uiState.value
+                    if (currentState is AnimalCatalogueUiState.Success) {
+                        _uiState.value = currentState.copy(favoriteIds = favoriteIds.toSet())
+                    }
+
+                    android.util.Log.d("AnimalViewModel", "Favorite toggled successfully for animal: $animalId")
+                }.onFailure { error ->
+                    android.util.Log.e("AnimalViewModel", "Error toggling favorite", error)
+                }
+            } catch (e: Exception) {
+                android.util.Log.e("AnimalViewModel", "Error toggling favorite", e)
+            }
+        }
+    }
 }

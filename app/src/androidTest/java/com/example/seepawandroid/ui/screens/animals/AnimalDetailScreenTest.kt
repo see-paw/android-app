@@ -62,44 +62,8 @@ class AnimalDetailScreenTest : BaseUiTest() {
     }
 
     /** -----------------------------------------
-     *  CUSTOM MATCHERS
-     *  ----------------------------------------- */
-
-    private fun hasTestTagStartingWith(prefix: String): SemanticsMatcher {
-        return SemanticsMatcher("TestTag starts with '$prefix'") { node ->
-            node.config.getOrNull(SemanticsProperties.TestTag)?.startsWith(prefix) == true
-        }
-    }
-
-    /** -----------------------------------------
      *  HELPER FUNCTIONS
      *  ----------------------------------------- */
-
-    private fun logoutIfNeeded() {
-        try {
-            composeTestRule.waitUntil(timeoutMillis = 2000) {
-                try {
-                    composeTestRule.onNodeWithTag("logoutButton").assertExists()
-                    true
-                } catch (e: Throwable) {
-                    false
-                }
-            }
-
-            composeTestRule.onNodeWithTag("logoutButton").safeClick()
-
-            composeTestRule.waitUntil(timeoutMillis = 3000) {
-                try {
-                    composeTestRule.onNodeWithTag("openLoginButton").assertExists()
-                    true
-                } catch (e: Throwable) {
-                    false
-                }
-            }
-        } catch (e: Throwable) {
-            // Already logged out
-        }
-    }
 
     private fun performLogout() {
         composeTestRule.onNodeWithTag("logoutButton").safeClick()
@@ -154,27 +118,6 @@ class AnimalDetailScreenTest : BaseUiTest() {
             } catch (e: Throwable) {
                 false
             }
-        }
-    }
-
-    private fun navigateToCatalogue() {
-        composeTestRule.onNodeWithTag("openDrawerButton").safeClick()
-
-        composeTestRule.waitUntil(timeoutMillis = 2000) {
-            try {
-                composeTestRule.onNodeWithTag("drawerItemCatalogue").assertExists()
-                true
-            } catch (e: Throwable) {
-                false
-            }
-        }
-
-        composeTestRule.onNodeWithTag("drawerItemCatalogue").safeClick()
-
-        composeTestRule.waitUntil(timeoutMillis = 10000) {
-            composeTestRule
-                .onAllNodes(hasTestTagStartingWith("animalCard_"))
-                .fetchSemanticsNodes().isNotEmpty()
         }
     }
 

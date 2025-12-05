@@ -15,6 +15,8 @@ import com.example.seepawandroid.ui.screens.schedule.SchedulingScreen
 import com.example.seepawandroid.ui.screens.animals.AnimalCatalogueScreen
 import com.example.seepawandroid.ui.screens.animals.AnimalDetailScreen
 import com.example.seepawandroid.ui.screens.animals.viewmodel.AnimalViewModel
+import com.example.seepawandroid.ui.screens.favorites.FavoritesScreen
+import com.example.seepawandroid.ui.screens.favorites.FavoritesViewModel
 import com.example.seepawandroid.ui.screens.login.AuthViewModel
 import com.example.seepawandroid.ui.screens.ownerships.OwnershipListScreen
 import com.example.seepawandroid.ui.screens.ownerships.OwnershipRequestScreen
@@ -136,6 +138,17 @@ fun NavGraphUser(
             SchedulingScreen(
                 animalId = animalId,
                 onNavigateBack = { navController.popBackStack() },
+            )
+        }
+
+        // FAVORITES (User's favorite animals)
+        composable(NavigationRoutes.FAVORITES) {
+            val favoritesViewModel: FavoritesViewModel = hiltViewModel()
+            FavoritesScreen(
+                viewModel = favoritesViewModel,
+                onAnimalClick = { animalId ->
+                    navController.navigate("${NavigationRoutes.ANIMAL_DETAIL_PAGE_BASE}/$animalId")
+                }
             )
         }
     }

@@ -8,6 +8,7 @@ import com.example.seepawandroid.data.remote.dtos.animals.ResOwnedAnimalDto
 import com.example.seepawandroid.data.remote.dtos.auth.ReqLoginDto
 import com.example.seepawandroid.data.remote.dtos.auth.ReqRegisterUserDto
 import com.example.seepawandroid.data.remote.dtos.auth.ResLoginDto
+import com.example.seepawandroid.data.remote.dtos.favorites.ResGetFavoritesDto
 import com.example.seepawandroid.data.remote.dtos.notifications.ResNotificationDto
 import com.example.seepawandroid.data.remote.dtos.ownerships.ReqOwnershipRequestDto
 import com.example.seepawandroid.data.remote.dtos.ownerships.ResOwnershipRequestDto
@@ -20,6 +21,7 @@ import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
@@ -241,4 +243,20 @@ interface BackendApiService {
     suspend fun createOwnershipActivity(
         @Body request: ReqCreateOwnershipActivityDto
     ): Response<Unit>
+
+    @GET("api/favorites")
+    suspend fun getFavorites(
+        @Query("pageNumber") pageNumber: Int = 1,
+        @Query("pageSize") pageSize: Int = 10
+    ) : Response<PagedListDto<ResGetFavoritesDto>>
+
+    @POST("api/favorites/{animalId}")
+    suspend fun addFavorite(
+        @Path("animalId") animalId: String
+    ) : Response<Unit>
+
+    @PATCH("api/favorites/{animalId}/deactivate")
+    suspend fun removeFavorite(
+        @Path("animalId") animalId: String
+    ) : Response<Unit>
 }

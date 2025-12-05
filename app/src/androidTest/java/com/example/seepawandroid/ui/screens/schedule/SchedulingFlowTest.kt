@@ -244,35 +244,6 @@ class SchedulingFlowTest : BaseUiTest() {
         return null
     }
 
-    private fun logoutIfNeeded() {
-        try {
-            composeTestRule.waitForIdle()
-            Thread.sleep(1000)
-            composeTestRule.waitUntil(timeoutMillis = 3000) {
-                try {
-                    composeTestRule.onNodeWithTag("logoutButton").assertExists()
-                    true
-                } catch (e: Throwable) {
-                    false
-                }
-            }
-            composeTestRule.onNodeWithTag("logoutButton").safeClick()
-            Thread.sleep(500)
-            composeTestRule.waitUntil(timeoutMillis = 5000) {
-                try {
-                    composeTestRule.onNodeWithTag("openLoginButton").assertExists()
-                    true
-                } catch (e: Throwable) {
-                    false
-                }
-            }
-            composeTestRule.waitForIdle()
-            Thread.sleep(500)
-        } catch (_: Throwable) {
-            Thread.sleep(300)
-        }
-    }
-
     private fun performLogin(maxRetries: Int = 20) {
         var attempt = 0
         while (attempt < maxRetries) {
@@ -372,12 +343,6 @@ class SchedulingFlowTest : BaseUiTest() {
             } catch (_: Throwable) {
                 false
             }
-        }
-    }
-
-    private fun hasTestTagStartingWith(prefix: String): SemanticsMatcher {
-        return SemanticsMatcher("TestTag starts with '$prefix'") { node ->
-            node.config.getOrNull(SemanticsProperties.TestTag)?.startsWith(prefix) == true
         }
     }
 }

@@ -84,4 +84,7 @@ object NavigationRoutes {
      * Route for scheduling a visit with an animal.
      */
     const val SCHEDULE_VISIT = "schedule_visit"
+
+    //Favorites (authenticated mode - view user's favorite animals)
+    const val FAVORITES = "favorites"
 }

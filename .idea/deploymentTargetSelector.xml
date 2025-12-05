@@ -8,13 +8,16 @@
       <SelectionState runConfigName="Tests in 'com.example.seepawandroid'">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="t9_confirmationModal_confirmButton_showsLoadingState()">
+      <SelectionState runConfigName="FavoritesScreenTest">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="SchedulingFlowTest">
+      <SelectionState runConfigName="catalogueScreen_favoriteIcon_notDisplayedWhenNotLoggedIn()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="login_withInvalidPassword_showsError()">
+      <SelectionState runConfigName="AnimalCatalogueScreenTest">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+      <SelectionState runConfigName="AnimalCatalogueFavoritesTest">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>

@@ -64,30 +64,6 @@ class RegisterScreenTest : BaseUiTest() {
         navigateToRegisterScreen()
     }
 
-    private fun logoutIfNeeded() {
-        try {
-            composeTestRule.waitUntil(timeoutMillis = 2000) {
-                try {
-                    composeTestRule.onNodeWithTag("logoutButton").assertExists()
-                    true
-                } catch (e: Throwable) {
-                    false
-                }
-            }
-            composeTestRule.onNodeWithTag("logoutButton").safeClick()
-            composeTestRule.waitUntil(timeoutMillis = 3000) {
-                try {
-                    composeTestRule.onNodeWithText("SeePaw Login").assertExists()
-                    true
-                } catch (e: Throwable) {
-                    false
-                }
-            }
-        } catch (e: Throwable) {
-            // Already logged out
-        }
-    }
-
     private fun navigateToRegisterScreen() {
         // Wait for PublicHomepage to load
         // We use the "openLoginButton" testTag as indicator that homepage is ready
